@@ -104,4 +104,13 @@ venv.bak/
 .mypy_cache/
 
 # JetBrains IDEs
-/.idea
+.idea/
+
+# Database files *.db
+*.sqlite3
+*.sqlite
+
+# Generated directories
+media_cdn/
+static_cdn/
+

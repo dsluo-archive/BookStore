@@ -32,6 +32,7 @@ class Member(models.Model):
     birth_date = models.DateField()
     recv_newsletter = models.BooleanField(default=True)
     account_active = models.BooleanField(default=True)  # set to False if account is deleted, disallows login
+    public_account = models.BooleanField(default=True)
 
     authenticated = models.BooleanField(default=False)  # user responded to emailed key
     authentication_key = models.CharField(max_length=8, blank=True)

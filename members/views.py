@@ -12,3 +12,8 @@ def profile(request, slug):
 
 def create(request):
     return render(request, "create_account.html", {})
+
+
+def default_profile(request):
+    slug = "Current Member's slug"
+    return profile(request, slug)

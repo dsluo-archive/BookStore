@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.db.models.signals import pre_save
+from binascii import hexlify
 
 from django.contrib.auth.models import User
 from books.models import Reservation
@@ -20,18 +21,20 @@ class Address(models.Model):
 
 
 def upload_location(instance, filename):
-    return "%s/%s" % (instance.id, filename)
+    return "%s/%s" % (instance.slug, filename)
 
 
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Username, Email, First/Last name, Password
+    primary_address = models.CharField(max_length=60)
     profile_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField()
     recv_newsletter = models.BooleanField(default=True)
     account_active = models.BooleanField(default=True)  # set to False if account is deleted, disallows login
+    public_account = models.BooleanField(default=True)
 
-    authenticated = models.BooleanField(default=True)  # user responded to emailed key
+    authenticated = models.BooleanField(default=False)  # user responded to emailed key
     authentication_key = models.CharField(max_length=8, blank=True)
 
     admin = models.BooleanField(default=False)
@@ -65,7 +68,7 @@ class Member(models.Model):
         return reverse("members:account", kwargs={"slug": self.slug})
 
     def __str__(self):
-        return self.user.first_name + self.user.last_name
+        return self.user.first_name + " " + self.user.last_name
 
 
 def create_slug(instance):

@@ -10,4 +10,5 @@ class VendorModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Vendor
 
+
 admin.site.register(Vendor, VendorModelAdmin)

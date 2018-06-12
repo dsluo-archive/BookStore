@@ -5,15 +5,15 @@ from django.db.models.signals import pre_save
 
 from books.models import Book
 
+
 # Create your models here.
 
 
 def upload_location(instance, filename):
-    return "%s/%s" %(instance.id, filename)
+    return "%s/%s" % (instance.id, filename)
 
 
 class Vendor(models.Model):
-
     vendor_name = models.CharField(max_length=60)
     member_actual = models.OneToOneField('members.Member', related_name='+', on_delete=models.CASCADE)
     books_owned = models.ManyToManyField(Book, blank=True)

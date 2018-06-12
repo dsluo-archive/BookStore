@@ -10,7 +10,6 @@ from members.models import Address
 
 
 class Cart(models.Model):
-
     member_owner = models.OneToOneField('members.Member', on_delete=models.PROTECT, related_name='+')
     books = models.ManyToManyField(Book, blank=True)
     total = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
@@ -21,4 +20,3 @@ class Order(models.Model):
     confirmation_number = models.IntegerField(blank=False)
     date = models.DateField(default=timezone.now, blank=False)
     address_used = models.OneToOneField(Address, on_delete=models.PROTECT)
-

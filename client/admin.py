@@ -10,4 +10,5 @@ class ClientModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Client
 
+
 admin.site.register(Client, ClientModelAdmin)

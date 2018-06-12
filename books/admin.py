@@ -14,4 +14,5 @@ class BookModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Book
 
+
 admin.site.register(Book, BookModelAdmin)

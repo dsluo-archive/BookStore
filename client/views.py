@@ -17,6 +17,7 @@ def inventory(request):
 def book_sales(request):
     return render(request, "book_sales.html", {})
 
+
 '''
 def pub_sales(request):
     return render(request, "pub_sales.html", {})

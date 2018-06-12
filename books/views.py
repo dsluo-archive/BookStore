@@ -18,6 +18,3 @@ def detail(request, slug):
 
 def query(request):
     return render(request, "query.html", {})
-
-
-

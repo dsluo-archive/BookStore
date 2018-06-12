@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.utils import timezone
 from django.db.models.signals import pre_save
 
+
 # Create your models here.
 
 
@@ -12,7 +13,6 @@ def upload_location(instance, filename):
 
 
 class Book(models.Model):
-
     id = models.AutoField(primary_key=True)
 
     item_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
@@ -57,5 +57,6 @@ def create_slug(instance):
 def pre_save_item_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
+
 
 pre_save.connect(pre_save_item_receiver, sender=Book)

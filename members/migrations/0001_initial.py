@@ -7,7 +7,6 @@ import members.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -39,13 +38,18 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('vendor_auth', models.BooleanField(default=False)),
                 ('client_auth', models.BooleanField(default=False)),
-                ('cart', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='+', to='cart.Cart')),
-                ('client_actual', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='client.Client')),
+                ('cart', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='+', to='cart.Cart')),
+                ('client_actual',
+                 models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                      to='client.Client')),
                 ('order', models.ManyToManyField(blank=True, related_name='_member_order_+', to='cart.Order')),
                 ('purchased', models.ManyToManyField(blank=True, related_name='_member_purchased_+', to='books.Book')),
                 ('reserved', models.ManyToManyField(blank=True, to='books.Reservation')),
-                ('saved_addresses', models.ManyToManyField(blank=True, related_name='_member_saved_addresses_+', to='members.Address')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('saved_addresses',
+                 models.ManyToManyField(blank=True, related_name='_member_saved_addresses_+', to='members.Address')),
+                (
+                'user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

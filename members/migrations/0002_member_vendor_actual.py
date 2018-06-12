@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -17,6 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='member',
             name='vendor_actual',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='vendors.Vendor'),
+            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                       to='vendors.Vendor'),
         ),
     ]

@@ -68,7 +68,7 @@ class Member(models.Model):
         return reverse("members:account", kwargs={"slug": self.slug})
 
     def __str__(self):
-        return self.user.first_name + self.user.last_name
+        return self.user.first_name + " " + self.user.last_name
 
 
 def create_slug(instance):

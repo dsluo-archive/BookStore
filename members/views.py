@@ -41,5 +41,9 @@ def create(request):
 
 
 def default_profile(request):
-    slug = "Current Member's slug"
-    return profile(request, slug)
+    user = Member.objects.all().filter(user=request.user).first()
+
+    if user:
+        return profile(request, user.slug)
+    else:
+        raise PermissionDenied

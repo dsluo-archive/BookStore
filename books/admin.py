@@ -1,7 +1,15 @@
 from django.contrib import admin
 
 # Register your models here.
-from books.models import Book
+from books.models import Book, Genre
+
+
+class GenreModelAdmin(admin.ModelAdmin):
+    list_display = ["subject"]
+    search_fields = ["subject"]
+
+    class Meta:
+        model = Genre
 
 
 class BookModelAdmin(admin.ModelAdmin):
@@ -16,3 +24,4 @@ class BookModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Book, BookModelAdmin)
+admin.site.register(Genre, GenreModelAdmin)

@@ -15,7 +15,7 @@ def upload_location(instance, filename):
 
 class Vendor(models.Model):
     vendor_name = models.CharField(max_length=60)
-    member_actual = models.OneToOneField('members.Member', related_name='+', on_delete=models.CASCADE)
+    member_actual = models.ManyToManyField('members.Member', related_name='+')
     books_owned = models.ManyToManyField(Book, blank=True)
 
     def __str__(self):

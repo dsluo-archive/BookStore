@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.db.models.signals import pre_save
+from binascii import hexlify
 
 from django.contrib.auth.models import User
 from books.models import Reservation
@@ -31,7 +32,7 @@ class Member(models.Model):
     recv_newsletter = models.BooleanField(default=True)
     account_active = models.BooleanField(default=True)  # set to False if account is deleted, disallows login
 
-    authenticated = models.BooleanField(default=True)  # user responded to emailed key
+    authenticated = models.BooleanField(default=False)  # user responded to emailed key
     authentication_key = models.CharField(max_length=8, blank=True)
 
     admin = models.BooleanField(default=False)

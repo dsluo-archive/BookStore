@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.shortcuts import render, HttpResponse, get_object_or_404, Http404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 
@@ -46,4 +46,4 @@ def default_profile(request):
     if user:
         return profile(request, user.slug)
     else:
-        raise PermissionDenied
+        raise Http404

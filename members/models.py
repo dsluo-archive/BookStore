@@ -21,11 +21,12 @@ class Address(models.Model):
 
 
 def upload_location(instance, filename):
-    return "%s/%s" % (instance.id, filename)
+    return "%s/%s" % (instance.slug, filename)
 
 
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Username, Email, First/Last name, Password
+    primary_address = models.CharField(max_length=60)
     profile_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField()

@@ -3,7 +3,6 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 
 # Create your views here.
-
 from members.models import Member
 from members.forms import UserForm, MemberForm
 

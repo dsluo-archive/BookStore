@@ -6,19 +6,15 @@ from django.db.models.signals import pre_save
 
 
 # Create your models here.
-
-
 def upload_location(instance, filename):
     return "%s/%s" % (instance.slug, filename)
 
 
 class Book(models.Model):
-    id = models.AutoField(primary_key=True)
-
     item_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
 
     name = models.CharField(max_length=120)
-    isbn = models.CharField(max_length=30)
+    isbn = models.CharField(unique=True, max_length=30)
     publisher = models.CharField(max_length=60)
     author = models.CharField(max_length=60)
 
@@ -32,11 +28,21 @@ class Book(models.Model):
 
     description = models.TextField()
 
+    subjects = models.ManyToManyField("Genre", related_name='+', blank=False)
+
     def get_absolute_url(self):
         return reverse("books:detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.name
+
+
+class Genre(models.Model):
+    subjects = models.CharField(max_length=30)
+    books = models.ManyToManyField(Book, blank=True)
+
+    def __str__(self):
+        return self.subjects
 
 
 class Reservation(models.Model):

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+    <!-- item info will need to be passed into this -->
+
+    <p>Mass Upload Books via CSV</p>
+    <form method="post" action='' enctype='multipart/form-data'> {% csrf_token %}
+	    {{ mass_book_form.as_p}}
+
+
+        <input type="submit" class='btn btn-default' value="Create Books"/>
+    </form>
+
+
+{% endblock main_content %}

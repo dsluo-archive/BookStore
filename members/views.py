@@ -1,7 +1,7 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404, Http404
 from django.core.exceptions import PermissionDenied
-from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404, Http404
 
+from members.forms import UserForm, MemberForm
 # Create your views here.
 from members.models import Member
 from members.forms import UserForm, MemberForm
@@ -20,7 +20,7 @@ def profile(request, slug):
         raise PermissionDenied
 
 
-def create(request):
+def register(request):
     user_form = UserForm(request.POST or None, request.FILES or None)
     member_form = MemberForm(request.POST or None, request.FILES or None)
 

@@ -28,7 +28,7 @@ class Book(models.Model):
 
     description = models.TextField()
 
-    subject = models.ManyToManyField("Genre", related_name='+', blank=False)
+    subjects = models.ManyToManyField("Genre", related_name='+', blank=False)
 
     def get_absolute_url(self):
         return reverse("books:detail", kwargs={"slug": self.slug})
@@ -38,11 +38,11 @@ class Book(models.Model):
 
 
 class Genre(models.Model):
-    subject = models.CharField(max_length=30)
+    subjects = models.CharField(max_length=30)
     books = models.ManyToManyField(Book, blank=True)
 
     def __str__(self):
-        return self.subject
+        return self.subjects
 
 
 class Reservation(models.Model):

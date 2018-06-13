@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from books.models import Book, Genre
@@ -14,19 +14,28 @@ def home(request):
 
 
 def detail(request, slug):
-    return render(request, "book_detail.html", {"slug": slug})
+    book = get_object_or_404(Book, slug=slug)
+
+    return render(request, "book_detail.html", {"book": book})
 
 
 def create_book(request):
     book_form = BookForm(request.POST or None, request.FILES or None)
 
     if book_form.is_valid():
-        genre = Genre.objects.all().filter(subject=book_form.cleaned_data['subject']).values().first()
+        form_genres = book_form.cleaned_data['subject'].split(",")
+        genres = []
 
-        if genre:
+        for genre_detail in form_genres:
+            genres.append(Genre.objects.all().filter(subjects=genre_detail.strip()).first())
+
+        if len(genres) > 0:
             new_book = book_form.save()
-            #new_book.subject.set(genre)
-            #new_book.save()
+
+            for genre_detail in genres:
+                new_book.subjects.add(genre_detail)
+
+            new_book.save()
 
             return render(request, "home_page.html", {})
         else:

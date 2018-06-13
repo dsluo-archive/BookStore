@@ -5,8 +5,8 @@ from books.models import Book, Genre
 
 
 class GenreModelAdmin(admin.ModelAdmin):
-    list_display = ["subject"]
-    search_fields = ["subject"]
+    list_display = ["subjects"]
+    search_fields = ["subjects"]
 
     class Meta:
         model = Genre

@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, get_object_or_404, Http404, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -28,16 +28,28 @@ def register(request):
 
     if user_form.is_valid() and member_form.is_valid():
         new_user = User.objects.create_user(**user_form.cleaned_data)
-        login(request, user=new_user)
+        new_user.is_active = False
+        new_user.save()
 
         new_member = member_form.save(commit=False)
         new_member.user = new_user
         new_member.save()
 
-        return render(request, "home_page.html", {})
+        '''
+        Call a function that will:
+        
+        1. Create an authentication key and store it in the Member.
+        2. Send an email to the user with said key.
+        '''
+
+        return HttpResponseRedirect(reverse('books:home'))
 
     return render(request, "create_account.html", {"user_form": user_form,
                                                    "member_form": member_form})
+
+
+def activate_user(request):
+    pass
 
 
 def default_profile(request):
@@ -50,7 +62,7 @@ def default_profile(request):
 def login_user(request):
 
     if request.user.is_authenticated:
-        return render(request, "home_page.html", {})
+        return HttpResponseRedirect(reverse('books:home'))
     else:
         user_form = UserLoginForm(request.POST or None, request.FILES or None)
 
@@ -60,15 +72,18 @@ def login_user(request):
 
             user = authenticate(request, username=username, password=password)
 
-            if user is not None:
+            if user is None:
+                raise PermissionDenied # placeholder for actual error
+            elif user.is_active:
                 login(request, user)
-                return render(request, "home_page.html", {})
+                return HttpResponseRedirect(reverse('books:home'))
             else:
-                raise PermissionDenied  # placeholder for actual error
+                return HttpResponse(request, "Please activate your account with the code provided.")
+                # Need to make sure authenticate() still returns if is_active is False.
 
         return render(request, "login.html", {"user_form": user_form})
 
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect(reverse('members:login'))
+    return HttpResponseRedirect(reverse('books:home'))

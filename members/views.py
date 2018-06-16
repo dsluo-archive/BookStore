@@ -41,12 +41,10 @@ def register(request):
 
 
 def default_profile(request):
-    user = Member.objects.all().filter(user=request.user).first()
-
-    if user:
-        return profile(request, user.slug)
+    if request.user.is_authenticated:
+        return profile(request, request.user.member.slug)
     else:
-        raise Http404
+        raise PermissionDenied
 
 
 def login_user(request):

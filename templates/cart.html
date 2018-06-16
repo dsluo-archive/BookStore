@@ -1,8 +1,46 @@
-{% extends "base.html" %}
+{% extends "base.html" %
+
+ {% block CartPage_css %}<link rel="stylesheet" href="assets/Cart/css/cart-main.css">  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">{% endblock CartPage_css %}
 
 {% block main_content %}
-
-    <!-- send user instance as object, populate the page with it -->
-    <p> Cart Page</p>
+	
+	<body>
+	    <div class="container-fluid banner">
+			<div class="row">
+				<div class="col">
+					<img id="banner_img" src="assets/Book/images/dogear.jpg"></img>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid main">
+			<div class="row">
+				<div class="col-md-8">
+					<form>
+						<ul class="list-group">
+							<li class="list-group-item">Item 1: <span class="amt">$X.XX</span></li>
+							<li class="list-group-item">Item 2: <span class="amt">$X.XX</span></li>
+							<li class="list-group-item">Item 3: <span class="amt">$X.XX</span></li>
+							<li class="list-group-item">Item 4: <span class="amt">$X.XX</span></li>
+							<li class="list-group-item tot">Total: &nbsp;&nbsp;<span class="amt">$X.XX</span></li>
+						</ul>
+					</form>
+				</div>
+				<div class="col-4 sidebar">
+					<button id="checkout" class="btn-lg btn-dark"> CheckOut</button><br>
+					<button id="shop" class="btn-lg btn-dark"> Continue Shopping</button>
+					<hr>
+					
+					
+					<h4>Similar Items:</h4>
+					<ul>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
 
 {% endblock main_content %}

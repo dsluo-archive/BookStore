@@ -1,20 +1,23 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django.db.models.signals import pre_save
+from django.utils import timezone
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
+
 from binascii import hexlify
 
-from django.contrib.auth.models import User
-from books.models import Reservation
-from vendors.models import Vendor
-from client.models import Client
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.forms import UserCreationForm
 
+from books.models import Book, Reservation
+from vendors.models import Vendor
 
 # Create your models here.
 
 
 class Address(models.Model):
-    address = models.CharField(max_length=120, null=True, blank=True)
+    location = models.CharField(max_length=120, null=True, blank=True)
 
     def __str__(self):
         return self.address
@@ -24,61 +27,56 @@ def upload_location(instance, filename):
     return "%s/%s" % (instance.slug, filename)
 
 
+class UserCreation(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserCreation, self).__init__(*args, **kwargs)
+
+        self.fields['email'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+
+
 class Member(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Username, Email, First/Last name, Password
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)
+
     primary_address = models.CharField(max_length=60)
     profile_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
-    birth_date = models.DateField()
-    recv_newsletter = models.BooleanField(default=True)
-    account_active = models.BooleanField(default=True)  # set to False if account is deleted, disallows login
-    public_account = models.BooleanField(default=True)
+    birth_date = models.DateField(default=timezone.now)
 
-    authenticated = models.BooleanField(default=False)  # user responded to emailed key
     authentication_key = models.CharField(max_length=8, blank=True)
 
-    admin = models.BooleanField(default=False)
-
-    id = models.AutoField(primary_key=True)
-
-    # If member is a vendor
-    vendor_auth = models.BooleanField(default=False)
-    vendor_actual = models.OneToOneField(Vendor, on_delete=models.CASCADE, null=True, blank=True)
-
-    # If member is a client
-    client_auth = models.BooleanField(default=False)
-    client_actual = models.OneToOneField(Client, on_delete=models.CASCADE, null=True, blank=True)
-
     # Of type Cart
-    cart = models.OneToOneField('cart.Cart', related_name='+', on_delete=models.CASCADE, null=True, blank=True)
+    cart = models.OneToOneField('cart.Cart', related_name='cart', on_delete=models.CASCADE, null=True, blank=True)
 
     # Of type Book
-    purchased = models.ManyToManyField('books.Book', related_name='+', blank=True)
+    purchased = models.ManyToManyField(Book, blank=True)
 
     # Of type Reservation
     reserved = models.ManyToManyField(Reservation, blank=True)
 
     # Of type Order
-    order = models.ManyToManyField('cart.Order', related_name='+', blank=True)
+    order = models.ManyToManyField('cart.Order', related_name='order', blank=True)
 
     # Of type Address
-    saved_addresses = models.ManyToManyField(Address, related_name='+', blank=True)
+    saved_addresses = models.ManyToManyField(Address, related_name='address', blank=True)
 
     def get_absolute_url(self):
         return reverse("members:account", kwargs={"slug": self.slug})
 
     def __str__(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.user.username
 
 
 def create_slug(instance):
-    current_id = Member.objects.all().order_by("-id").first()
+    current_id = User.objects.all().order_by("-id").first()
     if current_id:
         current_id = current_id.id
     else:
         current_id = 1
 
-    return slugify(instance.user.first_name) + "-" + slugify(instance.user.last_name) + "-" + str(current_id)
+    return slugify(instance.user.username) + "-" + str(current_id)
 
 
 def pre_save_member_receiver(sender, instance, *args, **kwargs):

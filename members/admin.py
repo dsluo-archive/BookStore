@@ -5,7 +5,7 @@ from members.models import Member
 
 
 class MemberModelAdmin(admin.ModelAdmin):
-    list_display = ["user", "birth_date", "recv_newsletter", "authenticated", "admin", "vendor_auth", "client_auth"]
+    list_display = ["user"]
 
     class Meta:
         model = Member

@@ -3,6 +3,34 @@
 {% block main_content %}
 
     <!-- item info will need to be passed into this -->
-    <p> Home Page</p>
+    <h1> Home Page</h1>
+
+    <h3>Genres: </h3>
+    <ul>
+    {% for genre in genres %}
+        <li>{{ genre }}</li>
+    {% endfor %}
+    </ul>
+
+    <h3>Books by {{ latest_author }}: </h3>
+    <ul>
+    {% for book in latest_author.book_set.all %}
+        <li>{{ book }}</li>
+    {% endfor %}
+    </ul>
+
+    <h3>New books: </h3>
+    <ul>
+    {% for book in new_books %}
+        <li>{{ book }}</li>
+    {% endfor %}
+    </ul>
+
+    <h3>Newly Added books: </h3>
+    <ul>
+    {% for book in newly_added_books %}
+        <li>{{ book }}</li>
+    {% endfor %}
+    </ul>
 
 {% endblock main_content %}

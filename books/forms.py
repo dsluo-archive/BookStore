@@ -8,8 +8,6 @@ class MassBookForm(forms.Form):
 
 
 class BookForm(forms.ModelForm):
-    subject = forms.CharField(max_length=30)
-
     class Meta:
         model = Book
         fields = [
@@ -21,5 +19,7 @@ class BookForm(forms.ModelForm):
             "author",
             "publish_date",
             "count_in_stock",
-            "description"
+            "description",
+            "subjects",
+            "vendor"
         ]

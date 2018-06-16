@@ -39,6 +39,7 @@ body {
 	margin: 15px;
 }
 
+
 .book_content {
 	height: 500px;
 }
@@ -84,6 +85,7 @@ body {
 	margin-top: 10px;
 	padding-right: 10px;
 	border-radius: 15px;
+	border-color: #12B886;
 }
 
 .sidebar p {
@@ -98,4 +100,27 @@ body {
 	margin-bottom: 15px;
 }
 
+.foot {
+	margin-top: 15px;
+	background: linear-gradient(rgba(205,205,205,0.7), rgba(205,205,205,0.7));
+	position: fixed;
+	bottom: 0;
+	font-family: bannerFontbold;
+}
 
+.nav-list {
+	display: inline-block;
+	right:0;
+	position: absolute;
+	margin-right: 20px;
+}
+
+.nav-list-item {
+	display: inline-block;
+	list-style: none;
+	font-size: 16px;
+}
+
+.nav-list-item:hover {
+	opacity: .6;
+}

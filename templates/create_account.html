@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block stylesheet %}
-    <link rel="stylesheet" href="assets/Create-Acct/css/create-acct-main.css">
+    <link rel="stylesheet" href="{% static "css/create-acct-main.css" %}">
 {% endblock stylesheet %}
 
 {% block main_content %}
@@ -10,7 +12,7 @@
     <div class="container-fluid banner">
         <div class="row">
             <div class="col-md-6">
-                <img id="banner_img" src="assets/Book/images/dogear.jpg"/>
+                <img id="banner_img" src="{% static "images/dogear.jpg" %}"/>
             </div>
             <div class="col-6">
                 <h3>Create your Dog-Ear account</h3>
@@ -58,7 +60,7 @@
                             </select>
                         </li>
                         <div class="profile_pic">
-                            <img id="profile_img" src="assets/Create-Acct/images/placeholder.jpg" alt=""/><input
+                            <img id="profile_img" src="{% static "images/placeholder.jpg" %}" alt=""/><input
                                 class="btn-sm btn-dark" id="browse" type="file" id="myFile"/>
                         </div>
                         <input class="btn-sm btn-dark" id="submit" type="submit" value="Submit">

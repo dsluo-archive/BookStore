@@ -7,3 +7,20 @@ footer {
     background-color: #f7f8f9;
     color: #949494;
 }
+
+/* font for the banner */
+@font-face {
+    font-family: bannerFont;
+    src: url("../fonts/GlacialIndifference-Regular.otf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: bannerFontbold;
+    src: url("../fonts/GlacialIndifference-Bold.otf");
+    font-weight: bold;
+}
+
+body {
+    font-family: bannerFont, serif;
+}

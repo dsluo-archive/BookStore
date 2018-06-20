@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block stylesheet %}
-    <link rel="stylesheet" href="assets/Book/css/book-detail-main.css">
+    <link rel="stylesheet" href="{% static "css/book-detail-main.css" %}">
 {% endblock stylesheet %}
 
 {% block main_content %}
@@ -10,7 +12,7 @@
     <div class="container-fluid banner">
         <div class="row">
             <div class="col">
-                <img id="banner_img" src="assets/Book/images/dogear.jpg"/>
+                <img id="banner_img" src="{% static "images/dogear.jpg" %}"/>
                 <button id="edit" class="btn-sm btn-dark"> &nbsp<i class="fas fa-edit"></i></button>
             </div>
         </div>
@@ -21,7 +23,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4">
-                            <img class="img-responsive" src="assets/Book/images/book_store.jpg"/>
+                            <img class="img-responsive" src="{% static "images/book_store.jpg" %}"/>
                         </div>
                         <div class="col-8">
                             <ul>
@@ -73,7 +75,8 @@
 
     <nav class="foot navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">
-            <img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            <img src="{% static "bootstrap-solid.svg" %}" width="30" height="30" class="d-inline-block align-top"
+                 alt="">
             <ul class="nav-list">
                 <li class="nav-list-item"></li>
                 <li class="nav-list-item">Back to Top</li>

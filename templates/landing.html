@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+
+{% load static %}
+
 {% block stylesheet %}
-    <link rel="stylesheet" href="assets/Landing/css/landing-main.css">
+    <link rel="stylesheet" href="{% static "css/landing-main.css" %}">
 {% endblock stylesheet %}
 
 {% block main_content %}
@@ -28,7 +31,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <img id="icon" src="assets/Landing/images/dogear.jpg"/>
+                        <img id="icon" src="{% static "images/dogear.jpg" %}"/>
                     </div>
                 </div>
                 <div class="row">

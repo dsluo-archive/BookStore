@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block stylesheet %}
-    <link rel="stylesheet" href="assets/Cart/css/cart-main.css"/>
+    <link rel="stylesheet" href="{% static "css/cart-main.css" %}"/>
 {% endblock stylesheet %}
 
 {% block main_content %}
@@ -10,7 +12,7 @@
     <div class="container-fluid banner">
         <div class="row">
             <div class="col">
-                <img id="banner_img" src="assets/Book/images/dogear.jpg"/>
+                <img id="banner_img" src="{% static "images/dogear.jpg" %}"/>
             </div>
         </div>
     </div>

@@ -1,74 +1,85 @@
 {% extends "base.html" %}
 
-{% block BookDetailPage_css %} <link rel="stylesheet" href="assets/Book/css/book-detail-main.css"> <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">{% endblock BookDetailPage_css %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="assets/Book/css/book-detail-main.css">
+{% endblock stylesheet %}
 
 {% block main_content %}
 
     <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid banner">
-		<div class="row">
-			<div class="col">
-				<img id="banner_img" src="assets/Book/images/dogear.jpg"></img>
-				<button id="edit" class="btn-sm btn-dark"> &nbsp<i class="fas fa-edit"></i></button>
-			</div>
-		</div>
-	</div>
-	<div class="container-fluid mh-100">
-		<div class="row">
-			<div class="col-10 book_content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-4">
-							<img class="img-responsive" src="assets/Book/images/book_store.jpg"></img>
-						</div>
-						<div class="col-8">
-							<ul>
-								<li>Title:</li>
-								<li>Author:</li>
-								<li>Genre:</li>
-								<li>Publisher:</li>
-							</ul>
-						</div>
-						<div class="col-12">
-							<p>Details: A Day in the Life of Marlon Bundo was conceptualized as a loose parody of Marlon Bundo's A Day in the Life of the Vice President, a children's book written by Mike Pence's daughter Charlotte Pence and illustrated by his wife Karen Pence. 
-							Their book also tells about a fictionalized day of the Pence family's pet rabbit, but without the LGBT themes of A Day in the Life of Marlon Bundo.
-							On March 18, 2018, the publication of both books was used as a comedy piece on Last Week Tonight to raise awareness of Mike Pence's stated anti-LGBT attitudes. 
-							John Oliver stated that Pence's pet rabbit was the one thing he liked about Pence, and that because of this, he had taken issue with the real-life Marlon Bundo having to make a stop at the anti-LGBT organization Focus on the Family during an upcoming promotional book tour with the Pences. 
-							With the Pences' book scheduled to appear on March 19, John Oliver announced the publication of a "better Bundo book" at that very moment (so preceding the Pences' book). </p>
-						</div>
-						<div class="col-12">
-							<ul id="secondary">
-								<li>ISBN:</li>
-								<li>Vendor:</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-2 sidebar">
-				<p>Price:</p>
-				<button class="btn-lg btn-dark"> Add to Cart </button>
-				<button id="reserve" class="btn-lg btn-dark"> Reserve Book</button>
-				<p>Others by Author:</p>
-				<ul id="Others">
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	
-	<nav class="foot navbar navbar-light bg-light">
-		  <a class="navbar-brand" href="#">
-			<img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-			<ul class="nav-list">
-				<li class="nav-list-item"></li>
-				<li class="nav-list-item">Back to Top</li>
-			</ul>
-		  </a>
-	</nav>
+        <div class="row">
+            <div class="col">
+                <img id="banner_img" src="assets/Book/images/dogear.jpg"/>
+                <button id="edit" class="btn-sm btn-dark"> &nbsp<i class="fas fa-edit"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mh-100">
+        <div class="row">
+            <div class="col-10 book_content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img class="img-responsive" src="assets/Book/images/book_store.jpg"/>
+                        </div>
+                        <div class="col-8">
+                            <ul>
+                                <li>Title:</li>
+                                <li>Author:</li>
+                                <li>Genre:</li>
+                                <li>Publisher:</li>
+                            </ul>
+                        </div>
+                        <div class="col-12">
+                            <p>Details: A Day in the Life of Marlon Bundo was conceptualized as a loose parody of Marlon
+                                Bundo's A Day in the Life of the Vice President, a children's book written by Mike
+                                Pence's daughter Charlotte Pence and illustrated by his wife Karen Pence.
+                                Their book also tells about a fictionalized day of the Pence family's pet rabbit, but
+                                without the LGBT themes of A Day in the Life of Marlon Bundo.
+                                On March 18, 2018, the publication of both books was used as a comedy piece on Last Week
+                                Tonight to raise awareness of Mike Pence's stated anti-LGBT attitudes.
+                                John Oliver stated that Pence's pet rabbit was the one thing he liked about Pence, and
+                                that because of this, he had taken issue with the real-life Marlon Bundo having to make
+                                a stop at the anti-LGBT organization Focus on the Family during an upcoming promotional
+                                book tour with the Pences.
+                                With the Pences' book scheduled to appear on March 19, John Oliver announced the
+                                publication of a "better Bundo book" at that very moment (so preceding the Pences'
+                                book). </p>
+                        </div>
+                        <div class="col-12">
+                            <ul id="secondary">
+                                <li>ISBN:</li>
+                                <li>Vendor:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 sidebar">
+                <p>Price:</p>
+                <button class="btn-lg btn-dark"> Add to Cart</button>
+                <button id="reserve" class="btn-lg btn-dark"> Reserve Book</button>
+                <p>Others by Author:</p>
+                <ul id="Others">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <nav class="foot navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            <ul class="nav-list">
+                <li class="nav-list-item"></li>
+                <li class="nav-list-item">Back to Top</li>
+            </ul>
+        </a>
+    </nav>
     <p> Slug: {{ slug }}</p> <!-- this will be passed in the url -->
 
 {% endblock main_content %}

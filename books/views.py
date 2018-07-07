@@ -28,6 +28,10 @@ def home(request):
                                               "genres": genres})
 
 
+def all_books(request):
+    return render(request, "query.html", {"books":Book.objects.all().order_by("name")})
+
+
 def detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
 

@@ -4,5 +4,11 @@
 
     <!-- send user instance as object, populate the page with it -->
     <p> Query Page</p>
+    <h3>Books by title: </h3>
+    <ul>
+    {% for book in books %}
+        <li>{{ book }}, {{ book.author }}, {{ book.price }}</li>
+    {% endfor %}
+    </ul>
 
 {% endblock main_content %}

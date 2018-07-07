@@ -1,8 +1,73 @@
 {% extends "base.html" %}
 
-{% block main_content %}
+{% load static %}
 
-    <!-- item info will need to be passed into this -->
-    <p> Book Sales Page</p>
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static "css/book-sales-main.css" %}">
+{% endblock stylesheet %}
 
+{% block main_content %} <!-- item info will need to be passed into this -->
+    
+	<div class="container-fluid banner">
+		<div class="row">
+			<div class="col-md-12">
+				<h1> {Vendor} Sales </h1>
+			</div>
+		</div>
+	</div>
+	<div class="container form-group dropdown">
+		<div class="row">
+			<div class="col-md-12">
+				<form>
+					Orders places in:
+					<select name="orders_within" value="1" class="form-control-sm">
+						<option value="3">past 3 months</option>
+						<option value="6">past 6 months</option>
+						<option value="12">past year</option>
+					</select>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row">
+			<table class="table table-dark">
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Ships To</th>
+						<th>Date Placed</th>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">1</th>
+						<th>Athens, GA</th>
+						<th>6/16/2018</th>
+						<th>$106.41</th>
+					</tr>
+					<tr>
+						<th scope="row">1</th>
+						<th>Nashville, TN</th>
+						<th>3/26/2018</th>
+						<th>$106.71</th>
+					</tr>
+					<tr>
+						<th scope="row">1</th>
+						<th>Atlanta, GA</th>
+						<th>7/6/2018</th>
+						<th>$56.10</th>
+					</tr>
+					<tr>
+						<th scope="row">1</th>
+						<th>Columbia, SC</th>
+						<th>5/8/2018</th>
+						<th>$177.51</th>
+					</tr>
+				<tbody>
+			</table>
+		</div>
+	</div>
 {% endblock main_content %}

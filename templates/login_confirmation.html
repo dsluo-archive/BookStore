@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static "css/book-detail-main.css" %}">
+{% endblock stylesheet %}
+
+{% block main_content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="alert alert-success" role="alert">
+				<h4 class="alert-heading">Login Sucessfull!</h4>
+				<p>You will be redirected back to our website. </p>
+				<hr>
+				<p class="mb-0">If you are not redirected immediately, please follow this link <a href="https://www.reddit.com/">Dog-Ear Rox</a>.</p>
+			</div>
+		</div>
+	</div>
+{% endblock main_content %}

@@ -1,0 +1,86 @@
+@import "base.css";
+
+.banner {
+    color: white;
+    font-family: bannerFontbold, serif;
+    background-color: #545D68;
+    background-size: cover;
+    height: 200px;
+    width: 100%;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+#banner_img {
+    height: 180px;
+    width: 180px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.banner h3 {
+    font-family: bannerFontbold, serif;
+    margin-top: 50px;
+}
+
+.list-group {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.inputbox {
+    position: absolute;
+    right: 0;
+    margin-right: 15px;
+    width: 205px;
+    border-radius: 3px;
+}
+
+#Day {
+    width: 50px;
+    margin-left: 5px;
+    position: absolute;
+    right: 170px;
+    border-radius: 3px;
+}
+
+#Month {
+    width: 50px;
+    margin-left: 5px;
+    position: absolute;
+    right: 103px;
+    border-radius: 3px;
+}
+
+#Year {
+    position: absolute;
+    right: 0;
+    margin-right: 15px;
+    width: 70px;
+    margin-left: 5px;
+    border-radius: 3px;
+}
+
+.list-group {
+    width: 50%;
+}
+
+.profile_pic {
+    margin-top: 10px;
+    margin-left: 25%;
+}
+
+#profile_img {
+    height: 320px;
+    width: 240px;
+}
+
+#submit {
+    margin-top: 10px;
+    margin-left: 25%;
+    width: 20%;
+}
+
+#browse {
+    margin-top: 10px;
+}

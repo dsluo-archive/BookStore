@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 
 
 # Create your views here.
@@ -29,7 +30,31 @@ def home(request):
 
 
 def all_books(request):
-    return render(request, "query.html", {"books":Book.objects.all().order_by("name")})
+    queryset_list = Book.objects.all().order_by("name")
+
+    book_name = request.GET.get('name')
+    book_author = request.GET.get('author')
+    book_isbn = request.GET.get('isbn')
+    book_genre = request.GET.get('genre')
+
+    if book_name:
+        book_name = book_name.split('%')
+        for name in book_name:
+            queryset_list = queryset_list.filter(name__contains=name)
+    if book_author:
+        book_author = book_author.split('%')
+        for author in book_author:
+            queryset_list = queryset_list.filter(author__name=author)
+    if book_isbn:
+        book_isbn = book_isbn.split('%')
+        for isbn in book_isbn:
+            queryset_list = queryset_list.filter(isbn=isbn)
+    if book_genre:
+        book_genre = book_genre.split('%')
+        for genre in book_genre:
+            queryset_list = queryset_list.filter(subjects__subjects=genre)
+
+    return render(request, "query.html", {"books": queryset_list})
 
 
 def detail(request, slug):

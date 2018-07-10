@@ -23,29 +23,34 @@ def profile(request, slug):
 
 
 def register(request):
-    user_form = UserCreateForm(request.POST or None, request.FILES or None)
-    member_form = MemberCreateForm(request.POST or None, request.FILES or None)
+    if not request.user.is_authenticated or request.user.is_superuser:
+        user_form = UserCreateForm(request.POST or None, request.FILES or None)
+        member_form = MemberCreateForm(request.POST or None, request.FILES or None)
 
-    if user_form.is_valid() and member_form.is_valid():
-        new_user = User.objects.create_user(**user_form.cleaned_data)
-        new_user.is_active = False
-        new_user.save()
+        if request.method == 'POST':
+            if user_form.is_valid() and member_form.is_valid():
+                new_user = User.objects.create_user(**user_form.cleaned_data)
+                new_user.is_active = False
+                new_user.save()
 
-        new_member = member_form.save(commit=False)
-        new_member.user = new_user
-        new_member.save()
+                new_member = member_form.save(commit=False)
+                new_member.user = new_user
+                new_member.save()
 
-        '''
-        Call a function that will:
-        
-        1. Create an authentication key and store it in the Member.
-        2. Send an email to the user with said key.
-        '''
+                '''
+                Call a function that will:
+                
+                1. Create an authentication key and store it in the Member.
+                2. Send an email to the user with said key.
+                '''
 
+                return HttpResponseRedirect(reverse('books:home'))
+
+        return render(request, "create_account.html", {"user_form": user_form,
+                                                           "member_form": member_form})
+
+    else:
         return HttpResponseRedirect(reverse('books:home'))
-
-    return render(request, "create_account.html", {"user_form": user_form,
-                                                   "member_form": member_form})
 
 
 def activate_user(request):

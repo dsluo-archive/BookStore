@@ -26,6 +26,9 @@ class UserCreateForm(forms.ModelForm):
             "email",
             "password",
         ]
+        help_texts = {
+            "username": None,
+        }
 
 
 class UserLoginForm(forms.Form):

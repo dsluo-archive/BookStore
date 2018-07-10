@@ -45,6 +45,7 @@ class Member(models.Model):
     profile_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField(default=timezone.now)
+    receive_newsletter = models.BooleanField(default=True, null=False)
 
     authentication_key = models.CharField(max_length=8, blank=True)
 

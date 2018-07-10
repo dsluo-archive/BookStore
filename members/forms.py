@@ -12,6 +12,7 @@ class MemberCreateForm(forms.ModelForm):
             "profile_picture",
             "birth_date",
             "primary_address",
+            "receive_newsletter",
         ]
 
 

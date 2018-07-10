@@ -37,13 +37,6 @@ def register(request):
                 new_member.user = new_user
                 new_member.save()
 
-                '''
-                Call a function that will:
-                
-                1. Create an authentication key and store it in the Member.
-                2. Send an email to the user with said key.
-                '''
-
                 return HttpResponseRedirect(reverse('books:home'))
 
         return render(request, "create_account.html", {"user_form": user_form,

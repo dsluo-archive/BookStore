@@ -3,9 +3,9 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.utils import timezone
 from django.db.models.signals import pre_save, post_save
-from django.dispatch import receiver
-
+from django.core.mail import send_mail
 from binascii import hexlify
+import random, string
 
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
@@ -46,6 +46,7 @@ class Member(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField(default=timezone.now)
     receive_newsletter = models.BooleanField(default=True, null=False)
+    hex_code = models.CharField(max_length=6, blank=True, null=True)
 
     authentication_key = models.CharField(max_length=8, blank=True)
 
@@ -91,6 +92,16 @@ def post_save_member_receiver(sender, instance, created, **kwargs):
         new_cart = Cart.objects.create()
         instance.cart = new_cart
         instance.save()
+
+        instance.hex_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+        send_mail(
+            'Welcome to The Dog Ear Bookstore',
+            'Welcome!\n\nPlease confirm your account using the following code:' + instance.hex_code + '\n\nlocalhost:8000/account/confirm',
+            'thedogearbookstore@example.com',
+            [instance.user.email],
+            fail_silently=False,
+        )
 
 
 pre_save.connect(pre_save_member_receiver, sender=Member)

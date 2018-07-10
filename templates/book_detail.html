@@ -6,4 +6,10 @@
     <p> Item detail Page</p>
     <p> Book: {{ book }}</p> <!-- this will be passed in the url -->
 
+<form method="post"> {% csrf_token %}
+    <input type="submit" name="cart" value="Add to Cart">
+    <input type="submit" name="reserve" value="Reserve">
+    <input type="text" name="count" value="1">
+</form>
+
 {% endblock main_content %}

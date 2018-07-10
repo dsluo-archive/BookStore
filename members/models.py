@@ -3,15 +3,16 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.utils import timezone
 from django.db.models.signals import pre_save, post_save
-from django.dispatch import receiver
-
+from django.core.mail import send_mail
 from binascii import hexlify
+import random, string
 
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 
 from books.models import Book, Reservation
 from vendors.models import Vendor
+from cart.models import Cart, Order
 
 # Create your models here.
 
@@ -44,11 +45,14 @@ class Member(models.Model):
     profile_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField(default=timezone.now)
+    receive_newsletter = models.BooleanField(default=True, null=False)
+    hex_code = models.CharField(max_length=6, blank=True, null=True)
+    activated = models.BooleanField(default=False, blank=False)
 
     authentication_key = models.CharField(max_length=8, blank=True)
 
     # Of type Cart
-    cart = models.OneToOneField('cart.Cart', related_name='cart', on_delete=models.CASCADE, null=True, blank=True)
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, null=True, blank=True)
 
     # Of type Book
     purchased = models.ManyToManyField(Book, blank=True)
@@ -57,7 +61,7 @@ class Member(models.Model):
     reserved = models.ManyToManyField(Reservation, blank=True)
 
     # Of type Order
-    order = models.ManyToManyField('cart.Order', related_name='order', blank=True)
+    order = models.ManyToManyField(Order, blank=True)
 
     # Of type Address
     saved_addresses = models.ManyToManyField(Address, related_name='address', blank=True)
@@ -84,4 +88,28 @@ def pre_save_member_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance)
 
 
+def post_save_member_receiver(sender, instance, created, **kwargs):
+    if created:
+        new_cart = Cart.objects.create()
+        instance.cart = new_cart
+        instance.save()
+
+        instance.hex_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        instance.save()
+
+        send_mail(
+            'Welcome to The Dog Ear Bookstore',
+
+            'Welcome!\n\nPlease confirm your account using the following code:'
+            + instance.hex_code
+            + '\n\nlocalhost:8000/account/activate/'
+            + instance.slug,
+
+            'thedogearbookstore@example.com',
+            [instance.user.email],
+            fail_silently=False,
+        )
+
+
 pre_save.connect(pre_save_member_receiver, sender=Member)
+post_save.connect(post_save_member_receiver, sender=Member)

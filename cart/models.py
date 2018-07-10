@@ -4,17 +4,29 @@ from django.utils import timezone
 # Create your models here.
 
 from books.models import Book
-from members.models import Address
 
 
 class Cart(models.Model):
-    member_owner = models.OneToOneField('members.Member', on_delete=models.CASCADE, related_name='+')
-    books = models.ManyToManyField(Book, blank=True)
-    total = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
+    books = models.ManyToManyField(Book,
+                                   blank=True)
+
+    total = models.DecimalField(max_digits=8,
+                                decimal_places=2,
+                                default=0.00,
+                                blank=True)
+
+    def add_purchase(self, book, count):
+        pass
+
+    def add_reservation(self, book, count):
+        pass
 
 
 class Order(models.Model):
-    cart = models.OneToOneField(Cart, on_delete=models.PROTECT)
+    cart = models.OneToOneField(Cart, null=True, on_delete=models.PROTECT)
     confirmation_number = models.IntegerField(blank=False)
     date = models.DateField(default=timezone.now, blank=False)
-    address_used = models.OneToOneField(Address, on_delete=models.PROTECT)
+    address_used = models.OneToOneField("members.Address",
+                                        related_name="address_used",
+                                        null=True,
+                                        on_delete=models.PROTECT)

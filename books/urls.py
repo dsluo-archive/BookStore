@@ -8,7 +8,7 @@ urlpatterns = [
     re_path(r'^$', books_views.landing, name='landing'),
     re_path(r'^home/$', books_views.home, name='home'),
 
-    re_path(r'^book/$', books_views.home),
+    re_path(r'^book/$', books_views.all_books),
     re_path(r'^book/create-book/$', books_views.create_book, name='create'),
     re_path(r'^book/mass-create-book/$', books_views.mass_create_book, name='mass_create'),
     re_path(r'^book/(?P<slug>[\w-]+)/$', books_views.detail, name='detail'),

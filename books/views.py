@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 # Create your views here.
 from books.models import Book, Genre, Author
@@ -32,11 +32,23 @@ def home(request):
 def all_books(request):
     queryset_list = Book.objects.all().order_by("name")
 
-    book_name = request.GET.get('name')
-    book_author = request.GET.get('author')
-    book_isbn = request.GET.get('isbn')
-    book_genre = request.GET.get('genre')
+    search = request.GET.get('q')
+    # book_name = request.GET.get('name')
+    # book_author = request.GET.get('author')
+    # book_isbn = request.GET.get('isbn')
+    # book_genre = request.GET.get('genre')
 
+    if search:
+        queryset_list = queryset_list.filter(
+            Q(name__icontains=search) |
+            Q(author__name__icontains=search) |
+            Q(isbn__exact=search) |
+            Q(subjects__subjects__iexact=search)
+        ).distinct()
+
+    '''
+    Maybe use for a filter bar. Maybe JS can handle this?
+    
     if book_name:
         book_name = book_name.split('%')
         for name in book_name:
@@ -53,8 +65,16 @@ def all_books(request):
         book_genre = book_genre.split('%')
         for genre in book_genre:
             queryset_list = queryset_list.filter(subjects__subjects=genre)
+    '''
 
-    return render(request, "query.html", {"books": queryset_list})
+    paginator = Paginator(queryset_list, 1)
+    page_var = 'page'
+
+    page = request.GET.get(page_var)
+    queryset = paginator.get_page(page)
+
+    return render(request, "query.html", {"books": queryset,
+                                          "page_var": page_var})
 
 
 def detail(request, slug):

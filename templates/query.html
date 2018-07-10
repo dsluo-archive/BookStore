@@ -11,4 +11,22 @@
     {% endfor %}
     </ul>
 
+    <div class="pagination">
+		<span class="step-links">
+			{% if books.has_previous %}
+				<a href="?{{page_var}}=1&q={{request.GET.q}}">&laquo; first</a>
+				<a href="?{{page_var}}={{ books.previous_page_number }}&q={{request.GET.q}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ books.number }} of {{ books.paginator.num_pages }}.
+			</span>
+
+			{% if books.has_next %}
+				<a href="?{{page_var}}={{ books.next_page_number }}&q={{request.GET.q}}">next</a>
+				<a href="?{{page_var}}={{ books.paginator.num_pages }}&q={{request.GET.q}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+
 {% endblock main_content %}

@@ -12,6 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from books.models import Book, Reservation
 from vendors.models import Vendor
+from cart.models import Cart, Order
 
 # Create your models here.
 
@@ -48,7 +49,7 @@ class Member(models.Model):
     authentication_key = models.CharField(max_length=8, blank=True)
 
     # Of type Cart
-    cart = models.OneToOneField('cart.Cart', related_name='cart', on_delete=models.CASCADE, null=True, blank=True)
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, null=True, blank=True)
 
     # Of type Book
     purchased = models.ManyToManyField(Book, blank=True)
@@ -57,7 +58,7 @@ class Member(models.Model):
     reserved = models.ManyToManyField(Reservation, blank=True)
 
     # Of type Order
-    order = models.ManyToManyField('cart.Order', related_name='order', blank=True)
+    order = models.ManyToManyField(Order, blank=True)
 
     # Of type Address
     saved_addresses = models.ManyToManyField(Address, related_name='address', blank=True)
@@ -84,4 +85,12 @@ def pre_save_member_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance)
 
 
+def post_save_member_receiver(sender, instance, created, **kwargs):
+    if created:
+        new_cart = Cart.objects.create()
+        instance.cart = new_cart
+        instance.save()
+
+
 pre_save.connect(pre_save_member_receiver, sender=Member)
+post_save.connect(post_save_member_receiver, sender=Member)

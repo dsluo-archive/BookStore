@@ -60,6 +60,16 @@ def all_books(request):
 def detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
 
+    if request.user.is_authenticated:
+        add_to_cart = request.POST.get("cart")
+        reserve = request.POST.get("reserve")
+        count = request.POST.get("count")
+
+        if add_to_cart and count:
+            request.user.member.cart.add_purchase(book, count)
+        elif reserve and count:
+            request.user.member.cart.add_reservation(book, count)
+
     return render(request, "book_detail.html", {"book": book})
 
 

@@ -7,7 +7,7 @@
     <h3>Books by title: </h3>
     <ul>
     {% for book in books %}
-        <li>{{ book }}, {{ book.author }}, {{ book.price }}</li>
+        <li>{{ book.slug }}, {{ book.author }}, {{ book.price }}</li>
     {% endfor %}
     </ul>
 

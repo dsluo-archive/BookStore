@@ -15,7 +15,7 @@ def profile(request, slug):
     if not request.user.is_authenticated:
         raise PermissionDenied
 
-    if request.user == member_to_view.user or member_to_view.user.is_active or request.user.is_staff:
+    if request.user == member_to_view.user or request.user.is_staff:
         return render(request, "user_profile.html", {"slug": slug,
                                                      "member": member_to_view})
     else:
@@ -30,7 +30,6 @@ def register(request):
         if request.method == 'POST':
             if user_form.is_valid() and member_form.is_valid():
                 new_user = User.objects.create_user(**user_form.cleaned_data)
-                new_user.is_active = False
                 new_user.save()
 
                 new_member = member_form.save(commit=False)
@@ -40,14 +39,33 @@ def register(request):
                 return HttpResponseRedirect(reverse('books:home'))
 
         return render(request, "create_account.html", {"user_form": user_form,
-                                                           "member_form": member_form})
+                                                       "member_form": member_form})
 
     else:
         return HttpResponseRedirect(reverse('books:home'))
 
 
-def activate_user(request):
-    pass
+def activate_user(request, slug):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('books:home'))
+    elif not slug:
+        raise PermissionDenied
+    else:
+        member = get_object_or_404(Member, slug=slug)
+
+        entered_code = request.POST.get('code')
+
+        if member.activated:
+            return HttpResponseRedirect(reverse('members:login'))
+        elif entered_code == member.hex_code:
+            member.activated = True
+            member.save()
+            login(request, member.user)
+            return HttpResponseRedirect(reverse('books:home'))
+        elif entered_code != member.hex_code and entered_code is not None:
+            return render(request, "activate.html", {"error": "Invalid Code"})
+        else:
+            return render(request, "activate.html", {})
 
 
 def default_profile(request):
@@ -70,14 +88,13 @@ def login_user(request):
 
             user = authenticate(request, username=username, password=password)
 
-            if user is None:
-                raise PermissionDenied # placeholder for actual error
-            elif user.is_active:
+            if user is None or not user.is_active:
+                raise PermissionDenied  # placeholder for actual error
+            elif user.member.activated:
                 login(request, user)
                 return HttpResponseRedirect(reverse('books:home'))
             else:
-                return HttpResponse(request, "Please activate your account with the code provided.")
-                # Need to make sure authenticate() still returns if is_active is False.
+                return HttpResponseRedirect(reverse("members:activate", kwargs={'slug': user.member.slug}))
 
         return render(request, "login.html", {"user_form": user_form})
 

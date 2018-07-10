@@ -26,4 +26,7 @@ class Order(models.Model):
     cart = models.OneToOneField(Cart, null=True, on_delete=models.PROTECT)
     confirmation_number = models.IntegerField(blank=False)
     date = models.DateField(default=timezone.now, blank=False)
-    address_used = models.OneToOneField("members.Address", related_name="address_used", null=True, on_delete=models.PROTECT)
+    address_used = models.OneToOneField("members.Address",
+                                        related_name="address_used",
+                                        null=True,
+                                        on_delete=models.PROTECT)

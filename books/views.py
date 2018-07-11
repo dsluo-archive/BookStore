@@ -86,9 +86,9 @@ def detail(request, slug):
         count = request.POST.get("count")
 
         if add_to_cart and count:
-            request.user.member.cart.add_purchase(book, count)
+            request.user.member.cart.add_purchase(request.user.member, book, count, False)
         elif reserve and count:
-            request.user.member.cart.add_reservation(book, count)
+            request.user.member.cart.add_purchase(request.user.member, book, count, True)
 
     return render(request, "book_detail.html", {"book": book})
 

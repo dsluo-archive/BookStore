@@ -1,11 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 
-
+from books.models import Book
 # Create your views here.
 
 
 def cart(request):
-    return render(request, "cart.html", {})
+    return render(request, "cart.html", {"items": request.user.member.cart.items.all()})
+
+
+def remove(request, slug):
+    book = Book.objects.all().filter(slug=slug).first()
+    request.user.member.cart.cancel_purchase(request.user.member, book)
+
+    return HttpResponseRedirect(reverse('cart:cart'))
 
 
 def checkout(request):

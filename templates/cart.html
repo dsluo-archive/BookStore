@@ -1,8 +1,20 @@
 {% extends "base.html" %}
+{% load unit_price total_price %}
 
 {% block main_content %}
-
     <!-- send user instance as object, populate the page with it -->
     <p> Cart Page</p>
+    <ul>
+    {% for item in items %}
+            <li>{{ item.book }}, ${% unit_price item.count item.book.price %}, Count: {{ item.count }}
+
+                <form method="post" action="remove/{{ item.book.slug }}/"> {% csrf_token %}
+                    <input type="submit" name="remove-item" value="Remove">
+                </form>
+
+            </li>
+    {% endfor %}
+    <li>(Sub) Total: ${% total_price items %}</li>
+    </ul>
 
 {% endblock main_content %}

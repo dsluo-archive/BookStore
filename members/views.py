@@ -3,10 +3,11 @@ from django.shortcuts import render, get_object_or_404, Http404, HttpResponseRed
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.contrib.auth.forms import UserChangeForm
 
 # Create your views here.
 from members.models import Member
-from members.forms import UserCreateForm, MemberCreateForm, UserLoginForm
+from members.forms import MemberForm, UserLoginForm, CustomUserCreationForm
 
 
 def profile(request, slug):
@@ -22,15 +23,35 @@ def profile(request, slug):
         raise PermissionDenied
 
 
+def save_account(request):
+    if request.user.is_authenticated or request.user.is_superuser:
+        user_edit_form = CustomUserCreationForm(request.POST or None, request.FILES or None, instance=request.user)
+        member_edit_form = MemberForm(request.POST or None, request.FILES or None, instance=request.user.member)
+
+        if request.method == 'POST':
+            if user_edit_form.is_valid() and member_edit_form.is_valid():
+                saved_user = user_edit_form.save()
+                member_edit_form.save()
+
+                login(request, saved_user)
+
+                return HttpResponseRedirect(reverse('members:default_account'))
+
+        return render(request, "edit_account.html", {"user_form": user_edit_form,
+                                                     "member_form": member_edit_form})
+
+    else:
+        raise PermissionDenied
+
+
 def register(request):
     if not request.user.is_authenticated or request.user.is_superuser:
-        user_form = UserCreateForm(request.POST or None, request.FILES or None)
-        member_form = MemberCreateForm(request.POST or None, request.FILES or None)
+        user_form = CustomUserCreationForm(request.POST or None, request.FILES or None)
+        member_form = MemberForm(request.POST or None, request.FILES or None)
 
         if request.method == 'POST':
             if user_form.is_valid() and member_form.is_valid():
-                new_user = User.objects.create_user(**user_form.cleaned_data)
-                new_user.save()
+                new_user = user_form.save()
 
                 new_member = member_form.save(commit=False)
                 new_member.user = new_user

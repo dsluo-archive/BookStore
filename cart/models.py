@@ -4,6 +4,7 @@ from django.utils import timezone
 # Create your models here.
 
 from books.models import Book
+from cart.tasks import cancel_reservation
 
 
 class CartItem(models.Model):
@@ -33,9 +34,13 @@ class Cart(models.Model):
             new_item = CartItem(reservation=reservation, count=count, book=book)
             new_item.save()
 
+            if reservation:
+                cancel_reservation.apply_async(args=[member.slug, book.slug], countdown=432000)
+
             self.items.add(new_item)
 
-    def cancel_purchase(self, member, book):
+    @staticmethod
+    def cancel_purchase(member, book):
         cart_item = member.cart.items.all().filter(book=book)
 
         if cart_item:

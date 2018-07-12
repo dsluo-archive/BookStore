@@ -39,8 +39,12 @@ INSTALLED_APPS = [
     'books',
     'cart',
     'members',
-    'vendors'
+    'vendors',
+    'django_celery_beat'
 ]
+
+#  CELERY
+BROKER_URL = 'pyamqp://guest@localhost//'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

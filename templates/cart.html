@@ -6,7 +6,7 @@
     <p> Cart Page</p>
     <ul>
     {% for item in items %}
-            <li>{{ item.book }}, ${% unit_price item.count item.book.price %}, Count: {{ item.count }}
+            <li>{{ item.book }}, ${% unit_price item.count item.book.price %}, Count: {{ item.count }}, Reservation: {{ item.reservation }}
 
                 <form method="post" action="remove/{{ item.book.slug }}/"> {% csrf_token %}
                     <input type="submit" name="remove-item" value="Remove">

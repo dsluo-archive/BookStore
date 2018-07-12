@@ -107,7 +107,7 @@ def post_save_member_receiver(sender, instance, created, **kwargs):
 
             'thedogearbookstore@example.com',
             [instance.user.email],
-            fail_silently=False,
+            fail_silently=True,
         )
 
 

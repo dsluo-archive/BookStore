@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, Http404, HttpResponseRed
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.mail import send_mail
 from django.contrib.auth.forms import UserChangeForm
 
 # Create your views here.
@@ -123,3 +124,17 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('books:home'))
+
+
+def daily_newsletter():
+    members = Member.objects.all().filter(receive_newsletter=True)
+    emails = []
+
+    for member in members:
+        emails.append(member.user.email)
+
+    send_mail("Dog Ear Bookstore Daily Newsletter",
+              "Dog Ear Bookstore\n\nDaily Promotional Code for X% Off: XXXXXX",
+              "dogearbookstore@gmail.com",
+              emails,
+              fail_silently=False)

@@ -17,7 +17,7 @@ def send_newsletter():
 
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    sender.add_periodic_task(20, send_newsletter.s(), name='add 10 and 9')
+    sender.add_periodic_task(86400, send_newsletter.s(), name='add 10 and 9')
 
 
 if __name__ == '__main__':

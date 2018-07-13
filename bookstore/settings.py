@@ -61,7 +61,7 @@ ROOT_URLCONF = 'bookstore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates/AJ')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,12 +126,14 @@ EMAIL_HOST_PASSWORD = 'TITOtitties6969'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static_cdn"),
+    os.path.join(BASE_DIR, "static"),
 ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
+
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)

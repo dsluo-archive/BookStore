@@ -15,7 +15,9 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+
+import analytics.views as av
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +26,7 @@ urlpatterns = [
 
     path('cart/', include("cart.urls"), name='cart'),
 
-    path('', include("books.urls"), name='base')
+    path('', include("books.urls"), name='base'),
+
+    re_path(r'^AJ/(?P<slug>[\w-]+)/$', av.send_page, name='AJ')
 ]

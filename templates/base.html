@@ -30,6 +30,9 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
+    <!-- Stylesheet for each page -->
+    {% block per_page_css %} {% endblock per_page_css %}
+
 </head>
 
 <body>
@@ -46,7 +49,6 @@
 
     <!-- What will be collapsed -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        {#        <ul class="navbar-nav mr-auto">#}
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
@@ -55,7 +57,7 @@
 
             <!-- Product Dropdown -->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="prodDropdown" role="button" data-toggle="dropdown" ,
+                <a class="nav-link dropdown-toggle" href="#" id="prodDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Products
                 </a>
@@ -84,84 +86,67 @@
 
         </ul>
 
-        <div class="navbar-nav ml-auto">
+        <!-- Search Bar -->
+        <form method="GET" class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search Books or Authors"
+                   aria-label="searchBar">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
 
-            <!-- Search Bar -->
-            <form method="GET" class="form-inline my-2 my-lg-0" action="/book/">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search Books or Authors"
-                       aria-label="searchBar" name="q">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-            <ul class="navbar-nav">
+        <!-- Cart Icon Dropdown -->
+        <div class="nav-item">
+            <div class="dropdown">
 
-                <!-- Cart Icon Dropdown -->
-                <li class="nav-item">
-                    <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="cart" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <i class="nav-item fas fa-cart-plus fa-lg"></i>
+                </a>
 
-                        <a class="nav-link dropdown-toggle" href="#" id="cart" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <i class="nav-item fas fa-cart-plus fa-lg"></i>
-                        </a>
+                <!-- Will need logic to determine number of items in user's cart. -->
 
-                        <!-- Will need logic to determine number of items in user's cart. -->
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cart">
+                    <a class="dropdown-item" href="#">Product Type 1</a> <!-- Will link to an item @ /item-as-slug -->
+                    <a class="dropdown-item" href="#">Product Type 2</a> <!-- Will link to an item @ /item-as-slug -->
+                    <a class="dropdown-item" href="#">Product Type 3</a> <!-- Will link to an item @ /item-as-slug -->
+                    <a class="dropdown-item" href="#">Product Type 4</a> <!-- Will link to an item @ /item-as-slug -->
+                    <a class="dropdown-item" href="#">Product Type 5</a> <!-- Will link to an item @ /item-as-slug -->
+                    <a class="dropdown-item" href="#">Product Type 6</a> <!-- Will link to an item @ /item-as-slug -->
+                </div>
+            </div>
 
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cart">
-                            <a class="dropdown-item" href="#">Product Type 1</a>
-                            <!-- Will link to an item @ /item-as-slug -->
-                            <a class="dropdown-item" href="#">Product Type 2</a>
-                            <!-- Will link to an item @ /item-as-slug -->
-                            <a class="dropdown-item" href="#">Product Type 3</a>
-                            <!-- Will link to an item @ /item-as-slug -->
-                            <a class="dropdown-item" href="#">Product Type 4</a>
-                            <!-- Will link to an item @ /item-as-slug -->
-                            <a class="dropdown-item" href="#">Product Type 5</a>
-                            <!-- Will link to an item @ /item-as-slug -->
-                            <a class="dropdown-item" href="#">Product Type 6</a>
-                            <!-- Will link to an item @ /item-as-slug -->
-                        </div>
-                    </div>
-
-                </li>
-
-                <!-- User icon Dropdown -->
-                <li class="nav-item">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="mem" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <i class="nav-item fas fa-user fa-lg"></i>
-                        </a>
-
-                        <!-- Will need logic to test whether a user is loged in -->
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="mem">
-                            <a class="dropdown-item" href="#">User Profile</a>
-                            <!-- Will link to a search query @ /q?s='...' -->
-                            <a class="dropdown-item" href="#">Purchases</a>
-                            <!-- Will link to a search query @ /q?s='...' -->
-                            <a class="dropdown-item" href="#">Settings</a>
-                            <!-- Will link to a search query @ /q?s='...' -->
-                            <a class="dropdown-item" href="#">Log out</a>
-                            <!-- Will link to a search query @ /q?s='...' -->
-                        </div>
-
-                    </div>
-                </li>
-            </ul>
         </div>
+
+        <!-- User icon Dropdown -->
+        <div class="nav-item">
+            <div class="dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" id="mem" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <i class="nav-item fas fa-user fa-lg"></i>
+                </a>
+
+                <!-- Will need logic to test whether a user is loged in -->
+
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="mem">
+                    <a class="dropdown-item" href="#">User Profile</a> <!-- Will link to a search query @ /q?s='...' -->
+                    <a class="dropdown-item" href="#">Purchases</a> <!-- Will link to a search query @ /q?s='...' -->
+                    <a class="dropdown-item" href="#">Settings</a> <!-- Will link to a search query @ /q?s='...' -->
+                    <a class="dropdown-item" href="#">Log out</a> <!-- Will link to a search query @ /q?s='...' -->
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </nav>
 <!-- End Title Bar -->
 
-<div class="container">
+{% block main_content %}
 
-    {% block main_content %}
+    <!-- Replaced by the content in template extension -->
 
-        <!-- Replaced by the content in template extension -->
+{% endblock main_content %}
 
-    {% endblock main_content %}
-
-</div>
-
-<!-- need working footer, previous one covered page content. -->
 
 </body>
 

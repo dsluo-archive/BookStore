@@ -1,8 +1,112 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/Eod-main.css' %}">
+{% endblock %}
+
 {% block main_content %}
 
-    <!-- item info will need to be passed into this -->
-    <p> Book Sales Page</p>
+    <div class="container-fluid banner">
+        <div class="row">
+            <div class="col-md-12">
+                <h4> Book Sales { Vendor }</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row table-cont">
+            <div class="col-md-12">
+                <form>
+                    <fieldset class="form-group">
+                        <legend>Advanced Search:</legend>
+                        Author: <input type="text" class="form-control-sm" name="author"></input>
+                        Genre: <select class="form-control-sm">
+                        <option value="">{Genre}</option>
+                        <option value="">{Genre}</option>
+                        <option value="">{Genre}</option>
+                        <option value="">{Genre}</option>
+                        <option value="">{Genre}</option>
+                    </select>
+                        ISBN: <input type="text" class="form-control-sm" name="ISBN"></input>
+                        Time period: <select class="form-control-sm">
+                        <option value="">Past week</option>
+                        <option value="">Past month</option>
+                        <option value="">Past 60 days</option>
+                        <option value="">Past year</option>
+                    </select>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Number Sold</th>
+                        <th>Revenue:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>{Title}</th>
+                        <th>{Quantity}</th>
+                        <th>{$ Amount}</th>
+                    </tr>
+                    <tr>
+                        <th>{Title}</th>
+                        <th>{Quantity}</th>
+                        <th>{$ Amount}</th>
+                    </tr>
+                    <tr>
+                        <th>{Title}</th>
+                        <th>{Quantity}</th>
+                        <th>{$ Amount}</th>
+                    </tr>
+                    <tr>
+                        <th>{Title}</th>
+                        <th>{Quantity}</th>
+                        <th>{$ Amount}</th>
+                    </tr>
+                    <tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Credit Cards</th>
+                        <th>Cash</th>
+                        <th>Paypal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>$2,054,975.83</th>
+                        <th>$6,164,927.41</th>
+                        <th>$4,109,951.63</th>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Promo Codes used</th>
+                        <th>Promo Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>{Amount used}</th>
+                        <th>{$ Amount users saved}</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
 
 {% endblock main_content %}

@@ -1,0 +1,103 @@
+body {
+	font-family: bannerFont;
+}
+
+.banner {
+	color: white;
+	font-family: bannerFontbold;
+	background-color: #545D68;
+	background-size: cover;
+	height: 200px;
+	width:100%;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+#banner_img {
+	height: 180px;
+	width: 180px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+.banner h3 {
+	font-family: bannerFontbold;
+	margin-top: 50px;
+}
+
+/* font for the banner */
+@font-face {
+    font-family: bannerFont;
+    src: url("../fonts/GlacialIndifference-regular.otf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: bannerFontbold;
+    src: url("../fonts/GlacialIndifference-bold.otf");
+    font-weight: bold;
+}
+
+/* end fonts */
+
+.list-group {
+	margin-top: 15px;
+	width: 100%;
+}
+
+.inputbox {
+	position: absolute;
+	right:0;
+	margin-right: 15px;
+	width: 205;
+	border-radius: 3px;
+}
+
+
+#Day {
+	width: 50px;
+	margin-left: 5px;
+	position: absolute;
+	right: 170;
+	border-radius: 3px;
+}
+
+#Month {
+	width: 50px;
+	margin-left: 5px;
+	position: absolute;
+	right: 102.5;
+	border-radius: 3px;
+}
+
+#Year {
+	position: absolute;
+	right: 0;
+	margin-right: 15px;
+	width: 70px;
+	margin-left: 5px;
+	border-radius: 3px;
+}
+.list-group {
+	width: 50%;
+}
+
+.profile_pic {
+	margin-top: 10px;
+	margin-left: 25%;
+}
+
+#profile_img {
+	height: 320px;
+	width: 240px;
+}
+
+#submit {
+	margin-top: 10px;
+	margin-left: 25%;
+	width: 20%;
+}
+
+#browse {
+	margin-top: 10px;
+}

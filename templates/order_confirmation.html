@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/confirmation-main.css' %}">
+{% endblock per_page_css %}
+
+{% block main_content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Order Placed!</h4>
+                <p>Your order number is {Order #}. You will be redirected back to our website. </p>
+                <hr>
+                <p class="mb-0">If you are not redirected immediately, please follow this link <a href="home_page.html">Dog-Ear
+                    Rox</a>.</p>
+            </div>
+        </div>
+    </div>
+{% endblock main_content %}

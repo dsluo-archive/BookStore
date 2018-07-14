@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+	<link rel="stylesheet" href="../../static/assets/Query/css/query-main.css"> <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <!-- send user instance as object, populate the page with it -->
+	<div class="container-fluid spaced">
+		<div class="row">
+			<div class="col-md-12">
+				<span class="left"><i class="fas fa-user-alt"></i>{Username}</span>
+			</div>
+		</div>
+		<div class="row banner">
+			<div class="col-md-12">
+				<h1> {Books Search Results} </h1>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-2 search_panel">
+				<form>
+					<fieldset class="spaced">
+						<legend>Genre:</legend>
+						<select name="genre">
+							<option name="Null"></option>
+							<option name="Sci-Fi">Science Fiction</option>
+							<option name="History">History</option>
+							<option name="Religious">Religious</option>
+						</select>
+					</fieldset>
+					<fieldset class="spaced">
+						<legend>Price:</legend>
+						<input type="radio" name="price"> $0-$10</input><br>
+						<input type="radio" name="price"> $10-$20</input><br>
+						<input type="radio" name="price"> $20-$30</input><br>
+						<input type="radio" name="price"> $30+</input><br>
+					</fieldset>
+					<fieldset class="spaced">
+						<legend>Author:</legend>
+						<button class="author-btn">{Author}</button><br>
+						<button class="author-btn">{Author}</button><br>
+						<button class="author-btn">{Author}</button><br>
+						<button class="author-btn">{Author}</button><br>
+						<button class="author-btn">{Author}</button><br>
+					</fieldset>
+					<fieldset class="spaced">
+						<input type="submit" value="Refine Search"></input>
+					</fieldset>
+				</form>
+			</div>
+			<div class="col-md-10">
+				<table class="table table-light table-striped">
+					<thead class="thead-dark">
+						<tr>
+							<th>Your Search Results:</th>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Rating</th>
+							<th>Add to Cart</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row"><img class="thumbnail" src="../../static/assets/Query/images/img.png"></img></th>
+							<th><p>{Book Title}</p></th>
+							<th><p>{Book Price}</p></th>
+							<th><p>{Book Rating}</p></th>
+							<th><button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button></th>
+						</tr>
+						<tr>
+							<th scope="row"><img class="thumbnail" src="../../static/assets/Query/images/img.png"></img></th>
+							<th><p>{Book Title}</p></th>
+							<th><p>{Book Price}</p></th>
+							<th><p>{Book Rating}</p></th>
+							<th><button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button></th>
+						</tr>
+						<tr>
+							<th scope="row"><img class="thumbnail" src="../../static/assets/Query/images/img.png"></img></th>
+							<th><p>{Book Title}</p></th>
+							<th><p>{Book Price}</p></th>
+							<th><p>{Book Rating}</p></th>
+							<th><button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button></th>
+						</tr>
+						<tr>
+							<th scope="row"><img class="thumbnail" src="../../static/assets/Query/images/img.png"></img></th>
+							<th><p>{Book Title}</p></th>
+							<th><p>{Book Price}</p></th>
+							<th><p>{Book Rating}</p></th>
+							<th><button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button></th>
+						</tr>
+						<tr>
+							<th scope="row"><img class="thumbnail" src="../../static/assets/Query/images/img.png"></img></th>
+							<th><p>{Book Title}</p></th>
+							<th><p>{Book Price}</p></th>
+							<th><p>{Book Rating}</p></th>
+							<th><button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button></th>
+						</tr>
+					<tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+{% endblock main_content %}

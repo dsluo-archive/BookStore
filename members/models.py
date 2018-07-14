@@ -21,7 +21,7 @@ class Address(models.Model):
     location = models.CharField(max_length=120, null=True, blank=True)
 
     def __str__(self):
-        return self.address
+        return self.location
 
 
 def upload_location(instance, filename):

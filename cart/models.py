@@ -13,6 +13,9 @@ class CartItem(models.Model):
     count = models.IntegerField(default=1)
     book = models.ForeignKey(Book, null=False, blank=False, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.book.name
+
 
 class Cart(models.Model):
     items = models.ManyToManyField(CartItem,
@@ -45,6 +48,9 @@ class Cart(models.Model):
 
         if cart_item:
             cart_item.delete()
+
+    def __str__(self):
+        return self.member.user.username
 
 
 class Order(models.Model):

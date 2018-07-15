@@ -58,8 +58,8 @@ def register(request):
 
                 return HttpResponseRedirect(reverse('books:home'))
 
-        return render(request, "register.html", {"user_form":         user_form,
-                                                       "member_form": member_form})
+        return render(request, "register.html", {"user_form":   user_form,
+                                                 "member_form": member_form})
 
     else:
         return HttpResponseRedirect(reverse('books:home'))
@@ -99,7 +99,7 @@ def login_user(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('books:home'))
     else:
-        user_form = UserLoginForm(request.POST or None, request.FILES or None)
+        user_form = UserLoginForm(request.POST or None, request.FILES or None, label_suffix='')
 
         if user_form.is_valid():
             username = user_form.cleaned_data['username'].strip()

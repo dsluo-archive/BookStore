@@ -35,14 +35,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django.contrib.sites',
+    # 'django.contrib.flatpages',
     'analytics',
     'books',
     'cart',
     'members',
     'vendors',
     'django_celery_beat',
-    'widget_tweaks'
+    'widget_tweaks',
 ]
+
+# for sites
+# SITE_ID = 1
 
 #  CELERY
 BROKER_URL = 'pyamqp://guest@localhost//'

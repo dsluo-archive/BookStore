@@ -1,14 +1,12 @@
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, get_object_or_404, Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.urls import reverse
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
-from django.contrib.auth.forms import UserChangeForm
+from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
+from django.urls import reverse
 
+from members.forms import CustomUserCreationForm, MemberForm, UserLoginForm
 # Create your views here.
 from members.models import Member
-from members.forms import MemberForm, UserLoginForm, CustomUserCreationForm
 
 
 def profile(request, slug):
@@ -18,7 +16,7 @@ def profile(request, slug):
         raise PermissionDenied
 
     if request.user == member_to_view.user or request.user.is_staff:
-        return render(request, "user_profile.html", {"slug": slug,
+        return render(request, "user_profile.html", {"slug":   slug,
                                                      "member": member_to_view})
     else:
         raise PermissionDenied
@@ -38,7 +36,7 @@ def save_account(request):
 
                 return HttpResponseRedirect(reverse('members:default_account'))
 
-        return render(request, "edit_account.html", {"user_form": user_edit_form,
+        return render(request, "edit_account.html", {"user_form":   user_edit_form,
                                                      "member_form": member_edit_form})
 
     else:
@@ -60,7 +58,7 @@ def register(request):
 
                 return HttpResponseRedirect(reverse('books:home'))
 
-        return render(request, "create_account.html", {"user_form": user_form,
+        return render(request, "create_account.html", {"user_form":   user_form,
                                                        "member_form": member_form})
 
     else:
@@ -98,7 +96,6 @@ def default_profile(request):
 
 
 def login_user(request):
-
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('books:home'))
     else:

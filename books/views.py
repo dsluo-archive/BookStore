@@ -1,11 +1,11 @@
-from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.db.models import Q
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.shortcuts import get_object_or_404, render
 
+from books.forms import BookForm, MassBookForm
 # Create your views here.
-from books.models import Book, Genre, Author
-from books.forms import MassBookForm, BookForm
+from books.models import Author, Book, Genre
 
 
 def landing(request):
@@ -22,10 +22,12 @@ def home(request):
     latest_authors = Author.objects.all().order_by('id')
     genres = Genre.objects.all()
 
-    return render(request, "home_page.html", {"new_books":         new_books,
-                                              "newly_added_books": newly_added_books,
-                                              "latest_authors":    latest_authors,
-                                              "genres":            genres})
+    return render(request, "home_page.html", {
+        "new_books":         new_books,
+        "newly_added_books": newly_added_books,
+        "latest_authors":    latest_authors,
+        "genres":            genres
+    })
 
 
 def all_books(request):

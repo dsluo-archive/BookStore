@@ -1,15 +1,17 @@
 .banner {
-	height: 200px;
-	background-color: #545D68;
-	color: white;
-	text-align: center;
+    height: 200px;
+    background-color: #545D68;
+    color: white;
+    text-align: center;
 }
+
 div {
-	font-family: bannerFont;
+    font-family: bannerFont;
 }
+
 .banner h4 {
-	font-size: 36pt;
-	margin-top: 4.5%;
+    font-size: 36pt;
+    margin-top: 4.5%;
 }
 
 @font-face {
@@ -25,10 +27,10 @@ div {
 }
 
 .table-cont {
-	margin-top: 30px;
+    margin-top: 30px;
 }
 
 .title {
-		text-align: center;
-		
+    text-align: center;
+
 }

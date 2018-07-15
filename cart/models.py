@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
-
 from books.models import Book
 from cart.tasks import cancel_reservation
+
+
+# Create your models here.
 
 
 class CartItem(models.Model):
@@ -19,7 +20,7 @@ class CartItem(models.Model):
 
 class Cart(models.Model):
     items = models.ManyToManyField(CartItem,
-                                  blank=True)
+                                   blank=True)
 
     total = models.DecimalField(max_digits=8,
                                 decimal_places=2,

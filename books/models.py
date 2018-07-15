@@ -1,9 +1,8 @@
 from django.db import models
+from django.db.models.signals import pre_save
 from django.urls import reverse
-from django.utils.text import slugify
 from django.utils import timezone
-from django.db.models.signals import pre_save, post_save
-
+from django.utils.text import slugify
 
 # Create your models here.
 from vendors.models import Vendor
@@ -73,5 +72,6 @@ def create_slug(instance):
 def pre_save_item_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
+
 
 pre_save.connect(pre_save_item_receiver, sender=Book)

@@ -3,7 +3,6 @@ from bookstore.celery import app
 
 @app.task
 def cancel_reservation(member_slug, book_slug):
-
     from members.models import Member
     from books.models import Book
 

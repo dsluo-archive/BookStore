@@ -1,5 +1,5 @@
 div {
-	font-family: bannerFont;
+    font-family: bannerFont;
 }
 
 /* font for the banner */
@@ -16,28 +16,28 @@ div {
 }
 
 .left {
-	margin-left: 90%;
-	margin-bottom: 3px;
+    margin-left: 90%;
+    margin-bottom: 3px;
 }
 
 .banner {
-	height: 150px;
-	background-color: #545D68;
-	color: white;
-	text-align: center;
+    height: 150px;
+    background-color: #545D68;
+    color: white;
+    text-align: center;
 }
 
 .banner h1 {
-	margin-top: 30px;
+    margin-top: 30px;
 }
 
 .confirm {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 .popup {
     display: none;
-    position: fixed; 
+    position: fixed;
     z-index: 1;
     padding-top: 75px;
     left: 0;
@@ -45,17 +45,17 @@ div {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
     color: white;
     font-family: bannerFontbold;
 }
 
 /* Pop-up Content */
 .popup-content {
-	border-radius: 5px;
+    border-radius: 5px;
     margin: auto;
-	margin-top: 100px;
+    margin-top: 100px;
     padding: 20px;
     border: 1px solid #888;
     width: 500px;
@@ -63,34 +63,34 @@ div {
 }
 
 .popup-content .container .row {
-	text-align: center;
+    text-align: center;
 }
 
 .credit {
-	margin-top: 15px;
-	display: block;
+    margin-top: 15px;
+    display: block;
 }
 
 #myPopup {
-	display: none;
+    display: none;
 }
 
 #myPopup2 {
-	display: none;
+    display: none;
 }
 
 #myPopup3 {
-	display: none;
+    display: none;
 }
 
 #myPopup4 {
-	display: block;
+    display: block;
 }
 
 #change_addr {
-	width: 80%;
+    width: 80%;
 }
 
 #checkout_btn {
-	margin-left: 7.5%;
+    margin-left: 7.5%;
 }

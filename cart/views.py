@@ -2,11 +2,16 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 
 from books.models import Book
+
+
 # Create your views here.
 
 
 def cart(request):
-    return render(request, "cart.html", {"items": request.user.member.cart.items.all()})
+    if request.user.is_anonymous:
+        return render(request, "cart.html", {"cart_items": []})
+    else:
+        return render(request, "cart.html", {"cart_items": request.user.member.cart.items.all()})
 
 
 def remove(request, slug):

@@ -7,6 +7,6 @@ register = template.Library()
 def total_price(items, *args, **kwargs):
     total = 0
     for item in items:
-        total += (item.book.price * item.count)
+        total += (item.price * item.count)
 
     return total

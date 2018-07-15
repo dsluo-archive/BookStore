@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.urls import reverse
 
+from books.models import PromotionCodes
 from members.forms import CustomUserCreationForm, MemberForm, UserLoginForm
 # Create your views here.
 from members.models import Member
@@ -123,7 +124,15 @@ def logout_user(request):
     return HttpResponseRedirect(reverse('books:home'))
 
 
-def daily_newsletter():
+def daily_newsletter(code):
+
+    new_promotion = PromotionCodes.objects.all().filter(code=code).first()
+
+    discounted_genres = ""
+
+    for genre in new_promotion.genres:
+        discounted_genres = genre.subjects + ", "
+
     members = Member.objects.all().filter(receive_newsletter=True)
     emails = []
 
@@ -131,7 +140,10 @@ def daily_newsletter():
         emails.append(member.user.email)
 
     send_mail("Dog Ear Bookstore Daily Newsletter",
-              "Dog Ear Bookstore\n\nDaily Promotional Code for X% Off: XXXXXX",
+              "Dog Ear Bookstore" + "\n\n"
+              + "Daily Promotional Code for " + str(float(new_promotion.discount) * 100) + "% Off:"
+              + new_promotion.code + "\n\n"
+              + "Discount applies to select genre(s): " + discounted_genres[:-2],
               "dogearbookstore@gmail.com",
               emails,
               fail_silently=False)

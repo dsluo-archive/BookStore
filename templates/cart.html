@@ -6,10 +6,23 @@
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
 {% endblock %}
 
+{% load unit_price total_price %}
 
 {% block main_content %}
+    <!-- send user instance as object, populate the page with it -->
+    <p> Cart Page</p>
+    <ul>
+        {% for item in items %}
+            <li>
+                {{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }},
+                Reservation: {{ item.reservation }}
+                <form method="post" action="remove/{{ item.book.slug }}/"> {% csrf_token %}
+                    <input type="submit" name="remove-item" value="Remove">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
 
-    <body>
     <div class="container-fluid banner">
         <div class="row">
             <div class="col">
@@ -32,7 +45,7 @@
 
                     <ul class="list-group promo-contr">
                         <li class="list-group-item">Promo Code: <input type="text" class="form-control"
-                                                                       name="Promo"></input><br></li>
+                                                                       name="Promo"/><br></li>
                         <li class="list-group-item">
                             <button class="btn-sm btn-dark">Apply Promo</button>
                         </li>
@@ -65,6 +78,15 @@
             </div>
         </div>
     </div>
-    </body>
+
+    <form method="post" action=""> {% csrf_token %}
+        <input type="text" name="promo_code" value="{{ current_code }}">
+        <input type="submit" value="Apply Promotional">
+    </form>
+
+    <form method="post" action="checkout/"> {% csrf_token %}
+        <input type="submit" name="card" value="Pay Online">
+        <input type="submit" name="cash" value="Reserve at Bookstore">
+    </form>
 
 {% endblock main_content %}

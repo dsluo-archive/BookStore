@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load unit_price %}
+{% load total_price %}
 
 {% block per_page_css %}
     <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
 {% endblock per_page_css %}
+
+{% block jquery %}
+    <script>
+        const clientToken = "{{ client_token }}";
+
+        braintree.setup(clientToken, "dropin", {
+            container: "payment-form"
+        });
+    </script>
+{% endblock jquery %}
 
 {% block main_content %}
 
@@ -192,5 +204,18 @@
             </div>
         </div>
     </div>
+    <ul>
+        {% for item in cart %}
+                <li>{{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }}, Reservation: {{ item.reservation }}</li>
+        {% endfor %}
+        <li>(Sub) Total: ${% total_price cart %}</li>
+        <li>Tax: $0.00</li>
+        <li>Total: {% total_price cart %}</li>
+    </ul>
+
+    <form id="checkout" method="post" action="submit/"> {% csrf_token %}
+        <div id="payment-form"></div>
+        <input type="submit" value="Submit Order">
+    </form>
 
 {% endblock main_content %}

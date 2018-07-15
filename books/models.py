@@ -26,6 +26,12 @@ class Author(models.Model):
         return self.name
 
 
+class PromotionCodes(models.Model):
+    code = models.CharField(max_length=6, unique=True, blank=False)
+    genres = models.ManyToManyField(Genre, blank=True)
+    discount = models.DecimalField(max_digits=2, decimal_places=2)
+
+
 class Book(models.Model):
     item_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
 

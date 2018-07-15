@@ -1,11 +1,16 @@
+import random
+import string
+
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from books.forms import BookForm, MassBookForm
-# Create your views here.
-from books.models import Author, Book, Genre
+from books.models import Author, Book, Genre, PromotionCodes
+from books.tasks import cancel_promotional
 
 
 def landing(request):
@@ -19,7 +24,7 @@ def landing(request):
 def home(request):
     new_books = Book.objects.all().order_by("publish_date")
     newly_added_books = Book.objects.all().order_by("-id")
-    latest_authors = Author.objects.all().order_by('id')
+    latest_authors = Author.objects.all().order_by('-id')
     genres = Genre.objects.all()
 
     return render(request, "home_page.html", {
@@ -68,7 +73,7 @@ def all_books(request):
             queryset_list = queryset_list.filter(subjects__subjects=genre)
     '''
 
-    paginator = Paginator(queryset_list, 1)
+    paginator = Paginator(queryset_list, 10)
     page_var = 'page'
 
     page = request.GET.get(page_var)
@@ -81,15 +86,17 @@ def all_books(request):
 def detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
 
-    if request.user.is_authenticated:
-        add_to_cart = request.POST.get("cart")
-        reserve = request.POST.get("reserve")
-        count = request.POST.get("count")
+    add_to_cart = request.POST.get("cart")
+    count = request.POST.get("count")
 
+    if request.user.is_authenticated:
         if add_to_cart and count:
-            request.user.member.cart.add_purchase(request.user.member, book, count, False)
-        elif reserve and count:
-            request.user.member.cart.add_purchase(request.user.member, book, count, True)
+            request.user.member.cart.add_item(request.user.member, book, count)
+    else:
+        add_to_cart = request.POST.get("cart")
+
+        if add_to_cart:
+            return HttpResponseRedirect(reverse('members:login'))
 
     return render(request, "book_detail.html", {"book": book})
 
@@ -119,3 +126,31 @@ def mass_create_book(request):
 
 def query(request):
     return render(request, "query.html", {})
+
+
+def generate_promotion():
+    code = "".join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
+
+    while PromotionCodes.objects.all().filter(code=code).exists():
+        code = "".join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
+
+    # getting genre to discount
+    max_id = Genre.objects.all().order_by("-id")[0].id
+    genre_id = random.randint(-20, max_id + 1)
+
+    if genre_id <= 0:
+        genres = Genre.objects.all()
+    else:
+        genres = Genre.objects.all().filter(id=genre_id)
+
+    discount = round(random.uniform(0.05, .2), 2)
+
+    new_promotion = PromotionCodes(code=code, discount=discount)
+    new_promotion.save()
+
+    for genre in genres:
+        new_promotion.genres.add(genre)
+
+    cancel_promotional(new_promotion.code, countdown=86400)
+
+    return new_promotion.code

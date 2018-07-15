@@ -35,8 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
-    # 'django.contrib.flatpages',
     'analytics',
     'books',
     'cart',
@@ -45,9 +43,6 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'widget_tweaks',
 ]
-
-# for sites
-# SITE_ID = 1
 
 #  CELERY
 BROKER_URL = 'pyamqp://guest@localhost//'
@@ -142,3 +137,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+
+# LOCAL
+BRAINTREE_PRIVATE = "5cf5917bf8883cc186a824b92371da2d"
+BRAINTREE_PUBLIC = "tzvsq9kwxxssxxwn"
+BRAINTREE_MERCHANT_ID = "78qw98m6sck3c49c"
+BRAINTREE_ENVIRONMENT = "Sandbox"

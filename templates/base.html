@@ -31,6 +31,8 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
+    <script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"></script>
+
     <!-- Stylesheet for each page -->
     {% block per_page_css %} {% endblock per_page_css %}
 
@@ -65,29 +67,30 @@
                 {% endif %}
             </li>
 
-            {#            <!-- Product Dropdown -->#}
-            {#            <li class="nav-item dropdown">#}
-            {#                <a class="nav-link dropdown-toggle" href="#" id="prodDropdown" role="button" data-toggle="dropdown"#}
-            {#                   aria-haspopup="true" aria-expanded="false">#}
-            {#                    Products#}
-            {#                </a>#}
-            {##}
-            {#                <!-- Will need logic and content to grab approrpiate items -->#}
-            {#                <div class="dropdown-menu" aria-labelledby="prodDropdown">#}
-            {#                    <a class="dropdown-item" href="#">Product Type 1</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 2</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 3</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 4</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 5</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 6</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                </div>#}
-            {#            </li>#}
+{#            <!-- Product Dropdown -->#}
+{#            <li class="nav-item dropdown">#}
+{#                <a class="nav-link dropdown-toggle" href="#" id="prodDropdown" role="button" data-toggle="dropdown" ,#}
+{#                   aria-haspopup="true" aria-expanded="false">#}
+{#                    Products#}
+{#                </a>#}
+{##}
+{#                <!-- Will need logic and content to grab approrpiate items -->#}
+{##}
+{#                <div class="dropdown-menu" aria-labelledby="prodDropdown">#}
+{#                    <a class="dropdown-item" href="#">Product Type 1</a>#}
+{#                    <!-- Will link to a search query @ /q?s='...' -->#}
+{#                    <a class="dropdown-item" href="#">Product Type 2</a>#}
+{#                    <!-- Will link to a search query @ /q?s='...' -->#}
+{#                    <a class="dropdown-item" href="#">Product Type 3</a>#}
+{#                    <!-- Will link to a search query @ /q?s='...' -->#}
+{#                    <a class="dropdown-item" href="#">Product Type 4</a>#}
+{#                    <!-- Will link to a search query @ /q?s='...' -->#}
+{#                    <a class="dropdown-item" href="#">Product Type 5</a>#}
+{#                    <!-- Will link to a search query @ /q?s='...' -->#}
+{#                    <a class="dropdown-item" href="#">Product Type 6</a>#}
+{#                    <!-- Will link to a search query @ /q?s='...' -->#}
+{#                </div>#}
+{#            </li>#}
 
             <li class="nav-item">
                 <a class="nav-link" href="/about">About</a> <!-- Will link to /about -->
@@ -155,6 +158,7 @@
         </div>
     </div>
 </nav>
+<!-- End Title Bar -->
 
 
 {% block main_content %}
@@ -165,5 +169,9 @@
 
 
 </body>
+
+{% block jquery %}
+
+{% endblock jquery %}
 
 </html>

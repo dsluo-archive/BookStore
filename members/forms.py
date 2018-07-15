@@ -11,9 +11,10 @@ class MemberForm(forms.ModelForm):
         fields = [
             "profile_picture",
             "birth_date",
-            "primary_address",
             "receive_newsletter",
         ]
+
+    primary_address = forms.CharField(max_length=120, required=True)
 
 
 class UserLoginForm(forms.Form):

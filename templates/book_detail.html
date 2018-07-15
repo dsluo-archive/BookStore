@@ -27,10 +27,12 @@
                         </div>
                         <div class="col-md-8">
                             <ul>
-                                <li>Title:</li>
-                                <li>Author:</li>
-                                <li>Genre:</li>
-                                <li>Publisher:</li>
+                                <li>Title: {{ book.name }}</li>
+                                <li>Author: {{ book.author }}</li>
+                                <li>Genre: {{ book.subjects.all.first }}</li>
+                                <li>Publisher: {{ book.publisher }}</li>
+                                <li>ISBN: {{ book.isbn }}</li>
+                                <li>Vendor: {{ book.vendor }}</li>
                             </ul>
                         </div>
                         <div class="col-md-12">
@@ -39,19 +41,17 @@
                                 Pence's daughter Charlotte Pence and illustrated by his wife Karen Pence.
                                 Their book also tells about a fictionalized day of the Pence family's pet rabbit </p>
                         </div>
-                        <div class="col-md-12">
-                            <ul id="secondary">
-                                <li>ISBN:</li>
-                                <li>Vendor:</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 sidebar">
-                <p>Price:</p>
-                <button class="btn-lg btn-dark"> Add to Cart</button>
-                <button id="reserve" class="btn-lg btn-dark"> Reserve Book</button>
+                <p>Price:{{ book.price }}</p>
+
+                <form method="post"> {% csrf_token %}
+                    <input class="btn-lg btn-dark" type="submit" name="cart" value="Add to Cart">
+                    <input type="text" name="count" value="1">
+                </form>
+
                 <p>Others by Author:</p>
                 <ul id="Others">
                     <li></li>
@@ -62,6 +62,8 @@
             </div>
         </div>
     </div>
+
+    <!-- No need for a Back to Top. Was also formatted incorrectly.
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -76,5 +78,6 @@
             </div>
         </div>
     </div>
+    -->
 
 {% endblock main_content %}

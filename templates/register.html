@@ -43,7 +43,7 @@
         {% endfor %}
 
         {% for field in member_form %}
-            {% if field|is_checkbox %}
+            {% if field|is_field:'CheckboxInput' %}
                 <div class="form-check mb-3">
                     <label for="{{ member_form.receive_newsletter.id_for_label }}" class="form-check-label">
                         {{ member_form.receive_newsletter|add_class:"form-check-input" }}
@@ -56,7 +56,7 @@
                         </small>
                     {% endif %}
                 </div>
-            {% elif field|is_file_upload %}
+            {% elif field|is_field:'FileField' %}
                 <div class="form-label-group">
                     {% render_field field class="form-control-file" placeholder=field.label %}
                     {{ field.label_tag }}

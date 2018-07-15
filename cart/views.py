@@ -14,30 +14,33 @@ reservation_cancellation_timer = 432000  # (5 days)
 
 def cart(request):
 
-    code = request.POST.get("promo_code")
+    if request.user.is_authenticated:
+        code = request.POST.get("promo_code")
 
-    if code:
-        promotion = PromotionCodes.objects.all().filter(code=code).first()
+        if code:
+            promotion = PromotionCodes.objects.all().filter(code=code).first()
 
-        if promotion:
-            for cart_item in request.user.member.cart.items.all():
-                for genre in promotion.genres.all():
-                    if genre.book_set.all().filter(slug=cart_item.book.slug):
-                        cart_item.price = float(cart_item.book.price) * (1-float(promotion.discount))
-                        cart_item.save()
-                        break
-                    else:
-                        cart_item.price = cart_item.book.price
-                        cart_item.save()
+            if promotion:
+                for cart_item in request.user.member.cart.items.all():
+                    for genre in promotion.genres.all():
+                        if genre.book_set.all().filter(slug=cart_item.book.slug):
+                            cart_item.price = float(cart_item.book.price) * (1-float(promotion.discount))
+                            cart_item.save()
+                            break
+                        else:
+                            cart_item.price = cart_item.book.price
+                            cart_item.save()
+            else:
+                for cart_item in request.user.member.cart.items.all():
+                    cart_item.price = cart_item.book.price
+                    cart_item.save()
         else:
-            for cart_item in request.user.member.cart.items.all():
-                cart_item.price = cart_item.book.price
-                cart_item.save()
-    else:
-        code = ""
+            code = ""
 
-    return render(request, "cart.html", {"items": request.user.member.cart.items.all(),
-                                         "current_code": code})
+        return render(request, "cart.html", {"items": request.user.member.cart.items.all(),
+                                             "current_code": code})
+    else:
+        return HttpResponseRedirect(reverse('members:login'))
 
 
 def remove(request, slug):

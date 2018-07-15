@@ -58,7 +58,7 @@ def register(request):
 
                 return HttpResponseRedirect(reverse('books:home'))
 
-        return render(request, "create_account.html", {"user_form":   user_form,
+        return render(request, "register.html", {"user_form":         user_form,
                                                        "member_form": member_form})
 
     else:

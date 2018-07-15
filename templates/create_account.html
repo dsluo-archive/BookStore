@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load widget_tweaks %}
+{% load form_tags %}
 
 {% block per_page_css %}
     <link rel="stylesheet" href="{% static 'css/create-acct-main.css' %}">
@@ -8,56 +10,79 @@
 
 {% block main_content %}
 
-    <div class="container-fluid banner">
-        <div class="row">
-            <div class="col-md-6">
-                <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>
+    {#    <div class="container-fluid banner">#}
+    {#        <div class="row">#}
+    {#            <div class="col-md-6">#}
+    {#                <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>#}
+    {#            </div>#}
+    {#            <div class="col-6">#}
+    {#                <h3>Create your Dog-Ear account</h3>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="form-signin">#}
+    <form action="{% url 'members:register' %}" method="post" class="form-signin">
+        <img src="{% static 'images/dogear-cropped.jpg' %}"/>
+        <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+
+        {% csrf_token %}
+        {{ user_form.non_field_errors }}
+        {{ member_form.non_field_errors }}
+
+        {% for field in user_form %}
+            <div class="form-label-group">
+                {% render_field field class="form-control" placeholder=field.label %}
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">
+                        {{ field.help_text | safe }}
+                    </small>
+                {% endif %}
             </div>
-            <div class="col-6">
-                <h3>Create your Dog-Ear account</h3>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="offset-4 col-md-8">
-                <form>
-                    <ul class="list-group">
-                        <li class="list-group-item">Firstname:<input class="inputbox" type="text" value="Firstname"
-                                                                     name="firstname"></input><br></li>
-                        <li class="list-group-item">Lastname:<input class="inputbox" type="text" value="Lastname"
-                                                                    name="lastname"></input></li>
-                        <li class="list-group-item">Email:<input class="inputbox" type="text" value="Email Address"
-                                                                 name="email"></input><br></li>
-                        <li class="list-group-item">Street Address:<input class="inputbox" value="Street Address"
-                                                                          type="text" name="address"></input></li>
-                        <li class="list-group-item">DOB:<input class="inputboxSpec" id="Month" value="MM" type="text"
-                                                               name="Month"></input><input class="inputboxSpec" id="Day"
-                                                                                           value="DD" type="text"
-                                                                                           name="Day"></input><input
-                                class="inputboxSpec" id="Year" value="YYYY" type="text" name="Year"></input><br></li>
-                        <li class="list-group-item">Password:<input class="inputbox" value="Password" type="password"
-                                                                    name="password"></input></li>
-                        <li class="list-group-item">Re-enter Password:<input class="inputbox" value="Password"
-                                                                             type="password"
-                                                                             name="password_confirm"></input></li>
-                        <li class="list-group-item">Receive our Newsletter:<input class="inputbox" type="checkbox"
-                                                                                  name="password_confirm"></input></li>
-                        <li class="list-group-item">User-type:<select class="inputbox" name="account_type">
-                            <option value="vendor">Vendor</option>
-                            <option value="buyer">Buyer</option>
-                            <select>
-                        </li>
-                        <div class="profile_pic">
-                            <img id="profile_img" src="{% static 'images/placeholder.jpg' %}"
-                                 alt=""/><input class="btn-sm btn-dark" id="browse" type="file"
-                                                     id="myFile"></input>
-                        </div>
-                        <input class="btn-sm btn-dark" id="submit" type="submit" value="Submit">
-                    </ul>
-                </form>
-            </div>
-        </div>
-    </div>
+        {% endfor %}
+
+        {% for field in member_form %}
+            {% if field|is_checkbox %}
+                <div class="form-check mb-3">
+                    <label for="{{ member_form.receive_newsletter.id_for_label }}" class="form-check-label">
+                        {{ member_form.receive_newsletter|add_class:"form-check-input" }}
+                        {{ member_form.receive_newsletter.label }}
+                    </label>
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% elif field|is_file_upload %}
+                <div class="form-label-group">
+                    {% render_field field class="form-control-file" placeholder=field.label %}
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="form-label-group">
+                    {% render_field field class="form-control" placeholder=field.label %}
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <input type="submit" class="btn btn-primary" value="Submit"/>
+    </form>
+    {#    </div>#}
 
 {% endblock main_content %}

@@ -14,6 +14,7 @@ from books.models import Book, Reservation
 from vendors.models import Vendor
 from cart.models import Cart, Order
 
+
 # Create your models here.
 
 
@@ -44,7 +45,7 @@ class Member(models.Model):
     primary_address = models.CharField(max_length=60)
     profile_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
-    birth_date = models.DateField(default=timezone.now)
+    birth_date = models.DateField()
     receive_newsletter = models.BooleanField(default=True, null=False)
     hex_code = models.CharField(max_length=6, blank=True, null=True)
     activated = models.BooleanField(default=False, blank=False)

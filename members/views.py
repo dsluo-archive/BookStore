@@ -47,8 +47,8 @@ def save_account(request):
 
 def register(request):
     if not request.user.is_authenticated or request.user.is_superuser:
-        user_form = CustomUserCreationForm(request.POST or None, request.FILES or None)
-        member_form = MemberForm(request.POST or None, request.FILES or None)
+        user_form = CustomUserCreationForm(request.POST or None, request.FILES or None, label_suffix='')
+        member_form = MemberForm(request.POST or None, request.FILES or None, label_suffix='')
 
         if request.method == 'POST':
             if user_form.is_valid() and member_form.is_valid():

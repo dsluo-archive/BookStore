@@ -13,3 +13,7 @@
     font-family: GlacialIndifference-bold;
     src: url("../fonts/GlacialIndifference-Bold.otf");
 }
+
+body {
+    font-family: GlacialIndifference-regular, sans-serif;
+}

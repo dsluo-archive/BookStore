@@ -1,20 +1,3 @@
-div {
-    font-family: bannerFont;
-}
-
-/* font for the banner */
-@font-face {
-    font-family: bannerFont;
-    src: url("../fonts/GlacialIndifference-regular.otf");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: bannerFontbold;
-    src: url("../fonts/GlacialIndifference-bold.otf");
-    font-weight: bold;
-}
-
 .left {
     margin-left: 90%;
     margin-bottom: 3px;

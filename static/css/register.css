@@ -1,9 +1,5 @@
 @import 'mixins/forms.css';
 
-body {
-    font-family: GlacialIndifference-regular, sans-serif;
-}
-
 .banner {
     color: white;
     font-family: GlacialIndifference-bold, sans-serif;

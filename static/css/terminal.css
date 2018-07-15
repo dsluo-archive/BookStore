@@ -9,23 +9,6 @@
     margin-top: 5%;
     font-size: 36pt;
 }
-
-@font-face {
-    font-family: bannerFont;
-    src: url("../fonts/GlacialIndifference-regular.otf");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: bannerFontbold;
-    src: url("../fonts/GlacialIndifference-bold.otf");
-    font-weight: bold;
-}
-
-div {
-    font-family: bannerFontbold;
-}
-
 .reports {
     text-align: center;
 }

@@ -1,25 +1,6 @@
-body {
-    font-family: bannerFont;
-}
-
-/* font for the banner */
-@font-face {
-    font-family: bannerFont;
-    src: url("../fonts/GlacialIndifference-regular.otf");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: bannerFontbold;
-    src: url("../fonts/GlacialIndifference-bold.otf");
-    font-weight: bold;
-}
-
-/* end fonts */
-
 .banner {
     color: white;
-    font-family: bannerFontbold;
+    font-family: GlacialIndifference-bold, sans-serif;
     background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url("../images/bookshelf.jpg");
     background-size: cover;
     background-position: bottom center;
@@ -58,7 +39,7 @@ body {
 
 .amt {
     float: right;
-    font-family: bannerFontbold;
+    font-family: GlacialIndifference-bold, sans-serif;
 }
 
 .tot {

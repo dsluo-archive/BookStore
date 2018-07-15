@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/activate.css' %}">
+{% endblock %}
+
+{% block main_content %}
+    <div class="text-center">
+        <h1>TODO</h1>
+        {{ error }}
+    </div>
+{% endblock %}

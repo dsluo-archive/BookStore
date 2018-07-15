@@ -1,8 +1,33 @@
 {% extends "base.html" %}
+{% load unit_price %}
+{% load total_price %}
+
+    {% block jquery %}
+        <script>
+        var clientToken = "{{ client_token }}";
+
+        braintree.setup(clientToken, "dropin", {
+          container: "payment-form"
+        });
+        </script>
+    {% endblock jquery %}
 
 {% block main_content %}
 
     <!-- send user instance as object, populate the page with it -->
     <p> Checkout Page</p>
+    <ul>
+        {% for item in cart %}
+                <li>{{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }}, Reservation: {{ item.reservation }}</li>
+        {% endfor %}
+        <li>(Sub) Total: ${% total_price cart %}</li>
+        <li>Tax: $0.00</li>
+        <li>Total: {% total_price cart %}</li>
+    </ul>
+
+    <form id="checkout" method="post" action="submit/"> {% csrf_token %}
+        <div id="payment-form"></div>
+        <input type="submit" value="Submit Order">
+    </form>
 
 {% endblock main_content %}

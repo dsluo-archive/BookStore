@@ -1,10 +1,398 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+{% endblock %}
+
 {% block main_content %}
 
     <!-- send user instance as object, populate the page with it -->
-    <p> User Profile Page</p>
-    <p> Slug: {{ slug }}</p> <!-- this will be passed in the url -->
-    <p> Member: {{ member }}</p>
+    <div class="container-fluid">
+        <div class="row info_block">
+            <div class="col-md-4">
+                <img src="{% static 'images/placeholder.jpg' %}" id="thumbnail"
+                     alt="User_Profile_image"/>
+            </div>
+            <div class="col-4">
+                <ul class="vitals list-group">
+                    <li class="list-group-item">Name: {Username}</li>
+                    <li class="list-group-item">Email: {Email}</li>
+                    <li class="list-group-item">DoB: {DoB}</li>
+                    <ul>
+            </div>
+            <div class="col-4">
+                <button id="edit" class="btn-sm btn-dark"> &nbsp<i class="fas fa-edit"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid carousel-container">
+        <div class="row purchases">
+            <div class="col-md-12">
+                <h3>Purchases:</h3>
+                <div class="span12">
+                    <div class="carousel slide" id="purCarousel">
+                        <div class="item-active">
+                            <div class="control-box-left">
+                                <a data-slide="prev" href="#myCarousel" class="carousel-control left"><i
+                                        class="fas fa-3x fa-chevron-left"></i></a>
+                            </div>
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="control-box-right">
+                                <a data-slide="next" href="myCarousel" class="carousel-control right"><i
+                                        class="fas fa-3x fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row orders">
+            <div class="col-12">
+                <div class="span12">
+                    <h3>Orders:</h3>
+                    <div class="carousel slide" id="purCarousel">
+                        <div class="item-active">
+                            <div class="control-box-left">
+                                <a data-slide="prev" href="#myCarousel" class="carousel-control left"><i
+                                        class="fas fa-3x fa-chevron-left"></i></a>
+                            </div>
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="control-box-right">
+                                <a data-slide="next" href="#myCarousel" class="carousel-control right"><i
+                                        class="fas fa-3x fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row reserve">
+            <div class="col-12">
+                <div class="span12">
+                    <h3>Reserved:</h3>
+                    <div class="carousel slide" id="purCarousel">
+                        <div class="item-active">
+                            <div class="control-box-left">
+                                <a data-slide="prev" href="#myCarousel" class="carousel-control left"><i
+                                        class="fas fa-3x fa-chevron-left"></i></a>
+                            </div>
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="control-box-right">
+                                <a data-slide="next" href="#myCarousel" class="carousel-control right"><i
+                                        class="fas fa-3x fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul class="book_imgs">
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="span3">
+                                    <div class="book_img">
+                                        <a href="#">
+                                            <img class="book_elem" src="{% static 'images/img.png' %}"/>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row others">
+            <div class="col-12">
+                <ul class="list-group" id="block2">
+                    <li class="list-group-item">Change Password:
+                        <button id="delete" class="btn-sm btn-dark center"><i class="fas fa-edit"></i></button>
+                    </li>
+                    <li class="list-group-item">Newsletter:
+                        <button id="delete" class="btn-sm btn-dark center"><i class="fas fa-edit"></i></button>
+                    </li>
+                    <li class="list-group-item">Delete:
+                        <button id="delete" class="btn-sm btn-dark center"><i class="fas fa-trash-alt"></i></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <nav class="foot navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <ul class="nav-list">
+                <li class="nav-list-item"></li>
+                <li class="nav-list-item">Back to Top</li>
+            </ul>
+        </a>
+    </nav>
 
 {% endblock main_content %}

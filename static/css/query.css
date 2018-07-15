@@ -1,0 +1,51 @@
+/* end fonts */
+
+.left {
+    margin-left: 90%;
+    margin-bottom: 3px;
+}
+
+.banner {
+    height: 150px;
+    background-color: #545A68;
+    color: white;
+    text-align: center;
+}
+
+.banner h1 {
+    margin-top: 30px;
+}
+
+.results {
+    margin-top: 15px;
+}
+
+.spaced {
+    margin-bottom: 15px;
+}
+
+.search_panel {
+    border-right: 3px solid;
+    border-color: #DBDBDB;
+}
+
+.author-btn {
+    border: none;
+    margin: 3px;
+    background: none;
+}
+
+.thumbnail {
+    height: 100px;
+    width: 100px;
+}
+
+th p {
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
+th button {
+    margin-top: 35px;
+    margin-left: 15px;
+}

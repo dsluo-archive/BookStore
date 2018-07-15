@@ -1,8 +1,58 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/eod.css' %}">
+{% endblock per_page_css %}
+
 {% block main_content %}
 
-    <!-- item info will need to be passed into this -->
-    <p> EoD Page</p>
+    <div class="container-fluid banner">
+        <div class="row">
+            <div class="col-md-12">
+                <h4> EoD Report { User }</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row table-cont">
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Number Books Sold</th>
+                        <th>Total Revenue</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>1,000,000</th>
+                        <th>$12,329,854.87</th>
+                    </tr>
+                    <tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Credit Cards</th>
+                        <th>Cash</th>
+                        <th>Paypal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>$2,054,975.83</th>
+                        <th>$6,164,927.41</th>
+                        <th>$4,109,951.63</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 {% endblock main_content %}

@@ -1,22 +1,36 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+{% endblock per_page_css %}
+
 {% block main_content %}
 
     <!-- send user instance as object, populate the page with it -->
-    <h1> Landing Page</h1>
+    <header class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h2>Welcome to Dog-Ear</h2>
+            </div>
+        </div>
+        <div class="row login">
+            <div class="col-sm-6">
+                <button type="button" id="doLogin" class="btn-lg btn-light">Login</button>
+            </div>
+            <div class="col-sm-6">
+                <a href="register.html">
+                    <button type="button" class="btn-lg btn-light">Register</button>
+                </a>
+            </div>
+            <div class="col-md-12">
+                <a href="home_page.html">
+                    <button class="btn-sm btn-light">Continue as non-user</button>
+                </a>
+            </div>
+        </div>
 
-    <h3>New books: </h3>
-    <ul>
-    {% for book in new_books %}
-        <li>{{ book }}</li>
-    {% endfor %}
-    </ul>
-
-    <h3>Newly Added books: </h3>
-    <ul>
-    {% for book in newly_added_books %}
-        <li>{{ book }}</li>
-    {% endfor %}
-    </ul>
+    </header>
 
 {% endblock main_content %}

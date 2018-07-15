@@ -1,15 +1,13 @@
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, get_object_or_404, Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.urls import reverse
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
-from django.contrib.auth.forms import UserChangeForm
+from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
+from django.urls import reverse
 
+from books.models import PromotionCodes
+from members.forms import CustomUserCreationForm, MemberForm, UserLoginForm
 # Create your views here.
 from members.models import Member
-from members.forms import MemberForm, UserLoginForm, CustomUserCreationForm
-from books.models import PromotionCodes
 
 
 def profile(request, slug):
@@ -19,7 +17,7 @@ def profile(request, slug):
         raise PermissionDenied
 
     if request.user == member_to_view.user or request.user.is_staff:
-        return render(request, "user_profile.html", {"slug": slug,
+        return render(request, "user_profile.html", {"slug":   slug,
                                                      "member": member_to_view})
     else:
         raise PermissionDenied
@@ -39,7 +37,7 @@ def save_account(request):
 
                 return HttpResponseRedirect(reverse('members:default_account'))
 
-        return render(request, "edit_account.html", {"user_form": user_edit_form,
+        return render(request, "edit_account.html", {"user_form":   user_edit_form,
                                                      "member_form": member_edit_form})
 
     else:
@@ -48,8 +46,8 @@ def save_account(request):
 
 def register(request):
     if not request.user.is_authenticated or request.user.is_superuser:
-        user_form = CustomUserCreationForm(request.POST or None, request.FILES or None)
-        member_form = MemberForm(request.POST or None, request.FILES or None)
+        user_form = CustomUserCreationForm(request.POST or None, request.FILES or None, label_suffix='')
+        member_form = MemberForm(request.POST or None, request.FILES or None, label_suffix='')
 
         if request.method == 'POST':
             if user_form.is_valid() and member_form.is_valid():
@@ -61,8 +59,8 @@ def register(request):
 
                 return HttpResponseRedirect(reverse('books:home'))
 
-        return render(request, "create_account.html", {"user_form": user_form,
-                                                       "member_form": member_form})
+        return render(request, "register.html", {"user_form":   user_form,
+                                                 "member_form": member_form})
 
     else:
         return HttpResponseRedirect(reverse('books:home'))
@@ -99,11 +97,10 @@ def default_profile(request):
 
 
 def login_user(request):
-
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('books:home'))
     else:
-        user_form = UserLoginForm(request.POST or None, request.FILES or None)
+        user_form = UserLoginForm(request.POST or None, request.FILES or None, label_suffix='')
 
         if user_form.is_valid():
             username = user_form.cleaned_data['username'].strip()
@@ -128,7 +125,6 @@ def logout_user(request):
 
 
 def daily_newsletter(code):
-
     new_promotion = PromotionCodes.objects.all().filter(code=code).first()
 
     discounted_genres = ""

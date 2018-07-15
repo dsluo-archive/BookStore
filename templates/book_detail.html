@@ -1,14 +1,80 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/book-detail.css' %}">
+{% endblock per_page_css %}
+
 {% block main_content %}
 
     <!-- send user instance as object, populate the page with it -->
-    <p> Item detail Page</p>
-    <p> Book: {{ book }}</p> <!-- this will be passed in the url -->
-
-<form method="post"> {% csrf_token %}
-    <input type="submit" name="cart" value="Add to Cart">
-    <input type="text" name="count" value="1">
-</form>
+    <div class="container-fluid banner">
+        <div class="row">
+            <div class="col">
+                <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>
+                <button id="edit" class="btn-sm btn-dark"> &nbsp<i class="fas fa-edit"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mh-100">
+        <div class="row">
+            <div class="col-md-9 book_content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img class="img-responsive" src="{% static 'images/img.png' %}"/>
+                        </div>
+                        <div class="col-md-8">
+                            <ul>
+                                <li>Title:</li>
+                                <li>Author:</li>
+                                <li>Genre:</li>
+                                <li>Publisher:</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <p>Details: A Day in the Life of Marlon Bundo was conceptualized as a loose parody of Marlon
+                                Bundo's A Day in the Life of the Vice President, a children's book written by Mike
+                                Pence's daughter Charlotte Pence and illustrated by his wife Karen Pence.
+                                Their book also tells about a fictionalized day of the Pence family's pet rabbit </p>
+                        </div>
+                        <div class="col-md-12">
+                            <ul id="secondary">
+                                <li>ISBN:</li>
+                                <li>Vendor:</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 sidebar">
+                <p>Price:</p>
+                <button class="btn-lg btn-dark"> Add to Cart</button>
+                <button id="reserve" class="btn-lg btn-dark"> Reserve Book</button>
+                <p>Others by Author:</p>
+                <ul id="Others">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="foot navbar navbar-light bg-light">
+                    <a class="navbar-brand" href="#">
+                        <ul class="nav-list">
+                            <li class="nav-list-item"></li>
+                            <li class="nav-list-item">Back to Top</li>
+                        </ul>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
 
 {% endblock main_content %}

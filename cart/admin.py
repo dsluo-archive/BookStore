@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from cart.models import Cart, Order, CartItem, UserCheckout
+from cart.models import Cart, CartItem, Order, UserCheckout
 
 
 # Register your models here.
@@ -35,9 +35,8 @@ class OrderModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Order
 
+
 admin.site.register(Cart, CartModelAdmin)
 admin.site.register(Order, OrderModelAdmin)
 admin.site.register(CartItem, CartItemModelAdmin)
 admin.site.register(UserCheckout, UserCheckoutModelAdmin)
-
-

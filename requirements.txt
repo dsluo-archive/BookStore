@@ -1,7 +1,12 @@
-Django==2.0.6
-Pillow==5.1.0
-pytz==2018.4
 celery==4.2.0
+amqp==2.3.2
+billiard==3.5.0.4
+Django==2.0.7
 django-celery-beat==1.1.1
+django-widget-tweaks==1.4.2
+kombu==4.2.1
+Pillow==5.2.0
+pytz==2018.5
+vine==1.1.4
 eventlet==0.23.0
 braintree==3.46.0

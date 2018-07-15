@@ -1,0 +1,51 @@
+.banner {
+    color: white;
+    font-family: GlacialIndifference-bold, sans-serif;
+    background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url("../images/bookshelf.jpg");
+    background-size: cover;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    height: 300px;
+}
+
+#banner_img {
+    height: 200px;
+    width: 200px;
+    margin-left: 40%;
+    margin-top: 30px;
+}
+
+.main {
+    margin-top: 20px;
+}
+
+#shop {
+    display: block;
+    text-align: center;
+    margin-left: 31%;
+}
+
+#checkout {
+    display: block;
+    margin-left: 40%;
+    text-align: center;
+}
+
+.sidebar {
+    text-align: center;
+    border-left: 3px solid;
+    border-color: #DBDBDB;
+}
+
+.amt {
+    float: right;
+    font-family: GlacialIndifference-bold, sans-serif;
+}
+
+.tot {
+    text-align: right;
+}
+
+.promo-contr {
+    margin-top: 25px;
+}

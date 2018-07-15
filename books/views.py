@@ -1,34 +1,38 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse
-from django.core.exceptions import PermissionDenied
-from django.db.models import Q
-from django.core.paginator import Paginator
-import random, string
+import random
+import string
 
-# Create your views here.
-from books.models import Book, Genre, Author, PromotionCodes
-from books.forms import MassBookForm, BookForm
+from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+
+from books.forms import BookForm, MassBookForm
+from books.models import Author, Book, Genre, PromotionCodes
 from books.tasks import cancel_promotional
 
 
 def landing(request):
-
     new_books = Book.objects.all().order_by("publish_date")
     newly_added_books = Book.objects.all().order_by("-id")
 
-    return render(request, "landing.html", {"new_books": new_books,
+    return render(request, "landing.html", {"new_books":         new_books,
                                             "newly_added_books": newly_added_books})
 
 
 def home(request):
     new_books = Book.objects.all().order_by("publish_date")
     newly_added_books = Book.objects.all().order_by("-id")
-    latest_author = Author.objects.all().order_by("-id").first()
+    latest_authors = Author.objects.all().order_by('-id')
     genres = Genre.objects.all()
 
-    return render(request, "home_page.html", {"new_books": new_books,
-                                              "newly_added_books": newly_added_books,
-                                              "latest_author": latest_author,
-                                              "genres": genres})
+    return render(request, "home_page.html", {
+        "new_books":         new_books,
+        "newly_added_books": newly_added_books,
+        "latest_authors":    latest_authors,
+        "genres":            genres
+    })
 
 
 def all_books(request):
@@ -75,7 +79,7 @@ def all_books(request):
     page = request.GET.get(page_var)
     queryset = paginator.get_page(page)
 
-    return render(request, "query.html", {"books": queryset,
+    return render(request, "query.html", {"books":    queryset,
                                           "page_var": page_var})
 
 
@@ -132,7 +136,7 @@ def generate_promotion():
 
     # getting genre to discount
     max_id = Genre.objects.all().order_by("-id")[0].id
-    genre_id = random.randint(-20, max_id+1)
+    genre_id = random.randint(-20, max_id + 1)
 
     if genre_id <= 0:
         genres = Genre.objects.all()

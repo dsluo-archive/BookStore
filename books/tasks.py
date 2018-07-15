@@ -1,5 +1,5 @@
-from bookstore.celery import app
 from books.models import PromotionCodes
+from bookstore.celery import app
 
 
 @app.task

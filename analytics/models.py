@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone
 
+from books.models import Book
 # Create your models here.
 from cart.models import Order
-from books.models import Book
 
 
 class EodReport(models.Model):

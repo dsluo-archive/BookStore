@@ -41,7 +41,7 @@ class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)
 
-    primary_address = models.CharField(max_length=60)
+    primary_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=False)
     profile_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField(default=timezone.now)
@@ -61,7 +61,7 @@ class Member(models.Model):
     reserved = models.ManyToManyField(Reservation, blank=True)
 
     # Of type Order
-    order = models.ManyToManyField(Order, blank=True)
+    orders = models.ManyToManyField(Order, blank=True)
 
     # Of type Address
     saved_addresses = models.ManyToManyField(Address, related_name='address', blank=True)

@@ -9,24 +9,23 @@ from books.forms import MassBookForm, BookForm
 
 
 def landing(request):
-
     new_books = Book.objects.all().order_by("publish_date")
     newly_added_books = Book.objects.all().order_by("-id")
 
-    return render(request, "landing.html", {"new_books": new_books,
+    return render(request, "landing.html", {"new_books":         new_books,
                                             "newly_added_books": newly_added_books})
 
 
 def home(request):
     new_books = Book.objects.all().order_by("publish_date")
     newly_added_books = Book.objects.all().order_by("-id")
-    latest_author = Author.objects.latest("id")
+    latest_authors = Author.objects.all().order_by('id')
     genres = Genre.objects.all()
 
-    return render(request, "home_page.html", {"new_books": new_books,
+    return render(request, "home_page.html", {"new_books":         new_books,
                                               "newly_added_books": newly_added_books,
-                                              "latest_author": latest_author,
-                                              "genres": genres})
+                                              "latest_authors":    latest_authors,
+                                              "genres":            genres})
 
 
 def all_books(request):
@@ -73,7 +72,7 @@ def all_books(request):
     page = request.GET.get(page_var)
     queryset = paginator.get_page(page)
 
-    return render(request, "query.html", {"books": queryset,
+    return render(request, "query.html", {"books":    queryset,
                                           "page_var": page_var})
 
 

@@ -23,4 +23,3 @@ class MemberModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Member, MemberModelAdmin)
 admin.site.register(Address, AddressModelAdmin)
-

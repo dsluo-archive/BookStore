@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserChangeForm
 # Create your views here.
 from members.models import Member
 from members.forms import MemberForm, UserLoginForm, CustomUserCreationForm
+from books.models import PromotionCodes
 
 
 def profile(request, slug):
@@ -126,7 +127,15 @@ def logout_user(request):
     return HttpResponseRedirect(reverse('books:home'))
 
 
-def daily_newsletter():
+def daily_newsletter(code):
+
+    new_promotion = PromotionCodes.objects.all().filter(code=code).first()
+
+    discounted_genres = ""
+
+    for genre in new_promotion.genres:
+        discounted_genres = genre.subjects + ", "
+
     members = Member.objects.all().filter(receive_newsletter=True)
     emails = []
 
@@ -134,7 +143,10 @@ def daily_newsletter():
         emails.append(member.user.email)
 
     send_mail("Dog Ear Bookstore Daily Newsletter",
-              "Dog Ear Bookstore\n\nDaily Promotional Code for X% Off: XXXXXX",
+              "Dog Ear Bookstore" + "\n\n"
+              + "Daily Promotional Code for " + str(float(new_promotion.discount) * 100) + "% Off:"
+              + new_promotion.code + "\n\n"
+              + "Discount applies to select genre(s): " + discounted_genres[:-2],
               "dogearbookstore@gmail.com",
               emails,
               fail_silently=False)

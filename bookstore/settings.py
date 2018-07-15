@@ -126,12 +126,20 @@ EMAIL_HOST_PASSWORD = 'TITOtitties6969'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static_cdn"),
+    os.path.join(BASE_DIR, "static"),
 ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
+
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+
+# LOCAL
+BRAINTREE_PRIVATE = "5cf5917bf8883cc186a824b92371da2d"
+BRAINTREE_PUBLIC = "tzvsq9kwxxssxxwn"
+BRAINTREE_MERCHANT_ID = "78qw98m6sck3c49c"
+BRAINTREE_ENVIRONMENT = "Sandbox"

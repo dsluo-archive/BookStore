@@ -6,7 +6,7 @@
     <p> Cart Page</p>
     <ul>
     {% for item in items %}
-            <li>{{ item.book }}, ${% unit_price item.count item.book.price %}, Count: {{ item.count }}, Reservation: {{ item.reservation }}
+            <li>{{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }}, Reservation: {{ item.reservation }}
 
                 <form method="post" action="remove/{{ item.book.slug }}/"> {% csrf_token %}
                     <input type="submit" name="remove-item" value="Remove">
@@ -16,5 +16,15 @@
     {% endfor %}
     <li>(Sub) Total: ${% total_price items %}</li>
     </ul>
+
+    <form method="post" action=""> {% csrf_token %}
+        <input type="text" name="promo_code" value="{{ current_code }}">
+        <input type="submit" value="Apply Promotional">
+    </form>
+
+    <form method="post" action="checkout/"> {% csrf_token %}
+        <input type="submit" name="card" value="Pay Online">
+        <input type="submit" name="cash" value="Reserve at Bookstore">
+    </form>
 
 {% endblock main_content %}

@@ -13,7 +13,6 @@ reservation_cancellation_timer = 432000  # (5 days)
 
 
 def cart(request):
-
     if request.user.is_authenticated:
         code = request.POST.get("promo_code")
 
@@ -24,7 +23,7 @@ def cart(request):
                 for cart_item in request.user.member.cart.items.all():
                     for genre in promotion.genres.all():
                         if genre.book_set.all().filter(slug=cart_item.book.slug):
-                            cart_item.price = float(cart_item.book.price) * (1-float(promotion.discount))
+                            cart_item.price = float(cart_item.book.price) * (1 - float(promotion.discount))
                             cart_item.save()
                             break
                         else:
@@ -37,7 +36,7 @@ def cart(request):
         else:
             code = ""
 
-        return render(request, "cart.html", {"items": request.user.member.cart.items.all(),
+        return render(request, "cart.html", {"items":        request.user.member.cart.items.all(),
                                              "current_code": code})
     else:
         return HttpResponseRedirect(reverse('members:login'))
@@ -61,7 +60,7 @@ def checkout(request):
             if purchase:
                 user_checkout, created = UserCheckout.objects.get_or_create(user=request.user, reservation=False)
                 client_token = user_checkout.get_client_token()
-                return render(request, "checkout.html", {"cart": request.user.member.cart.items.all(),
+                return render(request, "checkout.html", {"cart":         request.user.member.cart.items.all(),
                                                          "client_token": client_token})
             elif reserve:
                 user_cart = request.user.member.cart.items.all()
@@ -130,11 +129,10 @@ def order_detail(request, order):
         order = request.user.member.orders.all().filter(confirmation_number=order).first()
         if order:
             items = order.items.all()
-            return render(request, "order_detail.html", {"order": order,
-                                                         "items": items,
+            return render(request, "order_detail.html", {"order":       order,
+                                                         "items":       items,
                                                          "reservation": order.reservation})
         else:
             raise PermissionDenied
     else:
         raise PermissionDenied
-

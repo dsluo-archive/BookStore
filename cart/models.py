@@ -1,14 +1,15 @@
-from django.db import models
-from django.utils import timezone
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.conf import settings
-from django.core.mail import send_mail
-import random, string
-
-from books.models import Book
+import random
+import string
 
 import braintree
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.db import models
+from django.db.models.signals import post_save
+from django.utils import timezone
+
+from books.models import Book
 
 if settings.DEBUG:
     gateway = braintree.BraintreeGateway(
@@ -188,6 +189,7 @@ def post_save_order_receiver(sender, instance, created, **kwargs):
             [user.email],
             fail_silently=True,
         )
+
 
 post_save.connect(update_braintree_id, sender=UserCheckout)
 post_save.connect(post_save_order_receiver, sender=Order)

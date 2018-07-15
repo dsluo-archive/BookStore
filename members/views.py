@@ -125,7 +125,6 @@ def logout_user(request):
 
 
 def daily_newsletter(code):
-
     new_promotion = PromotionCodes.objects.all().filter(code=code).first()
 
     discounted_genres = ""

@@ -7,14 +7,16 @@
     <p>Order Confirmation Number: {{ order.confirmation_number }}</p>
 
     {% if reservation %}
-        <p>Item reserved for up to 5 days. Payment at vendor location in cash, check, or card must be completed before deadline. </p>
+        <p>Item reserved for up to 5 days. Payment at vendor location in cash, check, or card must be completed before
+            deadline. </p>
         <p>Available for pickup at specified Vendor(s) location:</p>
     {% endif %}
 
     <ul>
-    {% for item in items %}
-            <li>{{ item.book.vendor }}{{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }}</li>
-    {% endfor %}
+        {% for item in items %}
+            <li>{{ item.book.vendor }}{{ item.book }}, ${% unit_price item.count item.price %},
+                Count: {{ item.count }}</li>
+        {% endfor %}
         <li>Total: ${% total_price items %}</li>
     </ul>
 

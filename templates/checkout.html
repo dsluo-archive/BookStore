@@ -206,7 +206,8 @@
     </div>
     <ul>
         {% for item in cart %}
-                <li>{{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }}, Reservation: {{ item.reservation }}</li>
+            <li>{{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }},
+                Reservation: {{ item.reservation }}</li>
         {% endfor %}
         <li>(Sub) Total: ${% total_price cart %}</li>
         <li>Tax: $0.00</li>

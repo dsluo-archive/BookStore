@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.core.paginator import Paginator
 import random, string
 
 # Create your views here.
@@ -69,7 +69,7 @@ def all_books(request):
             queryset_list = queryset_list.filter(subjects__subjects=genre)
     '''
 
-    paginator = Paginator(queryset_list, 1)
+    paginator = Paginator(queryset_list, 10)
     page_var = 'page'
 
     page = request.GET.get(page_var)
@@ -82,12 +82,17 @@ def all_books(request):
 def detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
 
-    if request.user.is_authenticated:
-        add_to_cart = request.POST.get("cart")
-        count = request.POST.get("count")
+    add_to_cart = request.POST.get("cart")
+    count = request.POST.get("count")
 
+    if request.user.is_authenticated:
         if add_to_cart and count:
             request.user.member.cart.add_item(request.user.member, book, count)
+    else:
+        add_to_cart = request.POST.get("cart")
+
+        if add_to_cart:
+            return HttpResponseRedirect(reverse('members:login'))
 
     return render(request, "book_detail.html", {"book": book})
 

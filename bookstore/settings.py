@@ -61,7 +61,7 @@ ROOT_URLCONF = 'bookstore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/AJ')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,3 +137,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+
+# LOCAL
+BRAINTREE_PRIVATE = "5cf5917bf8883cc186a824b92371da2d"
+BRAINTREE_PUBLIC = "tzvsq9kwxxssxxwn"
+BRAINTREE_MERCHANT_ID = "78qw98m6sck3c49c"
+BRAINTREE_ENVIRONMENT = "Sandbox"

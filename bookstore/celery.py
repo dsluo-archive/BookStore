@@ -11,8 +11,10 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 @app.task
 def send_newsletter():
     from members.views import daily_newsletter
+    from books.views import generate_promotion
 
-    daily_newsletter()
+    code = generate_promotion()
+    daily_newsletter(code)
 
 
 @app.on_after_configure.connect

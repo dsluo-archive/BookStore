@@ -3,8 +3,10 @@ import string
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
+from django.core.files.temp import NamedTemporaryFile
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models.fields import NOT_PROVIDED
 from django.db.models.signals import post_save, pre_save
 from django.urls import reverse
 from django.utils.text import slugify
@@ -42,7 +44,10 @@ class Member(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)
 
     primary_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=False)
-    profile_picture = models.ImageField(upload_to=upload_location, default="members/images/default_member.jpg", null=True, blank=True)
+    profile_picture = models.ImageField(upload_to=upload_location,
+                                        default="members/images/default_member.jpg",
+                                        null=False,
+                                        blank=False)
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField(blank=False)
     receive_newsletter = models.BooleanField(default=True, null=False)

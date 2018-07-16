@@ -25,6 +25,7 @@ def profile(request, slug):
 
 def save_account(request):
     if request.user.is_authenticated or request.user.is_superuser:
+
         user_edit_form = CustomUserCreationForm(request.POST or None, request.FILES or None, instance=request.user)
         member_edit_form = MemberForm(request.POST or None, request.FILES or None, instance=request.user.member)
 

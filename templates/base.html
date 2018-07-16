@@ -141,6 +141,8 @@
 
                 {% if request.user.is_authenticated %}
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="mem">
+                        <a class="dropdown-item" href="#">{{ request.user }}</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Profile</a> {# TODO #}
                         <a class="dropdown-item" href="#">Purchases</a>
                         <a class="dropdown-item" href="#">Settings</a>

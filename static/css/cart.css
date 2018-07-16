@@ -20,9 +20,9 @@
 }
 
 #shop {
-    display: block;
+    /* display: block; */
     text-align: center;
-    margin-left: 31%;
+    /* margin-left: 31%; */
 }
 
 #checkout {
@@ -40,6 +40,15 @@
 .amt {
     float: right;
     font-family: GlacialIndifference-bold, sans-serif;
+}
+
+.amt_rem {
+    float: left;
+    font-family: GlacialIndifference-bold, sans-serif;
+}
+
+.remove_form {
+    float: right;
 }
 
 .tot {

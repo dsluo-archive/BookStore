@@ -12,14 +12,14 @@
     <div class="container-fluid">
         <div class="row info_block">
             <div class="col-md-4">
-                <img src="{% static 'images/placeholder.jpg' %}" id="thumbnail"
+                <img src="{{ member.profile_picture.url }}" id="thumbnail"
                      alt="User_Profile_image"/>
             </div>
             <div class="col-4">
                 <ul class="vitals list-group">
-                    <li class="list-group-item">Name: {Username}</li>
-                    <li class="list-group-item">Email: {Email}</li>
-                    <li class="list-group-item">DoB: {DoB}</li>
+                    <li class="list-group-item">Name: {{ member.user.first_name }} {{ member.user.last_name }}</li>
+                    <li class="list-group-item">Email: {{ member.user.email }}</li>
+                    <li class="list-group-item">DoB: {{ member.birth_date }}</li>
                     <ul>
             </div>
             <div class="col-4">

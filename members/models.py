@@ -25,7 +25,7 @@ class Address(models.Model):
 
 
 def upload_location(instance, filename):
-    return "%s/%s" % (instance.slug, filename)
+    return "%s/%s/%s" % ("members", instance.slug, filename)
 
 
 class UserCreation(UserCreationForm):
@@ -42,7 +42,7 @@ class Member(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)
 
     primary_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=False)
-    profile_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
+    profile_picture = models.ImageField(upload_to=upload_location, default="members/images/default_member.jpg", null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField(blank=False)
     receive_newsletter = models.BooleanField(default=True, null=False)
@@ -71,6 +71,10 @@ class Member(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def delete(self, *args, **kwargs):
+        self.cart.delete()
+        return super(self.__class__, self).delete(*args, **kwargs)
 
 
 def create_slug(instance):

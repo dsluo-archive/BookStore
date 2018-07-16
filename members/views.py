@@ -56,7 +56,7 @@ def register(request):
 
                 new_member = member_form.save(commit=False)
                 new_member.user = new_user
-                new_member.primary_address, created = Address.objects.\
+                new_member.primary_address, created = Address.objects. \
                     get_or_create(location=member_form.cleaned_data["primary_address"])
                 new_member.save()
 
@@ -105,7 +105,7 @@ def login_user(request):
     else:
         user_form = UserLoginForm(request.POST or None, request.FILES or None, label_suffix='')
 
-        if user_form.is_valid():
+        if request.method == 'POST' and user_form.is_valid():
             username = user_form.cleaned_data['username'].strip()
             password = user_form.cleaned_data['password'].strip()
 
@@ -124,7 +124,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect(reverse('books:home'))
+    return HttpResponseRedirect(reverse('books:landing'))
 
 
 def daily_newsletter(code):

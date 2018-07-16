@@ -206,12 +206,9 @@
     </div>
     <ul>
         {% for item in cart %}
-            <li>{{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }},
-                Reservation: {{ item.reservation }}</li>
+            <li>{{ item.book }}, ${% unit_price item.count item.price %}, Count: {{ item.count }}</li>
         {% endfor %}
-        <li>(Sub) Total: ${% total_price cart %}</li>
-        <li>Tax: $0.00</li>
-        <li>Total: {% total_price cart %}</li>
+        <li>Total: ${% total_price cart %}</li>
     </ul>
 
     <form id="checkout" method="post" action="submit/"> {% csrf_token %}

@@ -9,7 +9,7 @@ from vendors.models import Vendor
 
 
 def upload_location(instance, filename):
-    return "%s/%s" % (instance.slug, filename)
+    return "%s/%s/%s" % ("books", instance.slug, filename)
 
 
 class Genre(models.Model):
@@ -33,8 +33,10 @@ class PromotionCodes(models.Model):
 
 
 class Book(models.Model):
-    item_picture = models.ImageField(upload_to=upload_location, null=True, blank=True)
-
+    item_picture = models.ImageField(upload_to=upload_location,
+                                     default="books/images/default_book.png",
+                                     null=True,
+                                     blank=True)
     name = models.CharField(max_length=120)
     isbn = models.CharField(unique=True, max_length=30)
     publisher = models.CharField(max_length=60)
@@ -78,6 +80,5 @@ def create_slug(instance):
 def pre_save_item_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
-
 
 pre_save.connect(pre_save_item_receiver, sender=Book)

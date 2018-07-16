@@ -7,7 +7,7 @@ from django.urls import reverse
 from books.models import PromotionCodes
 from members.forms import CustomUserCreationForm, MemberForm, UserLoginForm
 # Create your views here.
-from members.models import Member
+from members.models import Address, Member
 
 
 def profile(request, slug):
@@ -25,6 +25,7 @@ def profile(request, slug):
 
 def save_account(request):
     if request.user.is_authenticated or request.user.is_superuser:
+
         user_edit_form = CustomUserCreationForm(request.POST or None, request.FILES or None, instance=request.user)
         member_edit_form = MemberForm(request.POST or None, request.FILES or None, instance=request.user.member)
 
@@ -55,6 +56,8 @@ def register(request):
 
                 new_member = member_form.save(commit=False)
                 new_member.user = new_user
+                new_member.primary_address, created = Address.objects.\
+                    get_or_create(location=member_form.cleaned_data["primary_address"])
                 new_member.save()
 
                 return HttpResponseRedirect(reverse('books:home'))

@@ -48,14 +48,19 @@ class Cart(models.Model):
 
         cart_item = member.cart.items.all().filter(book=book).first()
 
-        if cart_item:
-            cart_item.count = count
-            cart_item.save()
+        if int(count) > book.count_in_stock:
+            return False
         else:
-            new_item = CartItem(count=count, book=book, price=book.price)
-            new_item.save()
+            if cart_item:
+                cart_item.count = count
+                cart_item.save()
+            else:
+                new_item = CartItem(count=count, book=book, price=book.price)
+                new_item.save()
 
-            self.items.add(new_item)
+                self.items.add(new_item)
+
+            return True
 
     @staticmethod
     def remove_item(member, book):

@@ -1,4 +1,7 @@
+from random import shuffle
+
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from django.shortcuts import HttpResponseRedirect, render
 from django.urls import reverse
 
@@ -36,8 +39,20 @@ def cart(request):
         else:
             code = ""
 
+        genres = []
+        for item in request.user.member.cart.items.all():
+            genres.extend(item.book.subjects.all())
+        genres = list(set(genres))
+        shuffle(genres)
+
+        books = []
+        for genre in genres:
+            books.extend(genre.book_set.all())
+        books = list(set(books))[:5]
+
         return render(request, "cart.html", {"items":        request.user.member.cart.items.all(),
-                                             "current_code": code})
+                                             "current_code": code,
+                                             "similar_items": books})
     else:
         return HttpResponseRedirect(reverse('members:login'))
 

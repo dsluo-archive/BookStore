@@ -25,7 +25,6 @@ def profile(request, slug):
 
 def save_account(request):
     if request.user.is_authenticated or request.user.is_superuser:
-
         user_edit_form = CustomUserCreationForm(request.POST or None, request.FILES or None, instance=request.user)
         member_edit_form = MemberForm(request.POST or None, request.FILES or None, instance=request.user.member)
 
@@ -45,6 +44,18 @@ def save_account(request):
         raise PermissionDenied
 
 
+def delete_account(request):
+    confirmation = request.POST.get('confirmation')
+
+    if confirmation == "Yes, I want to delete my account.":
+        request.user.is_active = False
+        request.user.save()
+        logout(request)
+        return HttpResponseRedirect(reverse('books:home'))
+    else:
+        return render(request, "delete_account.html", {})
+
+
 def register(request):
     if not request.user.is_authenticated or request.user.is_superuser:
         user_form = CustomUserCreationForm(request.POST or None, request.FILES or None, label_suffix='')
@@ -60,7 +71,7 @@ def register(request):
                     get_or_create(location=member_form.cleaned_data["primary_address"])
                 new_member.save()
 
-                return HttpResponseRedirect(reverse('books:home'))
+                return HttpResponseRedirect(reverse('members:activate', kwargs={"slug": new_member.slug}))
 
         return render(request, "register.html", {"user_form":   user_form,
                                                  "member_form": member_form})
@@ -83,6 +94,7 @@ def activate_user(request, slug):
             return HttpResponseRedirect(reverse('members:login'))
         elif entered_code == member.hex_code:
             member.activated = True
+            member.hex_code = ""
             member.save()
             login(request, member.user)
             return HttpResponseRedirect(reverse('books:home'))

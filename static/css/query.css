@@ -40,9 +40,14 @@
     width: 100px;
 }
 
-th p {
+.book_url {
+    display:block;
+    text-decoration:none;
+}
+
+th p{
     margin-top: 25px;
-    margin-left: 25px;
+    margin-left: 10px;
 }
 
 th button {

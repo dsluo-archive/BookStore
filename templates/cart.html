@@ -60,23 +60,14 @@
 
                 <h4>Similar Items:</h4>
                 <ul class="list-group">
-                    <li class="list-group-item">{Book}</li>
-                    <li class="list-group-item">{Book}</li>
-                    <li class="list-group-item">{Book}</li>
-                    <li class="list-group-item">{Book}</li>
+                    {% for book in similar_items %}
+                        <li class="list-group-item"><a href="{{ book.get_absolute_url }}">{{ book }}</a></li>
+                    {% endfor %}
                 </ul>
                 <br>
 
-                <h4>Promoted Items:</h4>
-                <ul class="list-group">
-                    <li class="list-group-item">{Book}</li>
-                    <li class="list-group-item">{Book}</li>
-                    <li class="list-group-item">{Book}</li>
-                    <li class="list-group-item">{Book}</li>
-                </ul>
-
                 <hr>
-                <button id="shop" class="btn-lg btn-dark"> Continue Shopping</button>
+                <a href="{% url "books:query" %}"><button id="shop" class="btn-lg btn-dark">Continue Shopping</button></a>
 
             </div>
         </div>

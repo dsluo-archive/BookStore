@@ -1,6 +1,8 @@
+import operator
 import random
 import string
 
+from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -36,13 +38,16 @@ def home(request):
 
 
 def all_books(request):
-    queryset_list = Book.objects.all().order_by("name")
+    queryset_list = Book.objects.all()
 
     search = request.GET.get('q')
-    # book_name = request.GET.get('name')
-    # book_author = request.GET.get('author')
-    # book_isbn = request.GET.get('isbn')
-    # book_genre = request.GET.get('genre')
+    book_author = request.GET.get('author')
+    book_genre = request.GET.get('genre')
+
+    zero_to_ten = request.GET.get('zero_to_ten')
+    ten_to_twenty = request.GET.get('ten_to_twenty')
+    twenty_to_thirty = request.GET.get('twenty_to_thirty')
+    thirty_plus = request.GET.get('thirty_plus')
 
     if search:
         queryset_list = queryset_list.filter(
@@ -52,53 +57,79 @@ def all_books(request):
             Q(subjects__subjects__iexact=search)
         ).distinct()
 
-    '''
-    Maybe use for a filter bar. Maybe JS can handle this?
-    
-    if book_name:
-        book_name = book_name.split('%')
-        for name in book_name:
-            queryset_list = queryset_list.filter(name__contains=name)
     if book_author:
-        book_author = book_author.split('%')
-        for author in book_author:
-            queryset_list = queryset_list.filter(author__name=author)
-    if book_isbn:
-        book_isbn = book_isbn.split('%')
-        for isbn in book_isbn:
-            queryset_list = queryset_list.filter(isbn=isbn)
+        queryset_list = queryset_list.filter(author__name=book_author)
     if book_genre:
-        book_genre = book_genre.split('%')
-        for genre in book_genre:
-            queryset_list = queryset_list.filter(subjects__subjects=genre)
-    '''
+        queryset_list = queryset_list.filter(subjects__subjects__iexact=book_genre)
 
-    paginator = Paginator(queryset_list, 10)
+    queryset = []
+    entered = False
+    if zero_to_ten:
+        entered = True
+        queryset.extend(queryset_list.filter(price__lte=10))
+    if ten_to_twenty:
+        entered = True
+        queryset.extend(queryset_list.filter(price__lte=20).filter(price__gt=10))
+    if twenty_to_thirty:
+        entered = True
+        queryset.extend(queryset_list.filter(price__lte=30).filter(price__gt=20))
+    if thirty_plus:
+        entered = True
+        queryset.extend(queryset_list.filter(price__gt=30))
+
+    if not entered:
+        queryset = list(queryset_list)
+
+    genres = []
+    authors = []
+    for book in queryset_list:
+        genres.extend(book.subjects.all())
+        authors.append(book.author)
+
+    genres = sorted(list(set(genres)), key=operator.attrgetter('subjects'))
+    authors = sorted(list(set(authors)), key=operator.attrgetter('name'))
+    queryset = sorted(queryset, key=operator.attrgetter('name'))
+
+    paginator = Paginator(queryset, 10)
     page_var = 'page'
 
     page = request.GET.get(page_var)
-    queryset = paginator.get_page(page)
+    queryset_paginator = paginator.get_page(page)
 
-    return render(request, "query.html", {"books":    queryset,
-                                          "page_var": page_var})
+    return render(request, "query.html", {"books":    queryset_paginator,
+                                          "page_var": page_var,
+                                          "genres":   genres,
+                                          "authors":  authors})
 
 
 def detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
+
+    other_books = book.author.book_set.all().filter(~Q(slug=book.slug))[:5]
 
     add_to_cart = request.POST.get("cart")
     count = request.POST.get("count")
 
     if request.user.is_authenticated:
         if add_to_cart and count:
-            request.user.member.cart.add_item(request.user.member, book, count)
+            success = request.user.member.cart.add_item(request.user.member, book, count)
+
+            if success:
+                messages.success(request, book.name + " successfully added to cart!")
+            else:
+                messages.warning(request, book.name + " could not be added to cart. "
+                                                    + "Item currently has "
+                                                    + str(book.count_in_stock)
+                                                    + " items in stock.")
+
     else:
         add_to_cart = request.POST.get("cart")
 
         if add_to_cart:
             return HttpResponseRedirect(reverse('members:login'))
 
-    return render(request, "book_detail.html", {"book": book})
+    return render(request, "book_detail.html", {"book":        book,
+                                                "other_books": other_books})
 
 
 def create_book(request):

@@ -3,10 +3,8 @@ import string
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
-from django.core.files.temp import NamedTemporaryFile
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models.fields import NOT_PROVIDED
 from django.db.models.signals import post_save, pre_save
 from django.urls import reverse
 from django.utils.text import slugify
@@ -95,6 +93,8 @@ def create_slug(instance):
 def pre_save_member_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
+
+    instance.saved_addresses.add(instance.primary_address)
 
 
 def post_save_member_receiver(sender, instance, created, **kwargs):

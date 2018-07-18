@@ -9,11 +9,6 @@
 {% block main_content %}
     <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid spaced">
-        <div class="row">
-            <div class="col-md-12">
-                <span class="left"><i class="fas fa-user-alt"></i>{Username}</span>
-            </div>
-        </div>
         <div class="row banner">
             <div class="col-md-12">
                 <h1> Books for {{ request.user.first_name }} {{ request.user.last_name }}</h1>

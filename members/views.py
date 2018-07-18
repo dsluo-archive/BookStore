@@ -1,3 +1,6 @@
+import operator
+
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
@@ -15,10 +18,22 @@ def profile(request, slug):
 
     if not request.user.is_authenticated:
         raise PermissionDenied
-
     if request.user == member_to_view.user or request.user.is_staff:
-        return render(request, "user_profile.html", {"slug":   slug,
-                                                     "member": member_to_view})
+        orders = member_to_view.orders.all().order_by('date')
+
+        items_owned = []
+        for order in orders:
+            items_owned.extend(order.items.all())
+
+        books_owned = []
+        for item in items_owned:
+            books_owned.append(item.book)
+        books_owned = sorted(list(set(books_owned)), key=operator.attrgetter('name'))
+
+        return render(request, "user_profile.html", {"slug":        slug,
+                                                     "member":      member_to_view,
+                                                     "books_owned": books_owned,
+                                                     "orders":      orders})
     else:
         raise PermissionDenied
 
@@ -124,7 +139,8 @@ def login_user(request):
             user = authenticate(request, username=username, password=password)
 
             if user is None or not user.is_active:
-                raise PermissionDenied  # placeholder for actual error
+                messages.warning(request, "Username or Password is incorrect.")
+                return render(request, "login.html", {"user_form": user_form})  # placeholder for actual error
             elif user.member.activated:
                 login(request, user)
                 return HttpResponseRedirect(reverse('books:home'))

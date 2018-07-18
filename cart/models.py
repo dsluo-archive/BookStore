@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
 from django.db.models.signals import post_save
+from django.urls import reverse
 from django.utils import timezone
 
 from books.models import Book
@@ -123,19 +124,24 @@ class Order(models.Model):
     reservation = models.BooleanField(default=False)
     is_fulfilled = models.BooleanField(default=False)
 
+    def get_absolute_url(self):
+        return reverse("cart:summary", kwargs={"order": self.confirmation_number})
+
     @property
     def price(self):
         price = 0.0
         for item in self.items.all():
             price += float(item.price)
 
-        return price
+        return "%.2f" % price
 
     def cancel_order(self):
         user = self.member_set.first().user
         all_items = ''
 
         for item in self.items.all():
+            item.book.count_in_stock += item.count
+            item.book.save()
             all_items += item.book.name + ', '
 
         send_mail(
@@ -148,7 +154,7 @@ class Order(models.Model):
             + 'Date Order was Placed: ' + str(self.date)[0:10] + '\n'
             + 'Address Used: ' + self.address_used.location + '\n'
             + 'Items ordered: ' + all_items[:-2] + '\n'
-            + 'Total amount: ' + '%.2f' % self.price + '\n\n'
+            + 'Total amount: ' + self.price + '\n\n'
             + 'If this is an error, please contact support at thedogearbookstore@gmail.com',
 
             'thedogearbookstore@gmail.com',
@@ -187,7 +193,7 @@ def post_save_order_receiver(sender, instance, created, **kwargs):
             + 'Date Order was Placed: ' + str(instance.date)[0:10] + '\n'
             + 'Address Used: ' + instance.address_used.location + '\n'
             + 'Items ordered: ' + all_items[:-2] + '\n'
-            + 'Total amount: ' + '$%.2f' % instance.price + '\n\n'
+            + 'Total amount: ' + instance.price + '\n\n'
             + 'If this is an error, please contact support at thedogearbookstore@gmail.com',
 
             'thedogearbookstore@gmail.com',

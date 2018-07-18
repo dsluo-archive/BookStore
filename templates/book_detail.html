@@ -10,20 +10,19 @@
 
     <!-- send user instance as object, populate the page with it -->
     {% if messages %}
-	<div class='messages'>
-		<ul class="messages">
-			{% for message in messages %}
-				<li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
-			{% endfor %}
-		</ul>
-	</div>
-{% endif %}
+        <div class='messages'>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 
     <div class="container-fluid banner">
         <div class="row">
             <div class="col">
                 <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>
-                <button id="edit" class="btn-sm btn-dark"> &nbsp<i class="fas fa-edit"></i></button>
             </div>
         </div>
     </div>
@@ -70,7 +69,7 @@
                     <p>Others by Author:</p>
                     <ul id="Others">
                         {% for other_book in other_books %}
-                            <li>{{ other_book }}</li>
+                            <li><a href="{{ other_book.get_absolute_url }}">{{ other_book }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}

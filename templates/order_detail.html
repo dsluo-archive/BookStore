@@ -3,7 +3,7 @@
 
 {% block main_content %}
     <!-- send user instance as object, populate the page with it -->
-    <p> Order Detail Page</p>
+    <p>Order Detail Page</p>
     <p>Order Confirmation Number: {{ order.confirmation_number }}</p>
 
     {% if reservation %}
@@ -26,5 +26,9 @@
         {% endfor %}
         <li>Total: ${% total_price items %}</li>
     </ul>
+
+    {% if reservation %}
+        <a href="{{ order.get_absolute_url }}delete"><button>Cancel Reservation</button></a>
+    {% endif %}
 
 {% endblock main_content %}

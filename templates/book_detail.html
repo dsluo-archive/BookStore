@@ -9,11 +9,20 @@
 {% block main_content %}
 
     <!-- send user instance as object, populate the page with it -->
+    {% if messages %}
+        <div class='messages'>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <div class="container-fluid banner">
         <div class="row">
             <div class="col">
                 <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>
-                <button id="edit" class="btn-sm btn-dark"> &nbsp<i class="fas fa-edit"></i></button>
             </div>
         </div>
     </div>
@@ -49,16 +58,21 @@
 
                 <form method="post"> {% csrf_token %}
                     <input class="btn-lg btn-dark" type="submit" name="cart" value="Add to Cart">
-                    <input type="text" name="count" value="1">
+                        <select name="count">
+                            {% for i in "123456789"|make_list %}
+                                <option>{{ i }}</option>
+                            {% endfor %}
+                        </select>
                 </form>
 
-                <p>Others by Author:</p>
-                <ul id="Others">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
+                {% if other_books %}
+                    <p>Others by Author:</p>
+                    <ul id="Others">
+                        {% for other_book in other_books %}
+                            <li><a href="{{ other_book.get_absolute_url }}">{{ other_book }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
         </div>
     </div>

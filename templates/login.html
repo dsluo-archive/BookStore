@@ -12,6 +12,16 @@
         <img src="{% static 'images/dogear-cropped.jpg' %}"/>
         <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
 
+        {% if messages %}
+            <div class='messages'>
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
         {% csrf_token %}
         {{ user_form.non_field_errors }}
 

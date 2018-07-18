@@ -9,14 +9,9 @@
 {% block main_content %}
     <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid spaced">
-        <div class="row">
-            <div class="col-md-12">
-                <span class="left"><i class="fas fa-user-alt"></i>{Username}</span>
-            </div>
-        </div>
         <div class="row banner">
             <div class="col-md-12">
-                <h1> {Books Search Results} </h1>
+                <h1> Books for {{ request.user.first_name }} {{ request.user.last_name }}</h1>
             </div>
         </div>
     </div>
@@ -28,98 +23,81 @@
                     <fieldset class="spaced">
                         <legend>Genre:</legend>
                         <select name="genre">
-                            <option name="Null"></option>
-                            <option name="Sci-Fi">Science Fiction</option>
-                            <option name="History">History</option>
-                            <option name="Religious">Religious</option>
+                            <option name="Null" value="">-- Select A Genre --</option>
+
+                            {% for genre in genres %}
+                                <option>{{ genre.subjects }}</option>
+                            {% endfor %}
                         </select>
                     </fieldset>
+
                     <fieldset class="spaced">
                         <legend>Price:</legend>
-                        <input type="radio" name="price"> $0-$10</input><br>
-                        <input type="radio" name="price"> $10-$20</input><br>
-                        <input type="radio" name="price"> $20-$30</input><br>
-                        <input type="radio" name="price"> $30+</input><br>
+                        <input type="checkbox" name="zero_to_ten" value="0"> $0-$10</input><br>
+                        <input type="checkbox" name="ten_to_twenty" value="10"> $10-$20</input><br>
+                        <input type="checkbox" name="twenty_to_thirty" value="20"> $20-$30</input><br>
+                        <input type="checkbox" name="thirty_plus" value="30"> $30+</input><br>
                     </fieldset>
+
                     <fieldset class="spaced">
                         <legend>Author:</legend>
-                        <button class="author-btn">{Author}</button>
-                        <br>
-                        <button class="author-btn">{Author}</button>
-                        <br>
-                        <button class="author-btn">{Author}</button>
-                        <br>
-                        <button class="author-btn">{Author}</button>
-                        <br>
-                        <button class="author-btn">{Author}</button>
-                        <br>
+                        <select name="author">
+                            <option name="Null" value="">-- Select An Author --</option>
+
+                            {% for author in authors %}
+                                <option>{{ author.name }}</option>
+                            {% endfor %}
+                        </select>
                     </fieldset>
+
                     <fieldset class="spaced">
                         <input type="submit" value="Refine Search"/>
                     </fieldset>
                 </form>
             </div>
-            <div class="col-md-10">
-                <table class="table table-light table-striped">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th>Your Search Results:</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Rating</th>
-                        <th>Add to Cart</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"/></th>
-                        <th><p>{Book Title}</p></th>
-                        <th><p>{Book Price}</p></th>
-                        <th><p>{Book Rating}</p></th>
-                        <th>
-                            <button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"/></th>
-                        <th><p>{Book Title}</p></th>
-                        <th><p>{Book Price}</p></th>
-                        <th><p>{Book Rating}</p></th>
-                        <th>
-                            <button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"/></th>
-                        <th><p>{Book Title}</p></th>
-                        <th><p>{Book Price}</p></th>
-                        <th><p>{Book Rating}</p></th>
-                        <th>
-                            <button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"/></th>
-                        <th><p>{Book Title}</p></th>
-                        <th><p>{Book Price}</p></th>
-                        <th><p>{Book Rating}</p></th>
-                        <th>
-                            <button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"/></th>
-                        <th><p>{Book Title}</p></th>
-                        <th><p>{Book Price}</p></th>
-                        <th><p>{Book Rating}</p></th>
-                        <th>
-                            <button class="btn-sm btn-dark"><i class="fas fa-shopping-cart"></i></button>
-                        </th>
-                    </tr>
-                    <tbody>
-                </table>
+            <div class="col-md-6">
+                {% if books %}
+                    <table class="table table-light table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Your Search Results:</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Vendor</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for book in books %}
+                                <tr class="clickable-row" data-href="{{ book.get_absolute_url }}">
+                                    <th scope="row"><img class="thumbnail" src="{{ book.item_picture.url }}"/></th>
+                                    <th><p>{{ book.name }}</p></th>
+                                    <th><p>{{ book.author }}</p></th>
+                                    <th><p>{{ book.vendor }}</p></th>
+                                    <th><p>${{ book.price }}</p></th>
+                                </tr>
+                            {% endfor %}
+                        <tbody>
+                    </table>
+                {% else %}
+                    <p>No books could be found for the query.</p>
+                {% endif %}
             </div>
         </div>
     </div>
 
 {% endblock main_content %}
+
+{% block jquery %}
+
+    <script>
+
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+
+{% endblock %}

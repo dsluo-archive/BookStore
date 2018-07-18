@@ -1,3 +1,6 @@
+import operator
+
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
@@ -15,17 +18,28 @@ def profile(request, slug):
 
     if not request.user.is_authenticated:
         raise PermissionDenied
-
     if request.user == member_to_view.user or request.user.is_staff:
-        return render(request, "user_profile.html", {"slug":   slug,
-                                                     "member": member_to_view})
+        orders = member_to_view.orders.all().order_by('date')
+
+        items_owned = []
+        for order in orders:
+            items_owned.extend(order.items.all())
+
+        books_owned = []
+        for item in items_owned:
+            books_owned.append(item.book)
+        books_owned = sorted(list(set(books_owned)), key=operator.attrgetter('name'))
+
+        return render(request, "user_profile.html", {"slug":        slug,
+                                                     "member":      member_to_view,
+                                                     "books_owned": books_owned,
+                                                     "orders":      orders})
     else:
         raise PermissionDenied
 
 
 def save_account(request):
     if request.user.is_authenticated or request.user.is_superuser:
-
         user_edit_form = CustomUserCreationForm(request.POST or None, request.FILES or None, instance=request.user)
         member_edit_form = MemberForm(request.POST or None, request.FILES or None, instance=request.user.member)
 
@@ -45,6 +59,18 @@ def save_account(request):
         raise PermissionDenied
 
 
+def delete_account(request):
+    confirmation = request.POST.get('confirmation')
+
+    if confirmation == "Yes, I want to delete my account.":
+        request.user.is_active = False
+        request.user.save()
+        logout(request)
+        return HttpResponseRedirect(reverse('books:home'))
+    else:
+        return render(request, "delete_account.html", {})
+
+
 def register(request):
     if not request.user.is_authenticated or request.user.is_superuser:
         user_form = CustomUserCreationForm(request.POST or None, request.FILES or None, label_suffix='')
@@ -60,7 +86,7 @@ def register(request):
                     get_or_create(location=member_form.cleaned_data["primary_address"])
                 new_member.save()
 
-                return HttpResponseRedirect(reverse('books:home'))
+                return HttpResponseRedirect(reverse('members:activate', kwargs={"slug": new_member.slug}))
 
         return render(request, "register.html", {"user_form":   user_form,
                                                  "member_form": member_form})
@@ -83,6 +109,7 @@ def activate_user(request, slug):
             return HttpResponseRedirect(reverse('members:login'))
         elif entered_code == member.hex_code:
             member.activated = True
+            member.hex_code = ""
             member.save()
             login(request, member.user)
             return HttpResponseRedirect(reverse('books:home'))
@@ -112,7 +139,8 @@ def login_user(request):
             user = authenticate(request, username=username, password=password)
 
             if user is None or not user.is_active:
-                raise PermissionDenied  # placeholder for actual error
+                messages.warning(request, "Username or Password is incorrect.")
+                return render(request, "login.html", {"user_form": user_form})  # placeholder for actual error
             elif user.member.activated:
                 login(request, user)
                 return HttpResponseRedirect(reverse('books:home'))

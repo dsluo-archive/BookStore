@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block main_content %}
+    Edit {{ book.name }}
+
+    <form method="post" action='' enctype='multipart/form-data'> {% csrf_token %}
+        {{book_form.as_p}}
+        <input type="submit" class='btn btn-default' value="Save Book"/>
+    </form>
+
+    <br>
+
+    {% if book.is_active %}
+        <a href="{% url 'vendors:delete_book' book.slug %}"><button class='btn btn-default'>Delete Book</button></a>
+    {% else %}
+        <a href="{% url 'vendors:reactivate_book' book.slug %}"><button class='btn btn-default'>Reactivate Book</button></a>
+    {% endif %}
+
+
+{% endblock main_content %}

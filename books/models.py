@@ -53,7 +53,10 @@ class Book(models.Model):
     description = models.TextField()
 
     subjects = models.ManyToManyField(Genre)
+
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=False)
+
+    is_active = models.BooleanField(default=True)
 
     def get_absolute_url(self):
         return reverse("books:detail", kwargs={"slug": self.slug})
@@ -78,7 +81,6 @@ def create_slug(instance):
 
 
 def pre_save_item_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = create_slug(instance)
+    instance.slug = create_slug(instance)
 
 pre_save.connect(pre_save_item_receiver, sender=Book)

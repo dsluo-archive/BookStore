@@ -98,20 +98,28 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" href="/vendor">Vendors</a> <!-- Will link to /about -->
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="/about">About</a> <!-- Will link to /about -->
             </li>
 
         </ul>
 
         <!-- Search Bar -->
-        <form method="GET" class="form-inline my-2 my-lg-0" action="/book/"> {# TODO #}
-            <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search..."
-                   aria-label="searchBar">
-            {#            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">#}
-            <button class="btn my-2 my-sm-0" type="submit">
-                <i class="fas fa-search fa-lg"></i>
-            </button>
-        </form>
+        {% if request.path|slice:":8" == "/vendor/" %}
+            <form method="GET" class="form-inline my-2 my-lg-0" action="/vendor/"> {# TODO #}
+        {% else %}
+            <form method="GET" class="form-inline my-2 my-lg-0" action="/book/"> {# TODO #}
+        {% endif %}
+                <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search..."
+                       aria-label="searchBar">
+                {#            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">#}
+                <button class="btn my-2 my-sm-0" type="submit">
+                    <i class="fas fa-search fa-lg"></i>
+                </button>
+            </form>
 
         <!-- Cart Icon Dropdown -->
         <div class="nav-item">
@@ -154,6 +162,12 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="mem">
                         <a class="dropdown-item" href="{% url "members:default_account" %}">Profile</a> {# TODO #}
                         <div class="dropdown-divider"></div>
+
+                        {% if request.user.memeber.vendor %}
+                            <a class="dropdown-item" href="{% url "vendors:vendor" %}">Vendor</a> {# TODO #}
+                            <div class="dropdown-divider"></div>
+                        {% endif %}
+
                         <a class="dropdown-item" href="{% url 'members:logout' %}">Log out</a>
                     </div>
                 {% else %}

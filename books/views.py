@@ -37,8 +37,11 @@ def home(request):
     })
 
 
-def all_books(request):
-    queryset_list = Book.objects.all()
+def filter_books(request, vendor_filter, active_books=True):
+    if vendor_filter:
+        queryset_list = Book.objects.all().filter(vendor=request.user.member.vendor).filter(is_active=active_books)
+    else:
+        queryset_list = Book.objects.all().filter(is_active=True)
 
     search = request.GET.get('q')
     book_author = request.GET.get('author')
@@ -82,7 +85,7 @@ def all_books(request):
 
     genres = []
     authors = []
-    for book in queryset_list:
+    for book in queryset:
         genres.extend(book.subjects.all())
         authors.append(book.author)
 
@@ -96,40 +99,51 @@ def all_books(request):
     page = request.GET.get(page_var)
     queryset_paginator = paginator.get_page(page)
 
+    return queryset_paginator, page_var, genres, authors, active_books
+
+
+def all_books(request):
+    queryset_paginator, page_var, genres, authors, active_books = filter_books(request, vendor_filter=False)
+
     return render(request, "query.html", {"books":    queryset_paginator,
                                           "page_var": page_var,
                                           "genres":   genres,
-                                          "authors":  authors})
+                                          "authors":  authors,
+                                          "active_books": active_books})
 
 
-def detail(request, slug):
+def detail(request, slug, vendor=False):
     book = get_object_or_404(Book, slug=slug)
 
-    other_books = book.author.book_set.all().filter(~Q(slug=book.slug))[:5]
+    if book.is_active or vendor or request.user.is_staff:
+        other_books = book.author.book_set.all().filter(~Q(slug=book.slug))[:5]
 
-    add_to_cart = request.POST.get("cart")
-    count = request.POST.get("count")
-
-    if request.user.is_authenticated:
-        if add_to_cart and count:
-            success = request.user.member.cart.add_item(request.user.member, book, count)
-
-            if success:
-                messages.success(request, book.name + " successfully added to cart!")
-            else:
-                messages.warning(request, book.name + " could not be added to cart. "
-                                                    + "Item currently has "
-                                                    + str(book.count_in_stock)
-                                                    + " items in stock.")
-
-    else:
         add_to_cart = request.POST.get("cart")
+        count = request.POST.get("count")
 
-        if add_to_cart:
-            return HttpResponseRedirect(reverse('members:login'))
+        if request.user.is_authenticated:
+            if add_to_cart and count:
+                success = request.user.member.cart.add_item(request.user.member, book, count)
 
-    return render(request, "book_detail.html", {"book":        book,
-                                                "other_books": other_books})
+                if success:
+                    messages.success(request, book.name + " successfully added to cart!")
+                else:
+                    messages.warning(request, book.name + " could not be added to cart. "
+                                                        + "Item currently has "
+                                                        + str(book.count_in_stock)
+                                                        + " items in stock.")
+
+        else:
+            add_to_cart = request.POST.get("cart")
+
+            if add_to_cart:
+                return HttpResponseRedirect(reverse('members:login'))
+
+        return render(request, "book_detail.html", {"book":        book,
+                                                    "other_books": other_books,
+                                                    "vendor": vendor})
+    else:
+        raise PermissionDenied
 
 
 def create_book(request):

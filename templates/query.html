@@ -11,7 +11,9 @@
     <div class="container-fluid spaced">
         <div class="row banner">
             <div class="col-md-12">
-                <h1> Books for {{ request.user.first_name }} {{ request.user.last_name }}</h1>
+                {% block user_block %}
+                    <h1> Books for {{ request.user.first_name }} {{ request.user.last_name }}</h1>
+                {% endblock user_block %}
             </div>
         </div>
     </div>
@@ -19,25 +21,42 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-2 search_panel">
+                {% if request.path|slice:":8" == "/vendor/" %}
+                    <a href="{% url "vendors:add_book" %}"><button class="btn-lg btn-dark">Add New Book</button></a>
+                    <hr>
+
+                    {% if active_books %}
+                        <a href="{% url "vendors:inactive" %}"><button class="btn-lg btn-dark">View Inactive Books</button></a>
+                    {% else %}
+                        <a href="{% url "vendors:vendor" %}"><button class="btn-lg btn-dark">View Active Books</button></a>
+                    {% endif %}
+                    <hr>
+                {% endif %}
                 <form>
+                    <input type="hidden" name="q" value="{{ request.GET.q }}"/>
+
                     <fieldset class="spaced">
                         <legend>Genre:</legend>
                         <select name="genre">
                             <option name="Null" value="">-- Select A Genre --</option>
 
                             {% for genre in genres %}
-                                <option>{{ genre.subjects }}</option>
+                                <option {% if genre.subjects == request.GET.genre %} selected {% endif %}>{{ genre.subjects }}</option>
                             {% endfor %}
                         </select>
                     </fieldset>
 
+                    <hr>
+
                     <fieldset class="spaced">
                         <legend>Price:</legend>
-                        <input type="checkbox" name="zero_to_ten" value="0"> $0-$10</input><br>
-                        <input type="checkbox" name="ten_to_twenty" value="10"> $10-$20</input><br>
-                        <input type="checkbox" name="twenty_to_thirty" value="20"> $20-$30</input><br>
-                        <input type="checkbox" name="thirty_plus" value="30"> $30+</input><br>
+                        <input type="checkbox" {% if request.GET.zero_to_ten %} checked {% endif %} name="zero_to_ten" value="0"> $0-$10</input><br>
+                        <input type="checkbox" {% if request.GET.ten_to_twenty %} checked {% endif %} name="ten_to_twenty" value="10"> $10-$20</input><br>
+                        <input type="checkbox" {% if request.GET.twenty_to_thirty %} checked {% endif %} name="twenty_to_thirty" value="20"> $20-$30</input><br>
+                        <input type="checkbox" {% if request.GET.thirty_plus %} checked {% endif %} name="thirty_plus" value="30"> $30+</input><br>
                     </fieldset>
+
+                    <hr>
 
                     <fieldset class="spaced">
                         <legend>Author:</legend>
@@ -45,15 +64,23 @@
                             <option name="Null" value="">-- Select An Author --</option>
 
                             {% for author in authors %}
-                                <option>{{ author.name }}</option>
+                                <option {% if author.name == request.GET.author %} selected {% endif %}>{{ author.name }}</option>
                             {% endfor %}
                         </select>
                     </fieldset>
+
+                    <hr>
 
                     <fieldset class="spaced">
                         <input type="submit" value="Refine Search"/>
                     </fieldset>
                 </form>
+
+            <form>
+                <input type="hidden" name="q" value="{{ request.GET.q }}"/>
+                <input type="submit" value="Clear Filters"/>
+            </form>
+
             </div>
             <div class="col-md-6">
                 {% if books %}
@@ -70,7 +97,11 @@
 
                         <tbody>
                             {% for book in books %}
-                                <tr class="clickable-row" data-href="{{ book.get_absolute_url }}">
+                                {% if request.path|slice:":8" == "/vendor/" %}
+                                    <tr class="clickable-row" data-href="/vendor{{ book.get_absolute_url }}">
+                                {% else %}
+                                    <tr class="clickable-row" data-href="{{ book.get_absolute_url }}">
+                                {% endif %}
                                     <th scope="row"><img class="thumbnail" src="{{ book.item_picture.url }}"/></th>
                                     <th><p>{{ book.name }}</p></th>
                                     <th><p>{{ book.author }}</p></th>

@@ -150,8 +150,8 @@ def login_user(request):
         user_form = UserLoginForm(request.POST or None, request.FILES or None, label_suffix='')
 
         if request.method == 'POST' and user_form.is_valid():
-            username = user_form.cleaned_data['username'].strip()
-            password = user_form.cleaned_data['password'].strip()
+            username = user_form.cleaned_data['username']
+            password = user_form.cleaned_data['password']
 
             user = authenticate(request, username=username, password=password)
 

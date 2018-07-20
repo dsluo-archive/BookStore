@@ -1,6 +1,7 @@
 from django import forms
 
 from books.models import Book
+from vendors.models import Vendor
 
 
 class MassBookForm(forms.Form):
@@ -22,3 +23,8 @@ class BookForm(forms.ModelForm):
             "description",
             "subjects",
         ]
+
+
+class VendorRegistrationForm(forms.Form):
+    code = forms.CharField(max_length=16, required=True)
+    vendor = forms.ModelChoiceField(Vendor.objects.all(), required=True)

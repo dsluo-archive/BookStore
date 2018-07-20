@@ -42,3 +42,7 @@ class CustomUserCreationForm(UserCreationForm):
             user.save()
 
         return user
+
+
+class ActivationForm(forms.Form):
+    code = forms.CharField()

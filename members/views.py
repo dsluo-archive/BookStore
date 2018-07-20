@@ -8,7 +8,7 @@ from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.urls import reverse
 
 from books.models import PromotionCodes
-from members.forms import CustomUserCreationForm, MemberForm, UserLoginForm
+from members.forms import CustomUserCreationForm, MemberForm, UserLoginForm, ActivationForm
 # Create your views here.
 from members.models import Address, Member
 
@@ -30,10 +30,10 @@ def profile(request, slug):
             books_owned.append(item.book)
         books_owned = sorted(list(set(books_owned)), key=operator.attrgetter('name'))
 
-        return render(request, "user_profile.html", {"slug":        slug,
-                                                     "member":      member_to_view,
+        return render(request, "user_profile.html", {"slug": slug,
+                                                     "member": member_to_view,
                                                      "books_owned": books_owned,
-                                                     "orders":      orders})
+                                                     "orders": orders})
     else:
         raise PermissionDenied
 
@@ -52,7 +52,7 @@ def save_account(request):
 
                 return HttpResponseRedirect(reverse('members:default_account'))
 
-        return render(request, "edit_account.html", {"user_form":   user_edit_form,
+        return render(request, "edit_account.html", {"user_form": user_edit_form,
                                                      "member_form": member_edit_form})
 
     else:
@@ -88,7 +88,7 @@ def register(request):
 
                 return HttpResponseRedirect(reverse('members:activate', kwargs={"slug": new_member.slug}))
 
-        return render(request, "register.html", {"user_form":   user_form,
+        return render(request, "register.html", {"user_form": user_form,
                                                  "member_form": member_form})
 
     else:
@@ -105,6 +105,8 @@ def activate_user(request, slug):
 
         entered_code = request.POST.get('code')
 
+        activation_form = ActivationForm(label_suffix='')
+
         if member.activated:
             return HttpResponseRedirect(reverse('members:login'))
         elif entered_code == member.hex_code:
@@ -114,9 +116,24 @@ def activate_user(request, slug):
             login(request, member.user)
             return HttpResponseRedirect(reverse('books:home'))
         elif entered_code != member.hex_code and entered_code is not None:
-            return render(request, "activate.html", {"error": "Invalid Code"})
+            return render(
+                request,
+                "activate.html",
+                {
+                    "action": reverse('members:activate', args=(slug,)),
+                    "error": "Invalid Code",
+                    'form': activation_form
+                }
+            )
         else:
-            return render(request, "activate.html", {})
+            return render(
+                request,
+                "activate.html",
+                {
+                    "action": reverse('members:activate', args=(slug,)),
+                    'form': activation_form
+                }
+            )
 
 
 def default_profile(request):

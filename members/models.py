@@ -93,8 +93,9 @@ def create_slug(instance):
 def pre_save_member_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
-
-    instance.saved_addresses.add(instance.primary_address)
+    
+    if instance.id:
+        instance.saved_addresses.add(instance.primary_address)
 
 
 def post_save_member_receiver(sender, instance, created, **kwargs):

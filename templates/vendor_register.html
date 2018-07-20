@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-<p>Vendor register</p>
 
+    {% if messages %}
+        <div class='messages'>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <h1>Vendor register</h1>
+
+    <form method="POST"> {% csrf_token %}
+        {{ vendor_form.as_p }}
+        <input type="submit">
+    </form>
 {% endblock main_content %}

@@ -146,29 +146,6 @@ def detail(request, slug, vendor=False):
         raise PermissionDenied
 
 
-def create_book(request):
-    if request.user.is_authenticated and (request.user.member.vendor or request.user.is_staff):
-        book_form = BookForm(request.POST or None, request.FILES or None)
-
-        if book_form.is_valid():
-            book_form.save()
-
-            return render(request, "home_page.html", {})
-
-        return render(request, "create_book.html", {"book_form": book_form})
-    else:
-        raise PermissionDenied
-
-
-def mass_create_book(request):
-    mass_book_form = MassBookForm(request.POST or None, request.FILES or None)
-
-    if mass_book_form.is_valid():
-        return render(request, "home_page.html", {})
-
-    return render(request, "mass_create_book.html", {"mass_book_form": mass_book_form})
-
-
 def query(request):
     return render(request, "query.html", {})
 

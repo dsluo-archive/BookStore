@@ -1,14 +1,21 @@
 import operator
+import random
+import string
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.urls import reverse
 
 from books.models import PromotionCodes
-from members.forms import CustomUserCreationForm, MemberForm, UserLoginForm
+from members.forms import CustomUserCreationForm, \
+    MemberForm, \
+    PasswordResetForm, \
+    PasswordResetRequestForm, \
+    UserLoginForm
 # Create your views here.
 from members.models import Address, Member
 
@@ -45,11 +52,12 @@ def save_account(request):
 
         if request.method == 'POST':
             if user_edit_form.is_valid() and member_edit_form.is_valid():
-                saved_user = user_edit_form.save()
-                member_edit_form.save()
+                user_edit_form.save()
 
-                login(request, saved_user)
-
+                member = member_edit_form.save(commit=False)
+                member.primary_address, created = Address.objects. \
+                    get_or_create(location=member_edit_form.cleaned_data["primary_address"])
+                member.save()
                 return HttpResponseRedirect(reverse('members:default_account'))
 
         return render(request, "edit_account.html", {"user_form":   user_edit_form,
@@ -57,6 +65,63 @@ def save_account(request):
 
     else:
         raise PermissionDenied
+
+
+def reset_password_request(request):
+    reset_form = PasswordResetRequestForm(request.POST or None)
+
+    if request.method == 'POST':
+        if reset_form.is_valid():
+            user = User.objects.all().filter(email=reset_form.cleaned_data['email']).first()
+
+            if request.user.is_authenticated:
+                if user != request.user:
+                    raise PermissionDenied
+
+            if user:
+                user.member.hex_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+                user.member.save()
+
+                send_mail(
+                    'Password Reset',
+
+                    'Please follow the link below to reset your password:'
+                    + '\n\nlocalhost:8000/account/reset-password/'
+                    + user.member.slug + "/"
+                    + user.member.hex_code,
+
+                    'thedogearbookstore@example.com',
+                    [user.email],
+                    fail_silently=True,
+                )
+
+                messages.success(request, "A password reset link has been sent to your email.")
+            else:
+                messages.warning(request, "No account with that email could be found.")
+
+    return render(request, "reset_password_request.html", {"reset_request_form": reset_form})
+
+
+def reset_password(request, slug, hex_code):
+    member = get_object_or_404(Member, slug=slug, hex_code=hex_code)
+
+    if not member.hex_code:
+        raise PermissionDenied
+    else:
+        if member.hex_code == hex_code:
+            password_reset = PasswordResetForm(request.POST or None, instance=member.user)
+
+            if request.method == 'POST':
+                if password_reset.is_valid():
+                    password_reset.save()
+                    member.hex_code = ""
+                    member.save()
+
+                    messages.success(request, "Password successfully reset.")
+
+                    return HttpResponseRedirect(reverse("members:login"))
+
+            return render(request, "reset_password.html", {"password_reset_form": password_reset})
 
 
 def delete_account(request):

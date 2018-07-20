@@ -176,4 +176,4 @@ def daily_newsletter(code):
               + "Discount applies to select genre(s): " + discounted_genres[:-2],
               "dogearbookstore@gmail.com",
               emails,
-              fail_silently=False)
+              fail_silently=True)

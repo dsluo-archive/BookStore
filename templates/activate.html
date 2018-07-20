@@ -8,13 +8,6 @@
 {% endblock %}
 
 {% block main_content %}
-{#    <div class="text-center">#}
-{#        <h1>TODO</h1>#}
-{#        {{ error }}#}
-{#    </div>#}
-
-    <!-- until TODO is done -->
-
     <form method="post" action="{{ action }}" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Verify</h1>
 
@@ -34,7 +27,6 @@
             </div>
         {% endfor %}
 
-        <input type="text" class='btn btn-default' name="code"/>
         <input type="submit" class='btn btn-default' value="Verify Account"/>
     </form>
 {% endblock %}

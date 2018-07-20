@@ -103,37 +103,28 @@ def activate_user(request, slug):
     else:
         member = get_object_or_404(Member, slug=slug)
 
-        entered_code = request.POST.get('code')
-
-        activation_form = ActivationForm(label_suffix='')
+        activation_form = ActivationForm(request.POST or None, label_suffix='')
 
         if member.activated:
             return HttpResponseRedirect(reverse('members:login'))
-        elif entered_code == member.hex_code:
-            member.activated = True
-            member.hex_code = ""
-            member.save()
-            login(request, member.user)
-            return HttpResponseRedirect(reverse('books:home'))
-        elif entered_code != member.hex_code and entered_code is not None:
-            return render(
-                request,
-                "activate.html",
-                {
-                    "action": reverse('members:activate', args=(slug,)),
-                    "error": "Invalid Code",
-                    'form': activation_form
-                }
-            )
-        else:
-            return render(
-                request,
-                "activate.html",
-                {
-                    "action": reverse('members:activate', args=(slug,)),
-                    'form': activation_form
-                }
-            )
+        elif activation_form.is_valid():
+            if activation_form['code'].data == member.hex_code:
+                member.activated = True
+                member.hex_code = ""
+                member.save()
+                login(request, member.user)
+                return HttpResponseRedirect(reverse('books:home'))
+            elif activation_form.cleaned_data['code'] != member.hex_code \
+                    and activation_form.cleaned_data['code'] is not None:
+                activation_form.add_error('code', 'Invalid Code.')
+        return render(
+            request,
+            "activate.html",
+            {
+                "action": reverse('members:activate', args=(slug,)),
+                'form': activation_form
+            }
+        )
 
 
 def default_profile(request):

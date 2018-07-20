@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block main_content %}
+
+<form method="post" action='' enctype='multipart/form-data'> {% csrf_token %}
+    <p>If you wish to delete {{ book.name }}, please enter the following phrase into the text box:
+    Yes, I want to delete {{ book.name }}.</p>
+    <input type="text" name="confirmation" placeholder="Enter the above phrase exactly.">
+	<input type="submit" class='btn btn-default' value="Confirm Delete"/>
+</form>
+
+{% endblock main_content %}

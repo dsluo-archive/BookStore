@@ -45,33 +45,40 @@
                             </ul>
                         </div>
                         <div class="col-md-12">
-                            <p>Details: A Day in the Life of Marlon Bundo was conceptualized as a loose parody of Marlon
-                                Bundo's A Day in the Life of the Vice President, a children's book written by Mike
-                                Pence's daughter Charlotte Pence and illustrated by his wife Karen Pence.
-                                Their book also tells about a fictionalized day of the Pence family's pet rabbit </p>
+                            {{ book.description }}
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-3 sidebar">
                 <p>Price:{{ book.price }}</p>
 
-                <form method="post"> {% csrf_token %}
-                    <input class="btn-lg btn-dark" type="submit" name="cart" value="Add to Cart">
-                        <select name="count">
-                            {% for i in "123456789"|make_list %}
-                                <option>{{ i }}</option>
-                            {% endfor %}
-                        </select>
-                </form>
+                {% if not vendor and book.is_active %}
+                    <form method="post"> {% csrf_token %}
+                        <input class="btn-lg btn-dark" type="submit" name="cart" value="Add to Cart">
+                            <select name="count">
+                                {% for i in "123456789"|make_list %}
+                                    <option>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                    </form>
 
-                {% if other_books %}
-                    <p>Others by Author:</p>
-                    <ul id="Others">
-                        {% for other_book in other_books %}
-                            <li><a href="{{ other_book.get_absolute_url }}">{{ other_book }}</a></li>
-                        {% endfor %}
-                    </ul>
+                    {% if other_books %}
+                        <p>Others by Author:</p>
+                        <ul id="Others">
+                            {% for other_book in other_books %}
+                                <li><a href="{{ other_book.get_absolute_url }}">{{ other_book }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% else %}
+                    {% if book.is_active %}
+                        <h4>Book is currently Active</h4>
+                    {% else %}
+                        <h4>Book is currently Inactive</h4>
+                    {% endif %}
+                    <a href="{% url "vendors:edit" book.slug %}"><button class="btn-lg btn-dark">Edit Book</button></a>
                 {% endif %}
             </div>
         </div>

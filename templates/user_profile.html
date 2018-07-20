@@ -79,7 +79,7 @@
                                 <th id="amount 1"><i class="far fa-times-circle"></i></th>
                             {% endif %}
 
-                            {% if order.is_fulfilled %}
+                            {% if order.is_fulfilled or not order.reservation %}
                                 <th id="amount 1"><i class="far fa-check-square"></i></th>
                             {% else %}
                                 <th id="amount 1"><i class="far fa-times-circle"></i></th>

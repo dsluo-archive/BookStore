@@ -90,4 +90,7 @@ def create_slug(instance):
 def pre_save_item_receiver(sender, instance, *args, **kwargs):
     instance.slug = create_slug(instance)
 
+    from analytics.models import update_low_inventory
+    update_low_inventory(instance, True)
+
 pre_save.connect(pre_save_item_receiver, sender=Book)

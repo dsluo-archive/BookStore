@@ -11,6 +11,7 @@ from members.models import Address
 from books.models import Book, PromotionCodes
 from cart.models import Order, UserCheckout, order_id_generator
 from cart.tasks import cancel_reservation
+from analytics.models import update_reports
 
 # Create your views here.
 
@@ -142,6 +143,8 @@ def checkout(request):
                 request.user.member.orders.add(new_order)
                 new_order.save()
 
+                update_reports(new_order)
+
                 cancel_reservation.apply_async(args=[new_order.confirmation_number],
                                                countdown=reservation_cancellation_timer)  # 5 days
 
@@ -221,6 +224,8 @@ def submit(request):
 
                     request.user.member.orders.add(new_order)
                     new_order.save()
+
+                    update_reports(new_order)
 
                     for item in request.user.member.cart.items.all():
                         request.user.member.cart.remove_item(request.user.member, item.book)

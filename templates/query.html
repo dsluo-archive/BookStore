@@ -7,6 +7,17 @@
 {% endblock per_page_css %}
 
 {% block main_content %}
+
+    {% if messages %}
+        <div class='messages'>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid spaced">
         <div class="row banner">
@@ -30,6 +41,8 @@
                     {% else %}
                         <a href="{% url "vendors:vendor" %}"><button class="btn-lg btn-dark">View Active Books</button></a>
                     {% endif %}
+                    <hr>
+                    <a href="{% url "vendors:request_code" %}"><button class="btn-lg btn-dark">Request Verification Code</button></a>
                     <hr>
                 {% endif %}
                 <form>

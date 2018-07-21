@@ -17,6 +17,7 @@
             <li>
                 <ul style="list-style-type: none">
                     <li>Vendor: {{ item.book.vendor }}</li>
+                    <li>Vendor Address: {{ item.book.vendor.physical_address }}</li>
                     <li>Title: {{ item.book }}</li>
                     <li>Price: ${% unit_price item.count item.price %}</li>
                     <li>Number Ordered: {{ item.count }}</li>

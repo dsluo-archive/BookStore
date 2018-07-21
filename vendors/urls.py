@@ -5,7 +5,8 @@ from vendors import views as vendor_views
 app_name = "vendors"
 
 urlpatterns = [
-    re_path(r'^book/add/$', vendor_views.add, name='add_book'),
+    re_path(r'^validation-code$', vendor_views.request_code, name='request_code'),
+    re_path(r'^book/add/$', vendor_views.add_book, name='add_book'),
     re_path(r'^book/(?P<slug>[\w-]+)/edit/$', vendor_views.edit, name='edit'),
     re_path(r'^book/(?P<slug>[\w-]+)/delete/$', vendor_views.delete_book, name='delete_book'),
     re_path(r'^book/(?P<slug>[\w-]+)/reactivate/$', vendor_views.reactivate_book, name='reactivate_book'),

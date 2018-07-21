@@ -31,7 +31,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2 search_panel">
+            <div class="col-md-3 search_panel">
                 {% if request.path|slice:":8" == "/vendor/" %}
                     <a href="{% url "vendors:add_book" %}"><button class="btn-lg btn-dark">Add New Book</button></a>
                     <hr>
@@ -95,7 +95,7 @@
             </form>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-md-9">
                 {% if books %}
                     <table class="table table-light table-striped">
                         <thead class="thead-dark">

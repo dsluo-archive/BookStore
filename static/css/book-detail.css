@@ -10,14 +10,25 @@
 #banner_img {
     height: 200px;
     width: 200px;
-    margin-left: 40%;
     margin-top: 30px;
+}
+
+strong {
+	font-size: 14pt;
 }
 
 #edit {
     float: right;
     margin: 15px;
     display: none;
+}
+
+.pad-bottom {
+	margin-bottom: 35px;
+}
+
+.pad-top {
+	margin-top:35px;
 }
 
 .book_content {

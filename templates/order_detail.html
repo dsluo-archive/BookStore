@@ -1,33 +1,59 @@
 {% extends "base.html" %}
+
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/order_detail.css' %}">
+{% endblock per_page_css %}
+
 {% load unit_price total_price %}
 
 {% block main_content %}
     <!-- send user instance as object, populate the page with it -->
-    <p>Order Detail Page</p>
-    <p>Order Confirmation Number: {{ order.confirmation_number }}</p>
-
+	<div class="container-fluid banner">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Order Detail Page</h3>
+			</div>
+		</div>
+	</div>
+	<div class="container confirm">
+		<div class="row">
+			<div class="offset-md-3 col-md-6">
+				<div class="alert alert-success">
+					<h5>Order Confirmation Number: {{ order.confirmation_number }}</h5>
+				</div>
+			</div>
+		</div>
+	</div>
     {% if reservation %}
         <p>Item reserved for up to 5 days. Payment at vendor location in cash, check, or card must be completed before
             deadline. </p>
         <p>Available for pickup at specified Vendor(s) location:</p>
     {% endif %}
-
-    <ul>
-        {% for item in items %}
-            <li>
-                <ul style="list-style-type: none">
-                    <li>Vendor: {{ item.book.vendor }}</li>
-                    <li>Vendor Address: {{ item.book.vendor.physical_address }}</li>
-                    <li>Title: {{ item.book }}</li>
-                    <li>Price: ${% unit_price item.count item.price %}</li>
-                    <li>Number Ordered: {{ item.count }}</li>
-                    <br>
-                </ul>
-            </li>
-        {% endfor %}
-        <li>Total: ${% total_price items %}</li>
-    </ul>
-
+	<div class="container">
+		<div class="row">
+			<div class="offset-md-2 col-md-8">
+				<div class="alert alert-success">
+					<ul class="list-group">
+						{% for item in items %}
+							<li class="list-group-item-success">
+								<ul style="list-style-type: none">
+									<li>Vendor: {{ item.book.vendor }}</li>
+									<li>Vendor Address: {{ item.book.vendor.physical_address }}</li>
+									<li>Title: {{ item.book }}</li>
+									<li>Price: ${% unit_price item.count item.price %}</li>
+									<li>Number Ordered: {{ item.count }}</li>
+									<br>
+								</ul>
+							</li>
+						{% endfor %}
+						<li class="list-group-item-success" id="tot">Total: ${% total_price items %}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
     {% if reservation %}
         <a href="{{ order.get_absolute_url }}delete"><button>Cancel Reservation</button></a>
     {% endif %}

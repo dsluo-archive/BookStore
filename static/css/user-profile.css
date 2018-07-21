@@ -18,6 +18,10 @@
     margin-top: 10px;
 }
 
+.pad-top {
+	margin-top: 35px;
+}
+
 #delete {
     width: 50px;
     margin-left: 50px;

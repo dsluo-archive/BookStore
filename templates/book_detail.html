@@ -19,16 +19,16 @@
         </div>
     {% endif %}
 
-    <div class="container-fluid banner">
+    <div class="container-fluid banner text-center">
         <div class="row">
             <div class="col">
                 <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>
             </div>
         </div>
     </div>
-    <div class="container-fluid mh-100">
+    <div class="container mh-100 pad-bottom pad-top">
         <div class="row">
-            <div class="col-md-9 book_content">
+            <div class="col-md-8 book_content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4">
@@ -36,27 +36,28 @@
                         </div>
                         <div class="col-md-8">
                             <ul>
-                                <li>Title: {{ book.name }}</li>
-                                <li>Author: {{ book.author }}</li>
-                                <li>Genre: {{ book.subjects.all.first }}</li>
-                                <li>Publisher: {{ book.publisher.name }}</li>
-                                <li>ISBN: {{ book.isbn }}</li>
-                                <li>Vendor: {{ book.vendor }}</li>
+                                <li><strong>Title:</strong> {{ book.name }}</li>
+                                <li><strong>Author:</strong> {{ book.author }}</li>
+                                <li><strong>Genre:</strong> {{ book.subjects.all.first }}</li>
+                                <li><strong>Publisher:</strong> {{ book.publisher.name }}</li>
+                                <li><strong>ISBN:</strong> {{ book.isbn }}</li>
+                                <li><strong>Vendor:</strong> {{ book.vendor }}</li>
                             </ul>
                         </div>
-                        <div class="col-md-12">
-                            {{ book.description }}
-                        </div>
                     </div>
+					<div class="row">
+						<div class="col-md-12 align-self-start">
+							{{ book.description }}
+						</div>
+					</div>
                 </div>
             </div>
-
-            <div class="col-md-3 sidebar">
+            <div class="col-md-4 sidebar align-self-start text-center">
                 <p>Price:{{ book.price }}</p>
 
                 {% if not vendor and book.is_active %}
                     <form method="post"> {% csrf_token %}
-                        <input class="btn-lg btn-dark" type="submit" name="cart" value="Add to Cart">
+                        <input class="btn-lg btn-dark pad-bottom" type="submit" name="cart" value="Add to Cart">
                             <select name="count">
                                 {% for i in "123456789"|make_list %}
                                     <option>{{ i }}</option>
@@ -66,9 +67,9 @@
 
                     {% if other_books %}
                         <p>Others by Author:</p>
-                        <ul id="Others">
+                        <ul id="Others list-group">
                             {% for other_book in other_books %}
-                                <li><a href="{{ other_book.get_absolute_url }}">{{ other_book }}</a></li>
+                                <li class="list-group-item"><a href="{{ other_book.get_absolute_url }}">{{ other_book }}</a></li>
                             {% endfor %}
                         </ul>
                     {% endif %}

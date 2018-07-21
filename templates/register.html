@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load form_tags %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock per_page_css %}
+
+{% block main_content %}
+
+    {#    <div class="container-fluid banner">#}
+    {#        <div class="row">#}
+    {#            <div class="col-md-6">#}
+    {#                <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>#}
+    {#            </div>#}
+    {#            <div class="col-6">#}
+    {#                <h3>Create your Dog-Ear account</h3>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="form-signin">#}
+    <form action="{% url 'members:register' %}" method="post" class="form-signin">
+        <img src="{% static 'images/dogear-cropped.jpg' %}"/>
+        <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+
+        {% csrf_token %}
+        {{ user_form.non_field_errors }}
+        {{ member_form.non_field_errors }}
+
+        {% for field in user_form %}
+            <div class="form-label-group">
+                {% render_field field class="form-control" placeholder=field.label %}
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">
+                        {{ field.help_text | safe }}
+                    </small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% for field in member_form %}
+            {% if field|is_field:'CheckboxInput' %}
+                <div class="form-check mb-3">
+                    <label for="{{ member_form.receive_newsletter.id_for_label }}" class="form-check-label">
+                        {{ member_form.receive_newsletter|add_class:"form-check-input" }}
+                        {{ member_form.receive_newsletter.label }}
+                    </label>
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% elif field|is_field:'FileField' %}
+                <div class="form-label-group">
+                    {% render_field field class="form-control-file" placeholder=field.label %}
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="form-label-group">
+                    {% render_field field class="form-control" placeholder=field.label %}
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <input type="submit" class="btn btn-primary" value="Submit"/>
+    </form>
+    {#    </div>#}
+
+{% endblock main_content %}

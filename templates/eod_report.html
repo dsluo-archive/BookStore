@@ -1,8 +1,60 @@
 {% extends "base.html" %}
 
-{% block main_content %}
+{% load static %}
+{% load eod_total %}
 
-    <!-- item info will need to be passed into this -->
-    <p> EoD Page</p>
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/eod.css' %}">
+{% endblock per_page_css %}
+
+{% block main_content %}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4> End of Day report for {{ report.date }}</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table table-light table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>User</th>
+                        <th>Confirmation ID</th>
+                        <th>Total</th>
+                        <th>Reservation</th>
+                        <th>Payment Processed</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for order in report.orders.all %}
+                        <tr class="clickable-row" data-href="{{ order.get_absolute_url }}">
+                            <th>{{ order.member_set.first }}</th>
+                            <th>{{ order.confirmation_number }}</th>
+                            <th>${{ order.price }}</th>
+
+                            {% if order.reservation %}
+                                <th id="amount 1"><i class="far fa-check-square"></i></th>
+                            {% else %}
+                                <th id="amount 1"><i class="far fa-times-circle"></i></th>
+                            {% endif %}
+
+                            {% if order.is_fulfilled or not order.reservation %}
+                                <th id="amount 1"><i class="far fa-check-square"></i></th>
+                            {% else %}
+                                <th id="amount 1"><i class="far fa-times-circle"></i></th>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                <tbody>
+            </table>
+
+        <h3>Total amount sold: ${% eod_total report %}</h3>
+        </div>
+
+        <a href="{% url "analytics:eod_view" %}"><button>Back to End of Day Reports Overview</button></a>
+    </div>
 
 {% endblock main_content %}

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load unit_price total_price %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,8 +8,9 @@
     <title> {% block title %} Bookstore {% endblock title %}</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
-          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    {#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"#}
+    {#          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">#}
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css' %}">
 
     <!-- Font Awesome Icons CDN -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
@@ -30,16 +32,26 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
+    <script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"></script>
+
     <!-- Stylesheet for each page -->
-    {% block stylesheet %} {% endblock %}
+    {% block per_page_css %} {% endblock per_page_css %}
 
 </head>
 
 <body>
 
+                        {{ request.user.memeber.is_client }}
+
+
 <!-- Title bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Bookstore</a>
+
+    {% if request.user.is_authenticated %}
+        <a class="navbar-brand" href="{% url 'books:home' %}">Bookstore</a>
+    {% else %}
+        <a class="navbar-brand" href="{% url 'books:landing' %}">Bookstore</a>
+    {% endif %}
 
     <!-- Collapse button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -52,65 +64,89 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'books:home' %}">Home</a>
+                {% if request.user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'books:home' %}">Home</a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'books:landing' %}">Home</a>
+                {% endif %}
             </li>
 
-            <!-- Product Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="prodDropdown" role="button" data-toggle="dropdown" ,
-                   aria-haspopup="true" , aria-expanded="false">
-                    Products
-                </a>
+            {#            <!-- Product Dropdown -->#}
+            {#            <li class="nav-item dropdown">#}
+            {#                <a class="nav-link dropdown-toggle" href="#" id="prodDropdown" role="button" data-toggle="dropdown" ,#}
+            {#                   aria-haspopup="true" aria-expanded="false">#}
+            {#                    Products#}
+            {#                </a>#}
+            {##}
+            {#                <!-- Will need logic and content to grab approrpiate items -->#}
+            {##}
+            {#                <div class="dropdown-menu" aria-labelledby="prodDropdown">#}
+            {#                    <a class="dropdown-item" href="#">Product Type 1</a>#}
+            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
+            {#                    <a class="dropdown-item" href="#">Product Type 2</a>#}
+            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
+            {#                    <a class="dropdown-item" href="#">Product Type 3</a>#}
+            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
+            {#                    <a class="dropdown-item" href="#">Product Type 4</a>#}
+            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
+            {#                    <a class="dropdown-item" href="#">Product Type 5</a>#}
+            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
+            {#                    <a class="dropdown-item" href="#">Product Type 6</a>#}
+            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
+            {#                </div>#}
+            {#            </li>#}
 
-                <!-- Will need logic and content to grab approrpiate items -->
-
-                <div class="dropdown-menu" aria-labelledby="prodDropdown">
-                    <a class="dropdown-item" href="#">Product Type 1</a>
-                    <!-- Will link to a search query @ /q?s='...' -->
-                    <a class="dropdown-item" href="#">Product Type 2</a>
-                    <!-- Will link to a search query @ /q?s='...' -->
-                    <a class="dropdown-item" href="#">Product Type 3</a>
-                    <!-- Will link to a search query @ /q?s='...' -->
-                    <a class="dropdown-item" href="#">Product Type 4</a>
-                    <!-- Will link to a search query @ /q?s='...' -->
-                    <a class="dropdown-item" href="#">Product Type 5</a>
-                    <!-- Will link to a search query @ /q?s='...' -->
-                    <a class="dropdown-item" href="#">Product Type 6</a>
-                    <!-- Will link to a search query @ /q?s='...' -->
-                </div>
+            <li class="nav-item">
+                <a class="nav-link" href="/book">Books</a> <!-- Will link to /about -->
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a> <!-- Will link to /about -->
+                <a class="nav-link" href="/vendor">Vendors</a> <!-- Will link to /about -->
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About</a> <!-- Will link to /about -->
             </li>
 
         </ul>
 
         <!-- Search Bar -->
-        <form method="GET" class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search Books or Authors"
-                   aria-label="searchBar">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        {% if request.path|slice:":8" == "/vendor/" %}
+            <form method="GET" class="form-inline my-2 my-lg-0" action="/vendor/"> {# TODO #}
+        {% else %}
+            <form method="GET" class="form-inline my-2 my-lg-0" action="/book/"> {# TODO #}
+        {% endif %}
+                <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search..."
+                       aria-label="searchBar">
+                {#            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">#}
+                <button class="btn my-2 my-sm-0" type="submit">
+                    <i class="fas fa-search fa-lg"></i>
+                </button>
+            </form>
 
         <!-- Cart Icon Dropdown -->
         <div class="nav-item">
             <div class="dropdown">
 
-                <a class="nav-link dropdown-toggle" href="#" id="cart" role="button" data-toggle="dropdown" ,
-                   aria-haspopup="true" , aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="cart" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     <i class="nav-item fas fa-cart-plus fa-lg"></i>
                 </a>
 
                 <!-- Will need logic to determine number of items in user's cart. -->
-
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cart">
-                    <a class="dropdown-item" href="#">Product Type 1</a> <!-- Will link to an item @ /item-as-slug -->
-                    <a class="dropdown-item" href="#">Product Type 2</a> <!-- Will link to an item @ /item-as-slug -->
-                    <a class="dropdown-item" href="#">Product Type 3</a> <!-- Will link to an item @ /item-as-slug -->
-                    <a class="dropdown-item" href="#">Product Type 4</a> <!-- Will link to an item @ /item-as-slug -->
-                    <a class="dropdown-item" href="#">Product Type 5</a> <!-- Will link to an item @ /item-as-slug -->
-                    <a class="dropdown-item" href="#">Product Type 6</a> <!-- Will link to an item @ /item-as-slug -->
+                    {% if request.user.is_authenticated %}
+                        <ul>
+                            {% for item in request.user.member.cart.items.all %}
+                                <li><a class="dropdown-item" href="{{ item.book.get_absolute_url }}">{{ item }} by {{ item.book.author }} ({{ item.count }}) - ${% unit_price item.price item.count %}</a></li>
+                                <div class="dropdown-divider"></div>
+                            {% endfor %}
+                            <li><p class="dropdown-item">Total: ${% total_price request.user.member.cart.items.all %}</p></li>
+                            <a class="dropdown-item" href="{% url "cart:cart" %}"><button class="btn btn-sm btn-dark">Go to Cart</button></a>
+                        </ul>
+                    {% else %}
+                        <a class="dropdown-item" href="{% url "members:login" %}">Please log in to use Cart</a>
+                    {% endif %}
                 </div>
             </div>
 
@@ -120,46 +156,53 @@
         <div class="nav-item">
             <div class="dropdown">
 
-                <a class="nav-link dropdown-toggle" href="#" id="mem" role="button" data-toggle="dropdown" ,
-                   aria-haspopup="true" , aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="mem" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     <i class="nav-item fas fa-user fa-lg"></i>
                 </a>
 
-                <!-- Will need logic to test whether a user is loged in -->
-
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="mem">
-                    <a class="dropdown-item" href="#">User Profile</a> <!-- Will link to a search query @ /q?s='...' -->
-                    <a class="dropdown-item" href="#">Purchases</a> <!-- Will link to a search query @ /q?s='...' -->
-                    <a class="dropdown-item" href="#">Settings</a> <!-- Will link to a search query @ /q?s='...' -->
-                    <a class="dropdown-item" href="#">Log out</a> <!-- Will link to a search query @ /q?s='...' -->
+
+                    {% if request.user.is_authenticated %}
+                            <a class="dropdown-item" href="{% url "members:default_account" %}">Profile</a>
+                            <div class="dropdown-divider"></div>
+
+                            {% if request.user.member.vendor is not None %}
+                                <a class="dropdown-item" href="{% url "vendors:vendor" %}">Vendor Page</a>
+                                <div class="dropdown-divider"></div>
+                            {% endif %}
+
+                            {% if user.member.is_client is True %}
+                                <a class="dropdown-item" href="{% url "analytics:reports_overview" %}">Client Page</a>
+                                <div class="dropdown-divider"></div>
+                            {% endif %}
+
+                            <a class="dropdown-item" href="{% url 'members:logout' %}">Log out</a>
+
+                    {% else %}
+                            <a class="dropdown-item" href="{% url 'members:register' %}">Register</a>
+                            <a class="dropdown-item" href="{% url 'members:login' %}">Log in</a>
+                    {% endif %}
                 </div>
 
             </div>
         </div>
-
     </div>
 </nav>
 <!-- End Title Bar -->
 
-<div class="container">
 
-    {% block main_content %}
+{% block main_content %}
 
-        <!-- Replaced by the content in template extension -->
+    <!-- Replaced by the content in template extension -->
 
-    {% endblock main_content %}
-
-</div>
-
-<footer>
-    <ul>
-        <li> Link 1</li>
-        <li> Link 2</li>
-        <li> Link 3</li>
-    </ul>
-</footer>
+{% endblock main_content %}
 
 
 </body>
+
+{% block jquery %}
+
+{% endblock jquery %}
 
 </html>

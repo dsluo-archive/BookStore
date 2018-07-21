@@ -1,0 +1,33 @@
+body {
+    overflow-y: hidden;
+}
+
+header {
+    color: white;
+    font-family: GlacialIndifference-bold, sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-image: url("../images/library_transparency.png");
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+header h2 {
+    margin-top: 20%;
+    text-align: center;
+    font-size: 72px;
+    /*text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;*/
+    /*text-shadow: 2px 2px black;*/
+}
+
+.login {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#login {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+

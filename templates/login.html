@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block main_content %}
+    <form action="{% url 'members:login' %}" method="post" class="form-signin">
+        <img src="{% static 'images/dogear-cropped.jpg' %}"/>
+        <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
+
+        {% if messages %}
+            <div class='messages'>
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% csrf_token %}
+        {{ user_form.non_field_errors }}
+
+        {% for field in user_form %}
+            <div class="form-label-group">
+                {% render_field field class="form-control" placeholder=field.label %}
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">
+                        {{ field.help_text | safe }}
+                    </small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <a href="{% url "members:reset_password_form" %}">Forgot Password?</a> <hr>
+
+        <input type="submit" class="btn btn-primary" value="Submit"/>
+    </form>
+{% endblock %}

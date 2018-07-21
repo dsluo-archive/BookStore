@@ -2,50 +2,85 @@
 
 {% load static %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{% static "css/cart-main.css" %}"/>
-{% endblock stylesheet %}
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% load unit_price total_price %}
 
 {% block main_content %}
 
-    <body>
+    {% if messages %}
+        <div class='messages'>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid banner">
         <div class="row">
             <div class="col">
-                <img id="banner_img" src="{% static "images/dogear.jpg" %}"/>
+                <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>
             </div>
         </div>
     </div>
     <div class="container-fluid main">
         <div class="row">
             <div class="col-md-8">
-                <form>
-                    <ul class="list-group">
-                        <li class="list-group-item">Item 1: <span class="amt">$X.XX</span></li>
-                        <li class="list-group-item">Item 2: <span class="amt">$X.XX</span></li>
-                        <li class="list-group-item">Item 3: <span class="amt">$X.XX</span></li>
-                        <li class="list-group-item">Item 4: <span class="amt">$X.XX</span></li>
-                        <li class="list-group-item tot">Total: &nbsp;&nbsp;<span class="amt">$X.XX</span></li>
-                    </ul>
-                </form>
+                <ul class="list-group">
+                    {% for item in items %}
+                        <li class="list-group-item">{{ item }} ({{ item.count }})
+                            <span class="amt">
+                                <span class="amt_rem">${% unit_price item.price item.count %}&nbsp;&nbsp;</span>
+                                <form class="remove_form" method="post" action="remove/{{ item.book.slug }}/"> {% csrf_token %}
+                                    <input type="submit" name="remove-item" value="X">
+                                </form>
+                            </span>
+                        </li>
+                    {% endfor %}
+                    <li class="list-group-item tot">Total: &nbsp;&nbsp;<span class="amt">${% total_price items %}</span></li>
+                </ul>
+
+                <ul class="list-group promo-contr">
+                    <form method="post" action=""> {% csrf_token %}
+                        <li class="list-group-item">
+                            Promo Code: <input type="text" class="form-control" name="promo_code" placeholder="6-DIGIT CODE"/>
+                        </li>
+
+                        <li class="list-group-item">
+                            <input class="btn-sm btn-dark" type="submit" value="Apply Promotional">
+                        </li>
+                    </form>
+                </ul>
             </div>
             <div class="col-4 sidebar">
-                <button id="checkout" class="btn-lg btn-dark"> CheckOut</button>
-                <br>
-                <button id="shop" class="btn-lg btn-dark"> Continue Shopping</button>
+
+                <form method="post" action="checkout/"> {% csrf_token %}
+                    <span>
+                        <input id="checkout" class="btn-lg btn-dark" type="submit" name="card" value="Pay Online">
+                        <br>
+                        <input id='reserve' class="btn-lg btn-dark" type="submit" name="cash" value="Reserve at Bookstore">
+                    </span>
+                </form>
                 <hr>
 
 
                 <h4>Similar Items:</h4>
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
+                <ul class="list-group">
+                    {% for book in similar_items %}
+                        <li class="list-group-item"><a href="{{ book.get_absolute_url }}">{{ book }}</a></li>
+                    {% endfor %}
                 </ul>
+                <br>
+
+                <hr>
+                <a href="{% url "books:query" %}"><button id="shop" class="btn-lg btn-dark">Continue Shopping</button></a>
+
             </div>
         </div>
     </div>
-    </body>
-
 {% endblock main_content %}

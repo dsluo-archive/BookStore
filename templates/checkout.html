@@ -1,159 +1,92 @@
 {% extends "base.html" %}
 
-{% block main_content %}
-<link rel="stylesheet" href="{% static "css/checkout-main.css" %}"> 
+{% load static %}
+{% load unit_price %}
+{% load total_price %}
 
-   <!-- send user instance as object, populate the page with it -->
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{% endblock per_page_css %}
+
+{% block jquery %}
+    <script>
+        const clientToken = "{{ client_token }}";
+
+        braintree.setup(clientToken, "dropin", {
+            container: "payment-form"
+        });
+    </script>
+{% endblock jquery %}
+
+{% block main_content %}
+
+    {% if messages %}
+        <div class='messages'>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<span class="left"><i class="fas fa-user-alt"></i>{Username}</span>
-			</div>
-		</div>
-		<div class="row banner">
-			<div class="col-md-12">
-				<h1> Order Summary </h1>
-			</div>
-		</div>
-	</div>
-	
-	<div class="container confirm">
-		<div class="row">
-			<table class="table table-light table-bordered">
-				<thead class="thead-dark">
-					<tr>
-						<th>Item</th>
-						<th>Quantity</th>
-						<th>Amount</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th scope="row">Green Eggs and Ham</th>
-						<th>137</th>
-						<th id="amount 1">$1534.97</th>
-						<th><i class="fas fa-minus-circle"></i></th>
-					</tr>
-					<tr>
-						<th scope="row">A Day in the Life of Marlon Bundo</th>
-						<th>2</th>
-						<th id="amount 2">$32.16</th>
-						<th><i class="fas fa-minus-circle"></i></th>
-					</tr>
-					<tr>
-						<th scope="row">Lords of Discipline</th>
-						<th>1</th>
-						<th id="amount 3">$17.99</th>
-						<th><i class="fas fa-minus-circle"></i></th>
-					</tr>
-					<tr>
-						<th scope="row">Freakonomics</th>
-						<th>1</th>
-						<th id="amount 4">$10.99</th>
-						<th><i class="fas fa-minus-circle"></i></th>
-					</tr>
-					<tr>
-						<th scope="row"></th>
-						<th>. . .</th>
-						<th>. . .</th>
-						<th></th>
-					</tr>
-					<tr>
-						<th scope="row"></th>
-						<th>Sub-Total:</th>
-						<th id="sub-total">$ XXXX.XX</th>
-						<th><!-- total up the amount for each item and here --></th>
-					</tr>
-					<tr>
-						<th scope="row"></th>
-						<th>Shipping and Tax:</th>
-						<th id="tax-total">$ XX.XX</th>
-						<th><!-- total up the amount for all items shipping and tax here --></th>
-					</tr>
-					<tr>
-						<th scope="row"></th>
-						<th>Total:</th>
-						<th id="total">$ XXXX.XX</th>
-						<th><!-- total up the amount for everything here --></th>
-					</tr>
-				<tbody>
-			</table>
-		</div>
-		<div class="row">
-			<table class="table table-light table-bordered">	
-				<thead class="thead-dark">
-					<tr>
-						<th>Address</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th>{ 123 Address }</th>
-						<th><i class="fas fa-eraser"></i></th>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="row">
-			<div class="offset-4 col-md-8">
-				<button id="checkout_btn" class="btn btn-sm btn-dark">Place Order</button>
-				<button id="empty_btn" class="btn btn-sm btn-dark">Empty Cart</button>
-			</div>
-		</div>
-	</div>
-	
-	<div id="myPopup" class="popup">
-        <div class="popup-content">
-            <div class="container form-group">
-                <div class="row">
-                    <div class="col-12">
-                        <h4>How many copies of {book} would you like to remove from your cart?</h4>
-						<form>
-							<select name="copies" class="form-control-sm">
-								<option> 1 </option>
-								<!-- append to the max qty here -->
-							</select>
-						</form>
-                    </div>
-				</div>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="left"><i class="fas fa-user-alt"></i>{Username}</span>
+            </div>
+        </div>
+        <div class="row banner">
+            <div class="col-md-12">
+                <h1> Order Summary </h1>
             </div>
         </div>
     </div>
-	
-	<div id="myPopup2" class="popup">
-        <div class="popup-content">
-            <div class="container form-group">
-                <div class="row">
-                    <div class="col-12">
-                        <h4>What would you like your new shipping address to be?</h4>
-						<form>
-							<input name="address" id="change_addr" type="text"></input>
-							<br><br>
-							<input class="btn" type="submit"></input>
-						</form>
-                    </div>
-				</div>
-            </div>
+
+    <div class="container confirm">
+        <div class="row">
+            <table class="table table-light table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Item</th>
+                        <th>Per Book Price</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in cart %}
+                        <tr>
+                            <th scope="row">{{ item.book.name }}</th>
+                            <th>${{ item.price }}</th>
+                            <th>{{ item.count }}</th>
+                            <th id="amount 1">${% unit_price item.price item.count %}</th>
+                        </tr>
+                    {% endfor %}
+                <tbody>
+            </table>
         </div>
-    </div>
-	
-	<div id="myPopup3" class="popup">
-        <div class="popup-content">
-            <div class="container form-group">
-                <div class="row">
-                    <div class="col-12">
-                        <h4>Are you sure you wish to empty your cart?</h4>
-						<br>
-						<form>
-							<button class="btn btn-sm" id="empty">Yes</button>
-							<button class="btn btn-sm" id="keep">No</button>
-						</form>
-                    </div>
-				</div>
-            </div>
+        <div class="row">
+            <form id="checkout" method="post" action="submit/"> {% csrf_token %}
+                <h3>Shipping Address:</h3>
+                <input type="text" name="new_address" placeholder="New Address">
+                Save: <input type="checkbox" name="save_address"> <br>
+
+                <fieldset class="spaced">
+                    <legend>Saved Addresses:</legend>
+                    {% for address in request.user.member.saved_addresses.all %}
+                        <input type="radio" name="{{ address.location }}">{{ address.location }}<br>
+                    {% endfor %}
+                </fieldset>
+                <br>
+                <div id="payment-form"></div>
+                <input id="checkout_btn" class="btn btn-sm btn-dark" type="submit" value="Submit Order">
+            </form>
         </div>
+    <br>
+    <a href="{% url 'cart:cart' %}"><button id="edit" class="btn-sm btn-dark">Return to Cart</button></a>
     </div>
 
 {% endblock main_content %}

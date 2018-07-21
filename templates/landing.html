@@ -2,15 +2,14 @@
 
 {% load static %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{% static "css/landing-main.css" %}">
-{% endblock stylesheet %}
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+{% endblock per_page_css %}
 
 {% block main_content %}
 
-    <body>
     <!-- send user instance as object, populate the page with it -->
-    <div class="container-fluid banner">
+    <header class="container-fluid">
         <div class="row">
             <div class="col">
                 <h2>Welcome to Dog-Ear</h2>
@@ -21,45 +20,17 @@
                 <button type="button" id="doLogin" class="btn-lg btn-light">Login</button>
             </div>
             <div class="col-sm-6">
-                <button type="button" class="btn-lg btn-light">Create Account</button>
+                <a href="register.html">
+                    <button type="button" class="btn-lg btn-light">Register</button>
+                </a>
+            </div>
+            <div class="col-md-12">
+                <a href="home_page.html">
+                    <button class="btn-sm btn-light">Continue as non-user</button>
+                </a>
             </div>
         </div>
-    </div>
 
-    <div id="myPopup" class="popup">
-        <div class="popup-content">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <img id="icon" src="{% static "images/dogear.jpg" %}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <label><b>Username</b></label>
-                        <input type="text" placeholder="Enter Username" name="user" id="user">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <label><b>Password</b></label>
-                        <input type="password" placeholder="Enter Password" name="pwd" id="pwd">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button id="login" value="login" class="btn-sm btn-dark">Login</button>
-                        <button id="register" class="btn-sm btn-dark">Register here.</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button id="forgot" class="btn-sm btn-dark">Forgot username or password?</button>
-                        <div class="alert alert-success" role="alert" style="display: none;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </header>
 
 {% endblock main_content %}

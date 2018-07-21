@@ -49,7 +49,9 @@ class MemberForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['primary_address'].initial = self.instance.primary_address.location
+
+        if self.instance.primary_address:
+            self.fields['primary_address'].initial = self.instance.primary_address.location
 
 
 class PasswordResetRequestForm(forms.Form):

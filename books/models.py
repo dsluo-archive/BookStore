@@ -19,6 +19,13 @@ class Genre(models.Model):
         return self.subjects
 
 
+class Publisher(models.Model):
+    name = models.CharField(max_length=120, unique=True, null=True, blank=False)
+
+    def __str__(self):
+        return self.name
+
+
 class Author(models.Model):
     name = models.CharField(max_length=30)
 
@@ -39,7 +46,7 @@ class Book(models.Model):
                                      blank=True)
     name = models.CharField(max_length=120)
     isbn = models.CharField(unique=True, max_length=30)
-    publisher = models.CharField(max_length=60)
+    publisher = models.ForeignKey(Publisher, on_delete=models.SET_NULL, null=True, blank=False)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=False)
 
     price = models.DecimalField(max_digits=8, decimal_places=2)

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load publisher_report_total %}
+
+{% block per_page_css %}
+
+{% endblock %}
+
+{% block main_content %}
+
+
+    <div class="container">
+
+        <h1>Publisher Sales Reports</h1>
+
+        <div class="row">
+            <table class="table table-light table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Sold</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for report in reports %}
+                        <tr class="clickable-row" data-href="{{ report.get_absolute_url }}">
+                            <th scope="row">{{ report.date }}</th>
+                            <th>${% publisher_report_total report %}</th>
+                        </tr>
+                    {% endfor %}
+                <tbody>
+            </table>
+        </div>
+
+        <a href="{% url "analytics:reports_overview" %}"><button>Back to Reports Overview</button></a>
+
+    </div>
+
+{% endblock main_content %}
+
+{% block jquery %}
+
+    <script>
+
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+
+{% endblock %}

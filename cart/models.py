@@ -136,6 +136,8 @@ class Order(models.Model):
         return "%.2f" % price
 
     def cancel_order(self):
+        from analytics.models import update_reports
+
         user = self.member_set.first().user
         all_items = ''
 
@@ -143,6 +145,8 @@ class Order(models.Model):
             item.book.count_in_stock += item.count
             item.book.save()
             all_items += item.book.name + ', '
+
+        update_reports(self, cancel_order=True)
 
         send_mail(
             'Your order has been cancelled',

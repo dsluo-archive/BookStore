@@ -40,6 +40,7 @@ class UserCreation(UserCreationForm):
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)
+    is_client = models.BooleanField(default=False)
 
     primary_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=False)
     profile_picture = models.ImageField(upload_to=upload_location,

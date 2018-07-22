@@ -80,7 +80,7 @@ class Reservation(models.Model):
 def create_slug(instance):
     current_id = Book.objects.all().order_by("-id").first()
     if current_id:
-        current_id = current_id.id
+        current_id = current_id.id + 1
     else:
         current_id = 1
 

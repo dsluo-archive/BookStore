@@ -190,7 +190,8 @@ def activate_user(request, slug):
             "activate.html",
             {
                 "action": reverse('members:activate', args=(slug,)),
-                'form': activation_form
+                'form': activation_form,
+                'member': member
             }
         )
 

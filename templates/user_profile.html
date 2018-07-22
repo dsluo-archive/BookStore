@@ -13,48 +13,52 @@
         <div class='messages'>
             <ul class="messages">
                 {% for message in messages %}
-                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }} </li>
                 {% endfor %}
             </ul>
         </div>
     {% endif %}
 
     <!-- send user instance as object, populate the page with it -->
-    <div class="container-fluid">
+    <div class="container mt-2">
 
-        <div class="row info_block">
+        <div class="row">
             <div class="col-md-4">
-                <img src="{{ member.profile_picture.url }}" id="thumbnail" alt="User_Profile_image"/>
-            </div>
+                <h1 class="text-center">Profile</h1>
+                <div id="profile-wrapper">
+                    <div id="profile">
+                        <img src="{{ member.profile_picture.url }}" alt="User_Profile_image" class="img-fluid"/>
+                        {# TODO: does this look better than simply having a button as below? #}
+                        {# <a class="btn btn-sm btn-dark" href="{% url 'members:edit' %}"> #}
+                        {#     <i class="fas fa-edit"></i> #}
+                        {# </a> #}
+                    </div>
+                </div>
 
-            <div class="col-md-4">
-                <ul class="vitals list-group">
+                <ul class="list-group mt-2">
                     <li class="list-group-item">Name: {{ member.user.first_name }} {{ member.user.last_name }}</li>
                     <li class="list-group-item">Email: {{ member.user.email }}</li>
                     <li class="list-group-item">Date of Birth: {{ member.birth_date }}</li>
                 </ul>
+
+                <a class="btn btn-primary mt-2" href="{% url 'members:edit' %}">
+                    Edit Profile
+                </a>
             </div>
 
-            <div class="col-md-4">
-                <a href="{% url 'members:edit' %}"><button id="edit" class="btn-sm btn-dark"> &nbsp<i class="fas fa-edit"></i></button></a>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <table class="table table-light table-bordered">
-                <thead class="thead-dark">
+            <div class="col-md-8">
+                <h1 class="text-center">Orders</h1>
+                <table class="table table-light table-bordered">
+                    <thead class="thead-dark">
                     <tr>
                         <th>Title</th>
                         <th>Author</th>
                         <th>ISBN</th>
                         <th>Price per Unit</th>
                     </tr>
-                </thead>
+                    </thead>
 
-                <tbody>
+                    <tbody>
                     {% for book in books_owned %}
                         <tr class="clickable-row" data-href="{{ book.get_absolute_url }}">
                             <th scope="row">{{ book.name }}</th>
@@ -63,12 +67,12 @@
                             <th id="amount 1">${{ book.price }}</th>
                         </tr>
                     {% endfor %}
-                <tbody>
-            </table>
+                    <tbody>
+                </table>
 
-        <div class="row">
-            <table class="table table-light table-bordered">
-                <thead class="thead-dark">
+                <h1 class="text-center">Reservations</h1>
+                <table class="table table-light table-bordered">
+                    <thead class="thead-dark">
                     <tr>
                         <th>Confirmation ID</th>
                         <th>Date</th>
@@ -76,9 +80,9 @@
                         <th>Reservation</th>
                         <th>Payment Processed</th>
                     </tr>
-                </thead>
+                    </thead>
 
-                <tbody>
+                    <tbody>
                     {% for order in orders %}
                         <tr class="clickable-row" data-href="{{ order.get_absolute_url }}">
                             <th scope="row">{{ order.confirmation_number }}</th>
@@ -97,8 +101,9 @@
                             {% endif %}
                         </tr>
                     {% endfor %}
-                <tbody>
-            </table>
+                    <tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -108,8 +113,8 @@
 
     <script>
 
-        jQuery(document).ready(function($) {
-            $(".clickable-row").click(function() {
+        jQuery(document).ready(function ($) {
+            $(".clickable-row").click(function () {
                 window.location = $(this).data("href");
             });
         });

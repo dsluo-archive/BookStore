@@ -4,14 +4,18 @@
 {% load eod_total %}
 
 {% block per_page_css %}
-
+	<link rel="stylesheet" href="{% static 'css/terminal.css' %}">
 {% endblock %}
 
 {% block main_content %}
-    <div class="container">
-
-        <h1>End of Day Reports</h1>
-
+    <div class="container-fluid banner">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>End of Day Reports</h3>
+			</div>
+		</div>
+	</div>
+	<div class="container pad-top">
         <div class="row">
             <table class="table table-light table-bordered">
                 <thead class="thead-dark">

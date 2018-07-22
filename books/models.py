@@ -93,4 +93,5 @@ def pre_save_item_receiver(sender, instance, *args, **kwargs):
     from analytics.models import update_low_inventory
     update_low_inventory(instance, True)
 
+
 pre_save.connect(pre_save_item_receiver, sender=Book)

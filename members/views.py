@@ -15,7 +15,9 @@ from members.forms import CustomUserCreationForm, \
     MemberForm, \
     PasswordResetForm, \
     PasswordResetRequestForm, \
-    UserLoginForm, ActivationForm
+    UserLoginForm, \
+    ActivationForm, \
+    CustomUserEditForm
 # Create your views here.
 from members.models import Address, Member
 
@@ -47,8 +49,14 @@ def profile(request, slug):
 
 def save_account(request):
     if request.user.is_authenticated or request.user.is_superuser:
-        user_edit_form = CustomUserCreationForm(request.POST or None, request.FILES or None, instance=request.user)
-        member_edit_form = MemberForm(request.POST or None, request.FILES or None, instance=request.user.member)
+        user_edit_form = CustomUserEditForm(request.POST or None,
+                                            request.FILES or None,
+                                            instance=request.user,
+                                            initial={"email": request.user.email})
+        member_edit_form = MemberForm(request.POST or None,
+                                      request.FILES or None,
+                                      instance=request.user.member,
+                                      initial={"profile_picture": request.user.member.profile_picture})
 
         if request.method == 'POST':
             if user_edit_form.is_valid() and member_edit_form.is_valid():

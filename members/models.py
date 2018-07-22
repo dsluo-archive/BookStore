@@ -9,7 +9,7 @@ from django.db.models.signals import post_save, pre_save
 from django.urls import reverse
 from django.utils.text import slugify
 
-from books.models import Book, Reservation
+from books.models import Book
 from cart.models import Cart, Order
 from vendors.models import Vendor
 
@@ -60,9 +60,6 @@ class Member(models.Model):
 
     # Of type Book
     purchased = models.ManyToManyField(Book, blank=True)
-
-    # Of type Reservation
-    reserved = models.ManyToManyField(Reservation, blank=True)
 
     # Of type Order
     orders = models.ManyToManyField(Order, blank=True)

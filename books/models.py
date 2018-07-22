@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
@@ -90,8 +90,12 @@ def create_slug(instance):
 def pre_save_item_receiver(sender, instance, *args, **kwargs):
     instance.slug = create_slug(instance)
 
+
+def post_save_item_receiver(sender, instance, created, **kwargs):
+
     from analytics.models import update_low_inventory
     update_low_inventory(instance, True)
 
 
 pre_save.connect(pre_save_item_receiver, sender=Book)
+post_save.connect(post_save_item_receiver, sender=Book)

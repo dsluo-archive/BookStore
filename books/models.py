@@ -96,5 +96,6 @@ def post_save_item_receiver(sender, instance, created, **kwargs):
     from analytics.models import update_low_inventory
     update_low_inventory(instance, True)
 
+
 pre_save.connect(pre_save_item_receiver, sender=Book)
 post_save.connect(post_save_item_receiver, sender=Book)

@@ -6,13 +6,16 @@ from members.models import Member
 
 
 class PasswordResetForm(UserCreationForm):
-
     class Meta:
         model = User
         fields = [
             "password1",
             "password2"
         ]
+        widgets = {
+            'password1': forms.PasswordInput,
+            'password2': forms.PasswordInput
+        }
 
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -20,11 +23,12 @@ class CustomUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username",
-                  "email",
-                  "first_name",
-                  "last_name",
-                  ]
+        fields = [
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+        ]
 
     def save(self, commit=True):
         user = super(CustomUserCreationForm, self).save(commit=False)
@@ -61,3 +65,7 @@ class PasswordResetRequestForm(forms.Form):
 class UserLoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(max_length=120, widget=forms.PasswordInput)
+
+
+class ActivationForm(forms.Form):
+    code = forms.CharField()

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/mass_create_book.css' %}">
+{% endblock %}
+
+{% block main_content %}
+    {{ mass_book_form }}
+{% endblock %}

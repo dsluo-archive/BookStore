@@ -109,7 +109,7 @@ def reset_password(request, slug, hex_code):
         raise PermissionDenied
     else:
         if member.hex_code == hex_code:
-            password_reset = PasswordResetForm(request.POST or None, instance=member.user)
+            password_reset = PasswordResetForm(request.POST or None, instance=member.user, label_suffix='')
 
             if request.method == 'POST':
                 if password_reset.is_valid():
@@ -123,6 +123,7 @@ def reset_password(request, slug, hex_code):
 
             return render(request, "reset_password.html", {
                 "password_reset_form": password_reset,
+                'action': reverse('members:reset_password', args=(slug, hex_code))
             })
 
 

@@ -86,7 +86,7 @@ def reset_password_request(request):
                     'Password Reset',
 
                     'Please follow the link below to reset your password:'
-                    + '\n\nlocalhost:8000/account/reset-password/'
+                    + '\n\nhttp://localhost:8000/account/reset-password/'
                     + user.member.slug + "/"
                     + user.member.hex_code,
 

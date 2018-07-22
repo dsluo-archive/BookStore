@@ -113,7 +113,7 @@ def post_save_member_receiver(sender, instance, created, **kwargs):
 
             'Welcome!\n\nPlease confirm your account using the following code:'
             + instance.hex_code
-            + '\n\nlocalhost:8000/account/activate/'
+            + '\n\nhttp://localhost:8000/account/activate/'
             + instance.slug,
 
             'thedogearbookstore@example.com',

@@ -72,15 +72,12 @@ class Book(models.Model):
         return self.name
 
 
-class Reservation(models.Model):
-    book = models.OneToOneField(Book, on_delete=models.PROTECT)
-    date = models.DateField(default=timezone.now)
-
-
 def create_slug(instance):
-    current_id = Book.objects.all().order_by("-id").first()
+    current_id = Book.objects.all().order_by("-id").first().id
+
     if current_id:
-        current_id = current_id.id + 1
+        while Book.objects.filter(slug=slugify(instance.name) + "-" + str(current_id)).exists():
+            current_id += 1
     else:
         current_id = 1
 

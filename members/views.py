@@ -68,7 +68,7 @@ def save_account(request):
 
 
 def reset_password_request(request):
-    reset_form = PasswordResetRequestForm(request.POST or None)
+    reset_form = PasswordResetRequestForm(request.POST or None, label_suffix='')
 
     if request.method == 'POST':
         if reset_form.is_valid():
@@ -121,7 +121,9 @@ def reset_password(request, slug, hex_code):
 
                     return HttpResponseRedirect(reverse("members:login"))
 
-            return render(request, "reset_password.html", {"password_reset_form": password_reset})
+            return render(request, "reset_password.html", {
+                "password_reset_form": password_reset,
+            })
 
 
 def delete_account(request):

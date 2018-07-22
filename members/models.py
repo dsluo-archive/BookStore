@@ -40,6 +40,7 @@ class UserCreation(UserCreationForm):
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)
+    is_client = models.BooleanField(default=False)
 
     primary_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=False)
     profile_picture = models.ImageField(upload_to=upload_location,
@@ -49,7 +50,7 @@ class Member(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     birth_date = models.DateField(blank=False)
     receive_newsletter = models.BooleanField(default=True, null=False)
-    hex_code = models.CharField(max_length=6, blank=True, null=True)
+    hex_code = models.CharField(max_length=10, blank=True, null=True)
     activated = models.BooleanField(default=False, blank=False)
 
     authentication_key = models.CharField(max_length=8, blank=True)
@@ -104,7 +105,7 @@ def post_save_member_receiver(sender, instance, created, **kwargs):
         instance.cart = new_cart
         instance.save()
 
-        instance.hex_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        instance.hex_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
         instance.save()
 
         send_mail(

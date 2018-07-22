@@ -3,144 +3,61 @@
 {% load static %}
 
 {% block per_page_css %}
-    <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
-{% endblock per_page_css %}
+
+{% endblock %}
 
 {% block main_content %}
-    <!-- send user instance as object, populate the page with it -->
 
-    <div class="container-fluid spaced">
+
+    <div class="container">
+
+        <h1>Low Inventory Report</h1>
+
         <div class="row">
-            <div class="col-md-12">
-                <span class="left"><i class="fas fa-user-alt"></i>{Username}</span>
-            </div>
-        </div>
-        <div class="row banner">
-            <div class="col-md-12">
-                <h1> {Books Inventory} </h1>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2 button-group">
-                <form id="holder">
-                    <fieldset>
-                        <button class="btn-sm btn-dark">Return to the Vendor Screen</button>
-                    </fieldset>
-
-
-                    <h3 id="stock-head">Out of Stock:</h3>
-                    <ul id="out-of-stock" class="list-group">
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                    </ul>
-
-
-                    <h3 id="stock-head">Stock is Low:</h3>
-                    <ul id="out-of-stock" class="list-group">
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                        <li class="list-group-item">
-                            <button class="btn-sm btn-light">{book title}</button>
-                        </li>
-                    </ul>
-                </form>
-            </div>
-            <div class="col-md-10">
-                <table class="table table-light table-bordered">
-                    <thead class="thead-dark">
+            <table class="table table-light table-bordered">
+                <thead class="thead-dark">
                     <tr>
-                        <th>Your Inventory:</th>
+                        <th>Image</th>
                         <th>Name</th>
+                        <th>Author</th>
+                        <th>ISBN</th>
+                        <th>Vendor</th>
                         <th>Price</th>
                         <th>Stock</th>
-                        <th>Edit/Delete</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"></img></th>
-                        <th>{Book Title}</th>
-                        <th>{Book Price}</th>
-                        <th>{Book Stock}</th>
-                        <th>
-                            <button class="side-sp btn-sm btn-dark"><i class="fas fa-eraser"></i></button>
-                            <button class="btn-sm btn-dark"><i class="fas fa-minus-circle"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"></img></th>
-                        <th>{Book Title}</th>
-                        <th>{Book Price}</th>
-                        <th>{Book Stock}</th>
-                        <th>
-                            <button class="side-sp btn-sm btn-dark"><i class="fas fa-eraser"></i></button>
-                            <button class="btn-sm btn-dark"><i class="fas fa-minus-circle"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"></img></th>
-                        <th>{Book Title}</th>
-                        <th>{Book Price}</th>
-                        <th>{Book Stock}</th>
-                        <th>
-                            <button class="side-sp btn-sm btn-dark"><i class="fas fa-eraser"></i></button>
-                            <button class="btn-sm btn-dark"><i class="fas fa-minus-circle"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"></img></th>
-                        <th>{Book Title}</th>
-                        <th>{Book Price}</th>
-                        <th>{Book Stock}</th>
-                        <th>
-                            <button class="side-sp btn-sm btn-dark"><i class="fas fa-eraser"></i></button>
-                            <button class="btn-sm btn-dark"><i class="fas fa-minus-circle"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><img class="thumbnail" src="{% static 'images/img.png' %}"></img></th>
-                        <th>{Book Title}</th>
-                        <th>{Book Price}</th>
-                        <th>{Book Stock}</th>
-                        <th>
-                            <button class="side-sp btn-sm btn-dark"><i class="fas fa-eraser"></i></button>
-                            <button class="btn-sm btn-dark"><i class="fas fa-minus-circle"></i></button>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th class="add-bk" colspan="5" scope="row">
-                            <button class="btn-sm btn-dark">Add a Book</button>
-                        </th>
-                    </tr>
-                    <tbody>
-                </table>
-            </div>
+                </thead>
+
+                <tbody>
+                    {% for book in report.low_inventory_books.all %}
+                        <tr class="clickable-row" data-href="{{ book.get_absolute_url }}">
+                            <th><img class="img-responsive" src="{{ book.item_picture.url }}"/></th>
+                            <th>{{ book.name }}</th>
+                            <th>{{ book.author }}</th>
+                            <th>{{ book.isbn }}</th>
+                            <th>{{ book.vendor }}</th>
+                            <th>${{ book.price }}</th>
+                            <th>{{ book.count_in_stock }}</th>
+                        </tr>
+                    {% endfor %}
+                <tbody>
+            </table>
         </div>
+
+        <a href="{% url "analytics:reports_overview" %}"><button>Back to Reports Overview</button></a>
+
     </div>
 
 {% endblock main_content %}
+
+{% block jquery %}
+
+    <script>
+
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+
+{% endblock %}

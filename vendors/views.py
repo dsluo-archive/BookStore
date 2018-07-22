@@ -1,3 +1,5 @@
+from django.core.mail import send_mail
+from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, HttpResponseRedirect, render
 from django.urls import reverse
@@ -6,7 +8,8 @@ from django.urls import reverse
 # Create your views here.
 from books.models import Book
 from books.views import filter_books, detail
-from vendors.forms import BookForm
+from vendors.forms import BookForm, VendorRegistrationForm
+from vendors.models import Vendor
 
 
 def vendor_books(request, active_books=True):
@@ -36,14 +39,36 @@ def inactive(request):
 
 
 def register(request):
+    vendor_form = VendorRegistrationForm(request.POST or None)
 
-    # Create vendor_register form
+    if request.user.is_authenticated and not request.user.member.vendor:
+        if request.method == 'POST':
+            if vendor_form.is_valid():
 
-    return render(request, "vendor_register.html", {})
+                vendor = Vendor.objects.all().filter(vendor_name=vendor_form.cleaned_data['vendor']).first()
+                if vendor_form.cleaned_data['code'] == vendor.vendor_passcode:
+                    request.user.member.vendor = vendor
+                    request.user.member.save()
+                    messages.success(request, "Successfully validatd as a member of " + vendor.vendor_name + ".")
+                    return HttpResponseRedirect(reverse("vendors:vendor"))
+                else:
+                    messages.warning(request, "Code is invalid for this vendor.")
+
+    return render(request, "vendor_register.html", {"vendor_form": vendor_form})
 
 
-def authenticate_member_as_vendor(request):
-    pass
+def request_code(request):
+    if request.user.is_authenticated and request.user.member.vendor:
+        send_mail("Vendor Authentication Code",
+                  "Dog Ear Bookstore" + "\n\n"
+                  + "Your authentication code is: " + request.user.member.vendor.vendor_passcode,
+                  "dogearbookstore@gmail.com",
+                  [request.user.email],
+                  fail_silently=True)
+        messages.success(request, "Verification code has been emailed to you.")
+        return HttpResponseRedirect(reverse("vendors:vendor"))
+    else:
+        raise PermissionDenied
 
 
 def book_detail(request, slug):
@@ -74,7 +99,7 @@ def edit(request, slug):
         raise PermissionDenied
 
 
-def add(request):
+def add_book(request):
     if request.user.is_authenticated and request.user.member.vendor:
         book_form = BookForm(request.POST or None, request.FILES or None)
 

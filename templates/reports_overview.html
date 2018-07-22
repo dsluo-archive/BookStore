@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block per_page_css %}
-{#    <link rel="stylesheet" href="{% static 'css/terminal.css' %}">#}
+	<link rel="stylesheet" href="{% static 'css/terminal.css' %}">
 {% endblock per_page_css %}
 
 {% block main_content %}
@@ -11,26 +11,26 @@
     <div class="container-fluid banner">
         <div class="row">
             <div class="col-md-12">
-                <h4>Owner Terminal</h4>
+                <h3>Owner Terminal</h3>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid reports">
+    <div class="container-fluid reports pad-top">
         <div class="row">
-            <div class="col-md-12">
+            <div class="center offset-md-4 col-md-4">
                 <h4>Reports:</h4>
                 <ul class="list-group">
-                    <li class="list-group-item">
+                    <li class="list-group-item center">
                         <a href="{% url "analytics:eod_view" %}"><button class="btn-sm btn-dark">End Of Day</button></a>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item center">
                         <a href="{% url "analytics:low_inv_report" %}"><button class="btn-sm btn-dark">Low Inventory</button></a>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item center">
                         <a href="{% url "analytics:book_sales_view" %}"><button class="btn-sm btn-dark">Book Sales</button></a>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item center">
                         <a href="{% url "analytics:publisher_sales_view" %}"><button class="btn-sm btn-dark">Publisher Sales</button></a>
                     </li>
                 </ul>

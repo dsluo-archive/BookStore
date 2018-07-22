@@ -3,16 +3,21 @@
 {% load static %}
 
 {% block per_page_css %}
-
+	<link rel="stylesheet" href="{% static 'css/pub-sales.css' %}">
 {% endblock %}
 
 {% block main_content %}
 
 
-    <div class="container">
-
-        <h1>Book Sales Report for {{ report.date }}</h1>
-
+    <div class="container-fluid banner">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Book Sales Report for {{ report.date }}</h3>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
         <div class="row">
             <table class="table table-light table-bordered">
                 <thead class="thead-dark">

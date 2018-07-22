@@ -15,7 +15,7 @@ from members.forms import CustomUserCreationForm, \
     MemberForm, \
     PasswordResetForm, \
     PasswordResetRequestForm, \
-    UserLoginForm
+    UserLoginForm, ActivationForm
 # Create your views here.
 from members.models import Address, Member
 
@@ -37,10 +37,10 @@ def profile(request, slug):
             books_owned.append(item.book)
         books_owned = sorted(list(set(books_owned)), key=operator.attrgetter('name'))
 
-        return render(request, "user_profile.html", {"slug":        slug,
-                                                     "member":      member_to_view,
+        return render(request, "user_profile.html", {"slug": slug,
+                                                     "member": member_to_view,
                                                      "books_owned": books_owned,
-                                                     "orders":      orders})
+                                                     "orders": orders})
     else:
         raise PermissionDenied
 
@@ -60,7 +60,7 @@ def save_account(request):
                 member.save()
                 return HttpResponseRedirect(reverse('members:default_account'))
 
-        return render(request, "edit_account.html", {"user_form":   user_edit_form,
+        return render(request, "edit_account.html", {"user_form": user_edit_form,
                                                      "member_form": member_edit_form})
 
     else:
@@ -147,13 +147,13 @@ def register(request):
 
                 new_member = member_form.save(commit=False)
                 new_member.user = new_user
-                new_member.primary_address, created = Address.objects.\
+                new_member.primary_address, created = Address.objects. \
                     get_or_create(location=member_form.cleaned_data["primary_address"])
                 new_member.save()
 
                 return HttpResponseRedirect(reverse('members:activate', kwargs={"slug": new_member.slug}))
 
-        return render(request, "register.html", {"user_form":   user_form,
+        return render(request, "register.html", {"user_form": user_form,
                                                  "member_form": member_form})
 
     else:
@@ -168,20 +168,28 @@ def activate_user(request, slug):
     else:
         member = get_object_or_404(Member, slug=slug)
 
-        entered_code = request.POST.get('code')
+        activation_form = ActivationForm(request.POST or None, label_suffix='')
 
         if member.activated:
             return HttpResponseRedirect(reverse('members:login'))
-        elif entered_code == member.hex_code:
-            member.activated = True
-            member.hex_code = ""
-            member.save()
-            login(request, member.user)
-            return HttpResponseRedirect(reverse('books:home'))
-        elif entered_code != member.hex_code and entered_code is not None:
-            return render(request, "activate.html", {"error": "Invalid Code"})
-        else:
-            return render(request, "activate.html", {})
+        elif activation_form.is_valid():
+            if activation_form['code'].data == member.hex_code:
+                member.activated = True
+                member.hex_code = ""
+                member.save()
+                login(request, member.user)
+                return HttpResponseRedirect(reverse('books:home'))
+            elif activation_form.cleaned_data['code'] != member.hex_code \
+                    and activation_form.cleaned_data['code'] is not None:
+                activation_form.add_error('code', 'Invalid Code.')
+        return render(
+            request,
+            "activate.html",
+            {
+                "action": reverse('members:activate', args=(slug,)),
+                'form': activation_form
+            }
+        )
 
 
 def default_profile(request):
@@ -197,9 +205,9 @@ def login_user(request):
     else:
         user_form = UserLoginForm(request.POST or None, request.FILES or None, label_suffix='')
 
-        if user_form.is_valid():
-            username = user_form.cleaned_data['username'].strip()
-            password = user_form.cleaned_data['password'].strip()
+        if request.method == 'POST' and user_form.is_valid():
+            username = user_form.cleaned_data['username']
+            password = user_form.cleaned_data['password']
 
             user = authenticate(request, username=username, password=password)
 
@@ -217,7 +225,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect(reverse('books:home'))
+    return HttpResponseRedirect(reverse('books:landing'))
 
 
 def daily_newsletter(code):

@@ -61,3 +61,7 @@ class PasswordResetRequestForm(forms.Form):
 class UserLoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(max_length=120, widget=forms.PasswordInput)
+
+
+class ActivationForm(forms.Form):
+    code = forms.CharField()

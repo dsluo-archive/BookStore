@@ -26,7 +26,9 @@
                         <div class="row">
                             {% for book in book_page %}
                                 <div class="col-sm-3">
-                                    <img class="d-block w-100" src="{% static 'images/img.png' %}" alt="First slide">
+                                    <a href="{% url 'books:detail' book.slug %}">
+                                        <img class="d-block w-100" src="{{ book.item_picture.url }}">
+                                    </a>
                                     <div class="carousel-caption d-none d-md-block">
                                         <h3>{{ book.name }}</h3>
                                     </div>

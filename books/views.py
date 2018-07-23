@@ -16,11 +16,10 @@ from books.tasks import cancel_promotional
 
 
 def landing(request):
-    new_books = Book.objects.all().order_by("publish_date")
-    newly_added_books = Book.objects.all().order_by("-id")
-
-    return render(request, "landing.html", {"new_books":         new_books,
-                                            "newly_added_books": newly_added_books})
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("books:home"))
+    else:
+        return HttpResponseRedirect(reverse("members:login"))
 
 
 def home(request):

@@ -32,6 +32,6 @@ a:hover {
     margin-left: 10px;
 }
 
-#latest-books > .row {
+.overflow-x-auto {
     overflow-x: auto;
 }

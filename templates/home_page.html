@@ -15,86 +15,55 @@
 
     <div class="container">
         <h1 class="text-center mb-3 mt-3">New Releases</h1>
-        <div id="latest-books">
-            <div class="row flex-row flex-nowrap">
-                {% for book in new_books %}
-                    <div class="col-md-3">
-                        <div class="card">
+        <div class="row flex-row flex-nowrap overflow-x-auto">
+            {% for book in new_books %}
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <div class="card">
+                        <a href="{% url 'books:detail' book.slug %}">
+                            <img class="card-img-top" src="{{ book.item_picture.url }}" alt="{{ book.name }}">
+                        </a>
+                        <div class="card-body">
                             <a href="{% url 'books:detail' book.slug %}">
-                                <img class="card-img-top" src="{{ book.item_picture.url }}" alt="{{ book.name }}">
+                                <h3 class="card-title">{{ book.name }}</h3>
                             </a>
-                            <div class="card-body">
-                                <a href="{% url 'books:detail' book.slug %}">
-                                    <h3 class="card-title">{{ book.name }}</h3>
-                                </a>
-                                <h5 class="card-subtitle">{{ book.author }}</h5>
-                            </div>
+                            <h5 class="card-subtitle">{{ book.author }}</h5>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
 
         <h1 class="text-center mb-3 mt-3">Featured Authors</h1>
-        <div id="latest-authors" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                {% for author_page in latest_authors|paginate:4 %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="row">
-                            {% for author in author_page %}
-                                <div class="col-sm-3">
-                                    <img class="d-block w-100" src="{% static 'images/img.png' %}" alt="First slide">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h3>{{ author.name }}</h3>
-                                    </div>
-                                </div>
-                            {% endfor %}
+        <div class="row flex-row flex-nowrap overflow-x-auto">
+            {% for author in latest_authors %}
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <div class="card">
+                        <img class="card-img-top" src="{% static 'images/img.png' %}" alt="{{ author.name }}">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ author.name }}</h3>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-            {# Controls #}
-            <a class="carousel-control-prev" href="#latest-authors" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#latest-authors" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+                </div>
+            {% endfor %}
         </div>
 
+
         <h1 class="text-center mb-3 mt-3">Genres</h1>
-        <div id="genres" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                {% for genre_pages in genres|paginate:4 %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="row">
-                            {% for genre in genre_pages %}
-                                <div class="col-sm-3">
-                                    <img class="d-block w-100" src="{% static 'images/img.png' %}" alt="First slide">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h3>{{ genre.subjects }}</h3>
-                                    </div>
-                                </div>
-                            {% endfor %}
+        <div class="row flex-row flex-nowrap overflow-x-auto">
+            {% for genre in genres %}
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <div class="card">
+                        <img class="card-img-top" src="{% static 'images/img.png' %}" alt="{{ genre.subjects }}">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ genre.subjects }}</h3>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-            {# Controls #}
-            <a class="carousel-control-prev" href="#genres" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#genres" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
-    <div class="container-fluid about-us">
+    <div class="container-fluid about-us mt-4">
         <div class="row">
             <div class="col-md-12">
                 <h4>About Us:</h4>
@@ -106,3 +75,4 @@
         </div>
     </div>
 {% endblock main_content %}
+

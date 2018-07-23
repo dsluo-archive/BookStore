@@ -6,9 +6,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.urls import reverse
 from django.utils import timezone
+
 
 from books.models import Book
 
@@ -34,6 +35,15 @@ class CartItem(models.Model):
 
     def __str__(self):
         return self.book.name
+
+
+def cart_item_pre_delete_receiver(sender, instance, using, *args, **kwargs):
+    order = instance.order_set.all().first()
+
+    if order and len(order.items.all()) == 1:
+        order.delete()
+
+pre_delete.connect(cart_item_pre_delete_receiver, sender=CartItem)
 
 
 class Cart(models.Model):

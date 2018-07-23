@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.utils.text import slugify
 
@@ -117,7 +117,6 @@ def post_save_member_receiver(sender, instance, created, **kwargs):
             [instance.user.email],
             fail_silently=True,
         )
-
 
 pre_save.connect(pre_save_member_receiver, sender=Member)
 post_save.connect(post_save_member_receiver, sender=Member)

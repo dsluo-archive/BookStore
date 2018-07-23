@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load form_tags %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock per_page_css %}
+
+{% block main_content %}
+    <form action="" method="post" enctype="multipart/form-data" class="form-signin">
+        <img src="{% static 'images/dogear-cropped.jpg' %}"/>
+        <h1 class="h3 mb-3 font-weight-normal">Upload CSV:</h1>
+
+        {% csrf_token %}
+        {{ mass_add_form.non_field_errors }}
+
+        {% for field in mass_add_form %}
+            <div class="form-label-group">
+                {% render_field field class="form-control-file" placeholder=field.label %}
+                {{ field.errors }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">
+                        {{ field.help_text | safe }}
+                    </small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <a href="/static/csv/sample.csv">Sample CSV</a> <hr>
+
+        <input type="submit" class="btn btn-primary" value="Submit"/>
+    </form>
+
+{% endblock main_content %}

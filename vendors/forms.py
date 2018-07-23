@@ -1,11 +1,8 @@
 from django import forms
+from django.core.validators import FileExtensionValidator
 
 from books.models import Book, Publisher
 from vendors.models import Vendor
-
-
-class MassBookForm(forms.Form):
-    file = forms.FileField()
 
 
 class BookForm(forms.ModelForm):
@@ -49,3 +46,9 @@ class BookForm(forms.ModelForm):
 class VendorRegistrationForm(forms.Form):
     code = forms.CharField(max_length=16, required=True)
     vendor = forms.ModelChoiceField(Vendor.objects.all(), required=True)
+
+
+class MassAddForm(forms.Form):
+    csv = forms.FileField(required=True, validators=[FileExtensionValidator(allowed_extensions=['csv'])],
+                          help_text="Please submit a CSV of Authors, Genres, and Publishers. "
+                                    "A sample file may be downloaded below.")

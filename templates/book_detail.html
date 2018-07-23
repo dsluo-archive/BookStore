@@ -8,97 +8,99 @@
 
 {% block main_content %}
 
-    <!-- send user instance as object, populate the page with it -->
-    {% if messages %}
-        <div class='messages'>
-            <ul class="messages">
-                {% for message in messages %}
-                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    <div class="container-fluid banner">
+    <div class="container mt-2">
         <div class="row">
-            <div class="col">
-                <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="{{ book.item_picture.url }}"/>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ book.name }}</h4>
+                        <p class="card-subtitle">By {{ book.author }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Genre: {{ book.subjects.all.first }}</li>
+                        <li class="list-group-item">Publisher: {{ book.publisher.name }}</li>
+                        <li class="list-group-item">ISBN: {{ book.isbn }}</li>
+                        <li class="list-group-item">Vendor: {{ book.vendor }}</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="container-fluid mh-100">
-        <div class="row">
-            <div class="col-md-9 book_content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <img class="img-responsive" src="{{ book.item_picture.url }}"/>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ book.name }}</h1>
+                        <div class="card-text">
+                            {% if not vendor and book.is_active %}
+                                <form method="post" action="{% url 'books:detail' book.slug %}">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="quantity">Quantity</span>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="quantity">{{ book.count_in_stock }} in stock</span>
+                                        </div>
+                                        <input class="form-control" type="number" min="1"
+                                               max="{{ book.count_in_stock }}" value="1"
+                                               aria-describedby="quantity" name="count"/>
+                                        <div class="input-group-append">
+                                            <input class="btn btn-primary" type="submit" name="cart"
+                                                   value="Add to Cart"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% else %}
+                                {% if book.is_active %}
+                                    <h4>Book is active.</h4>
+                                {% else %}
+                                    <h4>Book is inactive.</h4>
+                                {% endif %}
+                                <a class='btn btn-primary' href="{% url 'vendors:edit' book.slug %}">
+                                    Edit Book
+                                </a>
+                            {% endif %}
                         </div>
-                        <div class="col-md-8">
-                            <ul>
-                                <li>Title: {{ book.name }}</li>
-                                <li>Author: {{ book.author }}</li>
-                                <li>Genre: {{ book.subjects.all.first }}</li>
-                                <li>Publisher: {{ book.publisher.name }}</li>
-                                <li>ISBN: {{ book.isbn }}</li>
-                                <li>Vendor: {{ book.vendor }}</li>
-                            </ul>
+                    </div>
+                    {% if messages %}
+                        <div class="card-body">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
                         </div>
-                        <div class="col-md-12">
-                            {{ book.description }}
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="card-text">
+                            {{ book.description|linebreaks }}
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-3 sidebar">
-                <p>Price:{{ book.price }}</p>
-
-                {% if not vendor and book.is_active %}
-                    <form method="post"> {% csrf_token %}
-                        <input class="btn-lg btn-dark" type="submit" name="cart" value="Add to Cart">
-                            <select name="count">
-                                {% for i in "123456789"|make_list %}
-                                    <option>{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                    </form>
-
-                    {% if other_books %}
-                        <p>Others by Author:</p>
-                        <ul id="Others">
-                            {% for other_book in other_books %}
-                                <li><a href="{{ other_book.get_absolute_url }}">{{ other_book }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% else %}
-                    {% if book.is_active %}
-                        <h4>Book is currently Active</h4>
-                    {% else %}
-                        <h4>Book is currently Inactive</h4>
-                    {% endif %}
-                    <a href="{% url "vendors:edit" book.slug %}"><button class="btn-lg btn-dark">Edit Book</button></a>
-                {% endif %}
-            </div>
         </div>
-    </div>
-
-    <!-- No need for a Back to Top. Was also formatted incorrectly.
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <nav class="foot navbar navbar-light bg-light">
-                    <a class="navbar-brand" href="#">
-                        <ul class="nav-list">
-                            <li class="nav-list-item"></li>
-                            <li class="nav-list-item">Back to Top</li>
-                        </ul>
-                    </a>
-                </nav>
+        {% if other_books %}
+            <h1>More by {{ book.author }}</h1>
+            <div class="row mt-3">
+                {% for other_book in other_books %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100">
+                            <a href="{{ other_book.get_absolute_url }}">
+                                <img class="card-img-top" src="{{ other_book.item_picture.url }}"/>
+                            </a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="{{ other_book.get_absolute_url }}">
+                                        {{ other_book.name }}
+                                    </a>
+                                </h4>
+                                <p class="card-text">
+                                    {{ other_book.author }}
+                                </p>
+                                <h5>${{ other_book.price }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        </div>
+        {% endif %}
     </div>
-    -->
 
 {% endblock main_content %}

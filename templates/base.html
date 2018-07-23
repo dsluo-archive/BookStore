@@ -108,13 +108,13 @@
         {% else %}
             <form method="GET" class="form-inline my-2 my-lg-0" action="/book/"> {# TODO #}
         {% endif %}
-                <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search..."
-                       aria-label="searchBar">
-                {#            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">#}
-                <button class="btn my-2 my-sm-0" type="submit">
-                    <i class="fas fa-search fa-lg"></i>
-                </button>
-            </form>
+        <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search..."
+               aria-label="searchBar">
+        {#            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">#}
+        <button class="btn my-2 my-sm-0" type="submit">
+            <i class="fas fa-search fa-lg"></i>
+        </button>
+        </form>
 
         <!-- Cart Icon Dropdown -->
         <div class="nav-item">
@@ -128,14 +128,20 @@
                 <!-- Will need logic to determine number of items in user's cart. -->
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cart">
                     {% if request.user.is_authenticated %}
-                        <ul>
-                            {% for item in request.user.member.cart.items.all %}
-                                <li><a class="dropdown-item" href="{{ item.book.get_absolute_url }}">{{ item }} by {{ item.book.author }} ({{ item.count }}) - ${% unit_price item.price item.count %}</a></li>
-                                <div class="dropdown-divider"></div>
-                            {% endfor %}
-                            <li><p class="dropdown-item">Total: ${% total_price request.user.member.cart.items.all %}</p></li>
-                            <a class="dropdown-item" href="{% url "cart:cart" %}"><button class="btn btn-sm btn-dark">Go to Cart</button></a>
-                        </ul>
+                        {% for item in request.user.member.cart.items.all %}
+                            <a class="dropdown-item" href="{{ item.book.get_absolute_url }}">{{ item }}
+                                by {{ item.book.author }} ({{ item.count }}) -
+                                ${% unit_price item.price item.count %}</a>
+                        {% endfor %}
+                        <div class="dropdown-divider"></div>
+                        <p class="dropdown-item text-right">
+                            Total: ${% total_price request.user.member.cart.items.all %}
+                        </p>
+                        <div class="dropdown-item text-right">
+                            <a class="btn btn-sm btn-dark" href="{% url "cart:cart" %}">
+                                Go to Cart
+                            </a>
+                        </div>
                     {% else %}
                         <a class="dropdown-item" href="{% url "members:login" %}">Please log in to use Cart</a>
                     {% endif %}
@@ -156,24 +162,24 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="mem">
 
                     {% if request.user.is_authenticated %}
-                            <a class="dropdown-item" href="{% url "members:default_account" %}">Profile</a>
+                        <a class="dropdown-item" href="{% url "members:default_account" %}">Profile</a>
+                        <div class="dropdown-divider"></div>
+
+                        {% if request.user.member.vendor is not None %}
+                            <a class="dropdown-item" href="{% url "vendors:vendor" %}">Vendor Page</a>
                             <div class="dropdown-divider"></div>
+                        {% endif %}
 
-                            {% if request.user.member.vendor is not None %}
-                                <a class="dropdown-item" href="{% url "vendors:vendor" %}">Vendor Page</a>
-                                <div class="dropdown-divider"></div>
-                            {% endif %}
+                        {% if user.member.is_client is True %}
+                            <a class="dropdown-item" href="{% url "analytics:reports_overview" %}">Client Page</a>
+                            <div class="dropdown-divider"></div>
+                        {% endif %}
 
-                            {% if user.member.is_client is True %}
-                                <a class="dropdown-item" href="{% url "analytics:reports_overview" %}">Client Page</a>
-                                <div class="dropdown-divider"></div>
-                            {% endif %}
-
-                            <a class="dropdown-item" href="{% url 'members:logout' %}">Log out</a>
+                        <a class="dropdown-item" href="{% url 'members:logout' %}">Log out</a>
 
                     {% else %}
-                            <a class="dropdown-item" href="{% url 'members:register' %}">Register</a>
-                            <a class="dropdown-item" href="{% url 'members:login' %}">Log in</a>
+                        <a class="dropdown-item" href="{% url 'members:register' %}">Register</a>
+                        <a class="dropdown-item" href="{% url 'members:login' %}">Log in</a>
                     {% endif %}
                 </div>
 

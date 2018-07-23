@@ -10,43 +10,29 @@
 {% block main_content %}
 
     <div class="container-fluid banner">
-        <div class="row">
-            <div class="col-md-12 center">
-                <img id="banner-img" src="{% static 'images/dogear.jpg' %}"/>
-            </div>
-        </div>
+        <img src="{% static 'images/dogear.jpg' %}"/>
     </div>
 
     <div class="container">
         <h1 class="text-center mb-3 mt-3">New Releases</h1>
-        <div id="latest-books" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                {% for book_page in new_books|paginate:4 %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="row">
-                            {% for book in book_page %}
-                                <div class="col-sm-3">
-                                    <a href="{% url 'books:detail' book.slug %}">
-                                        <img class="d-block w-100" src="{{ book.item_picture.url }}">
-                                    </a>
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h3>{{ book.name }}</h3>
-                                    </div>
-                                </div>
-                            {% endfor %}
+        <div id="latest-books">
+            <div class="row flex-row flex-nowrap">
+                {% for book in new_books %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            <a href="{% url 'books:detail' book.slug %}">
+                                <img class="card-img-top" src="{{ book.item_picture.url }}" alt="{{ book.name }}">
+                            </a>
+                            <div class="card-body">
+                                <a href="{% url 'books:detail' book.slug %}">
+                                    <h3 class="card-title">{{ book.name }}</h3>
+                                </a>
+                                <h5 class="card-subtitle">{{ book.author }}</h5>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            {# Controls #}
-            <a class="carousel-control-prev" href="#latest-books" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#latest-books" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
         </div>
 
         <h1 class="text-center mb-3 mt-3">Featured Authors</h1>

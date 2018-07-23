@@ -1,0 +1,19 @@
+.banner {
+    background-size: cover;
+    background: url('../../images/written.jpg') no-repeat bottom center;
+    height: 300px;
+}
+
+.banner img {
+    display: block;
+    height: 200px;
+    width: 200px;
+    position: relative;
+    top: 50%;
+    margin: auto;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}

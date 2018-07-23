@@ -1,3 +1,5 @@
+@import "mixins/banner.css";
+
 .banner h4 {
     font-size: 36pt;
     margin-top: 4.5%;

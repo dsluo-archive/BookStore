@@ -1,15 +1,4 @@
-.banner {
-    background-image: url('../images/written.jpg');
-    background-size: cover;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    height: 300px;
-}
-
-.banner img {
-    height: 200px;
-    width: 200px;
-}
+@import "mixins/banner.css";
 
 .banner #profile-btn {
     margin-left: 92.5%;

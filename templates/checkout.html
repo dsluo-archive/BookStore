@@ -11,7 +11,6 @@
 {% block jquery %}
     <script>
         const clientToken = "{{ client_token }}";
-
         braintree.setup(clientToken, "dropin", {
             container: "payment-form"
         });
@@ -31,15 +30,10 @@
     {% endif %}
 
     <!-- send user instance as object, populate the page with it -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <span class="left"><i class="fas fa-user-alt"></i>{Username}</span>
-            </div>
-        </div>
+    <div class="container-fluid main_content">
         <div class="row banner">
             <div class="col-md-12">
-                <h1> Order Summary </h1>
+                <h3> Order Summary </h3>
             </div>
         </div>
     </div>
@@ -68,25 +62,45 @@
                 <tbody>
             </table>
         </div>
-        <div class="row">
-            <form id="checkout" method="post" action="submit/"> {% csrf_token %}
-                <h3>Shipping Address:</h3>
-                <input type="text" name="new_address" placeholder="New Address">
-                Save: <input type="checkbox" name="save_address"> <br>
+        <div class="row" style="text-align: center">
+			<div class="offset-md-3 col-md-6">
+					<form id="checkout" method="post" action="submit/"> {% csrf_token %}
+					<ul class="list-group">
+						<li class="list-group-item">
+							<h3>Shipping Address:</h3>
+							<input type="text" name="new_address" placeholder="New Address">
+							Save: <input type="checkbox" name="save_address"> <br>
 
-                <fieldset class="spaced">
-                    <legend>Saved Addresses:</legend>
-                    {% for address in request.user.member.saved_addresses.all %}
-                        <input type="radio" name="{{ address.location }}">{{ address.location }}<br>
-                    {% endfor %}
-                </fieldset>
-                <br>
-                <div id="payment-form"></div>
-                <input id="checkout_btn" class="btn btn-sm btn-dark" type="submit" value="Submit Order">
-            </form>
+                            <hr>
+
+							<fieldset class="spaced">
+								<legend>Saved Addresses:</legend>
+								{% for address in request.user.member.saved_addresses.all %}
+									<ul class="list-group">
+										<li class="list-group-item list-group-item-info">
+											<input type="radio" name="location" value="{{ address.location }}">{{ address.location }}
+										</li>
+                                        <br>
+									</ul>
+								{% endfor %}
+							</fieldset>
+						</li>
+
+                        <hr>
+
+						<li class="list-group-item">
+							<div id="payment-form"></div>
+						</li>
+						<li class="list-group-item center">
+							<div class="checkout_cont">
+								<input class="btn btn-sm btn-dark" type="submit" value="Submit Order">
+                                <a href="{% url 'cart:cart' %}"><button class="btn btn-sm btn-dark">Return to Cart</button></a>
+							</div>
+						</li>
+					</ul>
+				</form>
+			</div>
         </div>
-    <br>
-    <a href="{% url 'cart:cart' %}"><button id="edit" class="btn-sm btn-dark">Return to Cart</button></a>
     </div>
 
 {% endblock main_content %}

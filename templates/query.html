@@ -7,17 +7,6 @@
 {% endblock per_page_css %}
 
 {% block main_content %}
-
-    {% if messages %}
-        <div class='messages'>
-            <ul class="messages">
-                {% for message in messages %}
-                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
     <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid spaced">
         <div class="row banner">

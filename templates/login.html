@@ -7,19 +7,16 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock %}
 
+{% block message %}
+{% endblock message %}
+
 {% block main_content %}
     <form action="{% url 'members:login' %}" method="post" class="form-signin">
         <img src="{% static 'images/dogear-cropped.jpg' %}"/>
         <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
 
         {% if messages %}
-            <div class='messages'>
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
-                    {% endfor %}
-                </ul>
-            </div>
+            {% include "mixins/messages.html" %}
         {% endif %}
 
         {% csrf_token %}

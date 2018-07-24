@@ -9,25 +9,11 @@
 {% load unit_price total_price %}
 
 {% block main_content %}
-
-    {% if messages %}
-        <div class='messages'>
-            <ul class="messages">
-                {% for message in messages %}
-                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
     <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid banner">
-        <div class="row">
-            <div class="col">
-                <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>
-            </div>
-        </div>
+        <img src="{% static 'images/dogear.jpg' %}"/>
     </div>
+
     <div class="container-fluid main">
         <div class="row">
             <div class="col-md-8">

@@ -18,23 +18,35 @@
 
     <div class="container-fluid reports pad-top">
         <div class="row">
-            <div class="center offset-md-4 col-md-4">
-                <h4>Reports:</h4>
+            <div class="center offset-md-5 col-md-2">
+                <h2><strong>Reports:</strong></h2>
                 <ul class="list-group">
-                    <li class="list-group-item center">
-                        <a href="{% url "analytics:eod_view" %}"><button class="btn-sm btn-dark">End Of Day</button></a>
+                    <li class="list-group-item center clickable-item" data-href="{% url "analytics:eod_view" %}">
+                        <h3><strong>End Of Day</strong></h3>
                     </li>
-                    <li class="list-group-item center">
-                        <a href="{% url "analytics:low_inv_report" %}"><button class="btn-sm btn-dark">Low Inventory</button></a>
+                    <li class="list-group-item center clickable-item" data-href="{% url "analytics:low_inv_report" %}">
+                        <h3><strong>Low Inventory</strong></h3>
                     </li>
-                    <li class="list-group-item center">
-                        <a href="{% url "analytics:book_sales_view" %}"><button class="btn-sm btn-dark">Book Sales</button></a>
+                    <li class="list-group-item center clickable-item" data-href="{% url "analytics:book_sales_view" %}">
+                        <h3><strong>Book Sales</strong></h3>
                     </li>
-                    <li class="list-group-item center">
-                        <a href="{% url "analytics:publisher_sales_view" %}"><button class="btn-sm btn-dark">Publisher Sales</button></a>
+                    <li class="list-group-item center clickable-item" data-href="{% url "analytics:publisher_sales_view" %}">
+                        <h3><strong>Publisher Sales</strong></h3>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 {% endblock main_content %}
+
+{% block jquery %}
+
+    <script>
+        jQuery(document).ready(function($) {
+            $(".clickable-item").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+
+{% endblock %}

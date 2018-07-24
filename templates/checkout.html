@@ -11,7 +11,6 @@
 {% block jquery %}
     <script>
         const clientToken = "{{ client_token }}";
-
         braintree.setup(clientToken, "dropin", {
             container: "payment-form"
         });
@@ -63,7 +62,7 @@
                 <tbody>
             </table>
         </div>
-        <div class="row">
+        <div class="row" style="text-align: center">
 			<div class="offset-md-3 col-md-6">
 					<form id="checkout" method="post" action="submit/"> {% csrf_token %}
 					<ul class="list-group">
@@ -72,36 +71,36 @@
 							<input type="text" name="new_address" placeholder="New Address">
 							Save: <input type="checkbox" name="save_address"> <br>
 
+                            <hr>
+
 							<fieldset class="spaced">
 								<legend>Saved Addresses:</legend>
 								{% for address in request.user.member.saved_addresses.all %}
 									<ul class="list-group">
 										<li class="list-group-item list-group-item-info">
-											<input type="radio" name="{{ address.location }}">{{ address.location }}<br>
+											<input type="radio" name="location" value="{{ address.location }}">{{ address.location }}
 										</li>
+                                        <br>
 									</ul>
 								{% endfor %}
 							</fieldset>
 						</li>
+
+                        <hr>
+
 						<li class="list-group-item">
 							<div id="payment-form"></div>
 						</li>
 						<li class="list-group-item center">
 							<div class="checkout_cont">
-								<input id="checkout_btn" class="btn btn-sm btn-dark" type="submit" value="Submit Order">
+								<input class="btn btn-sm btn-dark" type="submit" value="Submit Order">
+                                <a href="{% url 'cart:cart' %}"><button class="btn btn-sm btn-dark">Return to Cart</button></a>
 							</div>
 						</li>
 					</ul>
 				</form>
 			</div>
         </div>
-    <br>
-    
-		<div class="row">
-			<div class="offset-md-3 col-md-6 center">
-				<a href="{% url 'cart:cart' %}"><button id="edit" class="btn-sm btn-dark">Return to Cart</button></a>
-			</div>
-		</div>
     </div>
 
 {% endblock main_content %}

@@ -34,21 +34,21 @@
 	<div class="container">
 		<div class="row">
 			<div class="offset-md-2 col-md-8">
-				<div class="alert alert-success">
+				<div class="alert alert-success" style="text-align: center">
 					<ul class="list-group">
 						{% for item in items %}
-							<li class="list-group-item-success">
+							<li class="list-item">
 								<ul style="list-style-type: none">
-									<li>Vendor: {{ item.book.vendor }}</li>
-									<li>Vendor Address: {{ item.book.vendor.physical_address }}</li>
-									<li>Title: {{ item.book }}</li>
-									<li>Price: ${% unit_price item.count item.price %}</li>
-									<li>Number Ordered: {{ item.count }}</li>
+									<li><strong>Vendor: </strong>{{ item.book.vendor }}</li>
+                                    <li><strong>Vendor Address: </strong>{{ item.book.vendor.physical_address }}</li>
+                                    <li><strong>Title: </strong>{{ item.book }}</li>
+                                    <li><strong>Price: </strong>${% unit_price item.count item.price %}</li>
+                                    <li><strong>Number Ordered: </strong>{{ item.count }}</li>
 									<br>
 								</ul>
 							</li>
 						{% endfor %}
-						<li class="list-group-item-success" id="tot">Total: ${% total_price items %}</li>
+                        <li class="list-item" id="tot"><strong>Total: </strong>${% total_price items %}</li>
 					</ul>
 				</div>
 			</div>

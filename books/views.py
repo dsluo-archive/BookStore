@@ -10,17 +10,15 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
-from books.forms import BookForm, MassBookForm
 from books.models import Author, Book, Genre, PromotionCodes
 from books.tasks import cancel_promotional
 
 
 def landing(request):
-    new_books = Book.objects.all().order_by("publish_date")
-    newly_added_books = Book.objects.all().order_by("-id")
-
-    return render(request, "landing.html", {"new_books":         new_books,
-                                            "newly_added_books": newly_added_books})
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("books:home"))
+    else:
+        return HttpResponseRedirect(reverse("members:login"))
 
 
 def home(request):
@@ -105,10 +103,10 @@ def filter_books(request, vendor_filter, active_books=True):
 def all_books(request):
     queryset_paginator, page_var, genres, authors, active_books = filter_books(request, vendor_filter=False)
 
-    return render(request, "query.html", {"books":    queryset_paginator,
-                                          "page_var": page_var,
-                                          "genres":   genres,
-                                          "authors":  authors,
+    return render(request, "query.html", {"books":        queryset_paginator,
+                                          "page_var":     page_var,
+                                          "genres":       genres,
+                                          "authors":      authors,
                                           "active_books": active_books})
 
 
@@ -126,12 +124,12 @@ def detail(request, slug, vendor=False):
                 success = request.user.member.cart.add_item(request.user.member, book, count)
 
                 if success:
-                    messages.success(request, book.name + " successfully added to cart!")
+                    messages.success(request, book.name + " added to cart!")
                 else:
                     messages.warning(request, book.name + " could not be added to cart. "
-                                                        + "Item currently has "
-                                                        + str(book.count_in_stock)
-                                                        + " items in stock.")
+                                     + "Item currently has "
+                                     + str(book.count_in_stock)
+                                     + " items in stock.")
 
         else:
             add_to_cart = request.POST.get("cart")
@@ -141,7 +139,7 @@ def detail(request, slug, vendor=False):
 
         return render(request, "book_detail.html", {"book":        book,
                                                     "other_books": other_books,
-                                                    "vendor": vendor})
+                                                    "vendor":      vendor})
     else:
         raise PermissionDenied
 

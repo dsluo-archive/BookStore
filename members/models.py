@@ -5,11 +5,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.utils.text import slugify
 
-from books.models import Book, Reservation
+from books.models import Book
 from cart.models import Cart, Order
 from vendors.models import Vendor
 
@@ -61,9 +61,6 @@ class Member(models.Model):
     # Of type Book
     purchased = models.ManyToManyField(Book, blank=True)
 
-    # Of type Reservation
-    reserved = models.ManyToManyField(Reservation, blank=True)
-
     # Of type Order
     orders = models.ManyToManyField(Order, blank=True)
 
@@ -113,14 +110,13 @@ def post_save_member_receiver(sender, instance, created, **kwargs):
 
             'Welcome!\n\nPlease confirm your account using the following code:'
             + instance.hex_code
-            + '\n\nlocalhost:8000/account/activate/'
+            + '\n\nhttp://localhost:8000/account/activate/'
             + instance.slug,
 
             'thedogearbookstore@example.com',
             [instance.user.email],
             fail_silently=True,
         )
-
 
 pre_save.connect(pre_save_member_receiver, sender=Member)
 post_save.connect(post_save_member_receiver, sender=Member)

@@ -1,3 +1,6 @@
+import csv
+from io import TextIOWrapper
+
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -6,9 +9,9 @@ from django.urls import reverse
 
 
 # Create your views here.
-from books.models import Book
+from books.models import Author, Book, Genre, Publisher
 from books.views import filter_books, detail
-from vendors.forms import BookForm, VendorRegistrationForm
+from vendors.forms import BookForm, VendorRegistrationForm, MassAddForm
 from vendors.models import Vendor
 
 
@@ -113,6 +116,56 @@ def add_book(request):
                 return HttpResponseRedirect(reverse("vendors:detail", kwargs={"slug": new_book.slug}))
 
         return render(request, "vendor_add_book.html", {"book_form": book_form})
+    else:
+        raise PermissionDenied
+
+
+def mass_add(request):
+    if request.user.is_authenticated and request.user.member.vendor:
+
+        mass_add_form = MassAddForm(request.POST or None, request.FILES or None)
+
+        if request.method == 'POST':
+
+            if mass_add_form.is_valid():
+                file = TextIOWrapper(request.FILES['csv'].file, encoding=request.encoding)
+                reader = csv.DictReader(file)
+
+                headers = reader.fieldnames
+                authors = False
+                genres = False
+                publishers = False
+
+                for head in headers:
+                    if head == 'Authors':
+                        authors = True
+                    elif head == 'Genres':
+                        genres = True
+                    elif head == 'Publishers':
+                        publishers = True
+
+                for row in reader:
+                    if authors and row['Authors']:
+                        author, created = Author.objects.get_or_create(name__iexact=row['Authors'])
+                        if created:
+                            author.name = row['Authors']
+                            author.save()
+                    if genres and row['Genres']:
+                        genre, created = Genre.objects.get_or_create(subjects__iexact=row['Genres'])
+                        if created:
+                            genre.subjects = row['Genres']
+                            genre.save()
+                    if publishers and row['Publishers']:
+                        publisher, created = Publisher.objects.get_or_create(name__iexact=row['Publishers'])
+                        if created:
+                            publisher.name = row['Publishers']
+                            publisher.save()
+
+                file.close()
+
+                return HttpResponseRedirect(reverse("vendors:vendor"))
+
+        return render(request, "mass_add.html", {"mass_add_form": mass_add_form})
     else:
         raise PermissionDenied
 

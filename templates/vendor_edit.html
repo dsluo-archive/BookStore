@@ -1,61 +1,59 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load form_tags %}
+{% load widget_tweaks %}
 
 {% block per_page_css %}
-    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
-{% endblock per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/edit_account.css' %}">
+{% endblock %}
 
 {% block main_content %}
+    <form action="" method="post" class="form-signin" enctype='multipart/form-data'>
+        <h1 class="h3 mb-3 font-weight-normal">Edit {{ book.name }}</h1>
 
-	<div class="container-fluid banner">
-		<div class="row">
-			<div class="col-md-12">
-				<h3> Edit {{ book.name }} </h3>
-			</div>
-		</div>
-	</div>
-	
-		<div class="container confirm">
-			<div class="row">
-				<div class="offset-md-3 col-md-6">
-					<div class="card">
-						<div class="card-body">
-							<form method="post" action='' enctype='multipart/form-data'> {% csrf_token %}
-								{{book_form.as_p}}
-								<div class="text-center">
-									<input type="submit" class='btn btn-default' value="Save Book"/>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+        {% csrf_token %}
+        {{ book_form.non_field_errors }}
 
-    <br>
+        {% for field in book_form %}
+            {% if field|is_field:'ClearableFileInput' %}
+                <div class="form-label-group">
+                    <input type="file" id="{{ field.id_for_label }}" class="form-control" name="{{ field.name }}"/>
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% else %}
+                {{ field.label_tag }}
+                <div class="form-label-group">
+                    {% render_field field class="form-control" placeholder=field.label %}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
 
-    {% if book.is_active %}
-		<div class="container pad-bottom center">
-			<div class="row">
-				<div class="offset-md-4 col-md-4">
-					<a href="{% url 'vendors:delete_book' book.slug %}"><button class='btn btn-danger'>Delete Book</button></a>
-				</div>
-			</div>
-		</div>
-    {% else %}
-		<div class="container pad-bottom center">
-			<div class="row">
-				<div class="offset-md-4 col-md-4">
-					<div class="card">
-						<div class="card-body">
-							<a href="{% url 'vendors:reactivate_book' book.slug %}"><button class='btn btn-default'>Reactivate Book</button></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-    {% endif %}
+        <input type="submit" class="btn btn-primary" value="Save"/>
+    </form>
 
+    <div class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Danger Zone</h1>
+        <br>
+        {% if book.is_active %}
+            <h5>Sets Book to Inactive (effective deletion):</h5>
+            <a href="{% url 'vendors:delete_book' book.slug %}"><button class='btn btn-danger'>Delete Book</button></a>
+        {% else %}
+            <h5>Sets Book Back to Active:</h5>
+            <a href="{% url 'vendors:reactivate_book' book.slug %}"><button class='btn btn-danger'>Reactivate Book</button></a>
+        {% endif %}
+    </div>
 
 {% endblock main_content %}

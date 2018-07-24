@@ -31,19 +31,23 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 search_panel">
+            <div class="col-md-2 search_panel">
                 {% if request.path|slice:":8" == "/vendor/" %}
-                    <a href="{% url "vendors:add_book" %}"><button class="btn-lg btn-dark">Add New Book</button></a>
-                    <hr>
+                    <div style="text-align: center">
+                        <a href="{% url "vendors:add_book" %}"><button class="btn-lg btn-dark">Add New Book</button></a>
+                        <hr>
 
-                    {% if active_books %}
-                        <a href="{% url "vendors:inactive" %}"><button class="btn-lg btn-dark">View Inactive Books</button></a>
-                    {% else %}
-                        <a href="{% url "vendors:vendor" %}"><button class="btn-lg btn-dark">View Active Books</button></a>
-                    {% endif %}
-                    <hr>
-                    <a href="{% url "vendors:request_code" %}"><button class="btn-lg btn-dark">Request Verification Code</button></a>
-                    <hr>
+                        {% if active_books %}
+                            <a href="{% url "vendors:inactive" %}"><button class="btn-lg btn-dark">View Inactive Books</button></a>
+                        {% else %}
+                            <a href="{% url "vendors:vendor" %}"><button class="btn-lg btn-dark">View Active Books</button></a>
+                        {% endif %}
+                        <hr>
+                        <a href="{% url "vendors:mass_add" %}"><button class="btn-lg btn-dark">Mass Add Authors, Genres, and Publishers</button></a>
+                        <hr>
+                        <a href="{% url "vendors:request_code" %}"><button class="btn-lg btn-dark">Request Verification Code</button></a>
+                        <hr>
+                    </div>
                 {% endif %}
                 <form>
                     <input type="hidden" name="q" value="{{ request.GET.q }}"/>
@@ -95,7 +99,7 @@
             </form>
 
             </div>
-            <div class="col-md-9">
+            <div class="col-md-6">
                 {% if books %}
                     <table class="table table-light table-striped">
                         <thead class="thead-dark">

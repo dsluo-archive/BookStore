@@ -1,21 +1,33 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load widget_tweaks %}
 
 {% block per_page_css %}
     <link rel="stylesheet" href="{% static 'css/activate.css' %}">
 {% endblock %}
 
 {% block main_content %}
-    <div class="text-center">
-        <h1>TODO</h1>
-        {{ error }}
-    </div>
+    <form method="post" action="{{ action }}" class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Verify</h1>
+        <p>An email has been sent to {{ member.user.email }} with a verification code. Please enter the code below:</p>
 
-    <!-- until TODO is done -->
+        {% csrf_token %}
+        {{ form.non_field_errors }}
 
-    <form method="post" action=''> {% csrf_token %}
-        <input type="text" class='btn btn-default' name="code"/>
+        {% for field in form %}
+            <div class="form-label-group">
+                {% render_field field class="form-control" placeholder=field.label %}
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">
+                        {{ field.help_text | safe }}
+                    </small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
         <input type="submit" class='btn btn-default' value="Verify Account"/>
     </form>
 {% endblock %}

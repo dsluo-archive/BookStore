@@ -16,12 +16,12 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="container pad-top">
         <div class="row">
             <table class="table table-light table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Image</th>
                         <th>Name</th>
                         <th>Author</th>
                         <th>ISBN</th>
@@ -34,7 +34,6 @@
                 <tbody>
                     {% for book in report.low_inventory_books.all %}
                         <tr class="clickable-row" data-href="{{ book.get_absolute_url }}">
-                            <th><img class="img-responsive" src="{{ book.item_picture.url }}"/></th>
                             <th>{{ book.name }}</th>
                             <th>{{ book.author }}</th>
                             <th>{{ book.isbn }}</th>
@@ -56,7 +55,6 @@
 {% block jquery %}
 
     <script>
-
         jQuery(document).ready(function($) {
             $(".clickable-row").click(function() {
                 window.location = $(this).data("href");

@@ -1,9 +1,48 @@
 {% extends "base.html" %}
+
+{% load static %}
+{% load form_tags %}
+{% load widget_tweaks %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/edit_account.css' %}">
+{% endblock %}
+
 {% block main_content %}
 
-    <form method="post" action='' enctype='multipart/form-data'> {% csrf_token %}
-        {{book_form.as_p}}
-        <input type="submit" class='btn btn-default' value="Add Book"/>
-    </form>
+    <form action="" method="post" class="form-signin" enctype='multipart/form-data'>
+        <h1 class="h3 mb-3 font-weight-normal">Add Book</h1>
 
+        {% csrf_token %}
+        {{ book_form.non_field_errors }}
+
+        {% for field in book_form %}
+            {% if field|is_field:'ClearableFileInput' %}
+                <div class="form-label-group">
+                    <input type="file" id="{{ field.id_for_label }}" class="form-control" name="{{ field.name }}"/>
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% else %}
+                {{ field.label_tag }}
+                <div class="form-label-group">
+                    {% render_field field class="form-control" placeholder=field.label %}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">
+                            {{ field.help_text | safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <input type="submit" class="btn btn-primary" value="Save"/>
+
+    </form>
 {% endblock main_content %}

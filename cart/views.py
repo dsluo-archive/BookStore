@@ -201,14 +201,17 @@ def submit(request):
                     save_address = request.POST.get("save_address")
 
                     if address:
+
+                        address, created = Address.objects.get_or_create(location=address)
+
                         if save_address:
-                            address, created = Address.objects.get_or_create(location=address)
                             request.user.member.saved_addresses.add(address)
                             request.user.member.save()
                     else:
-                        for saved_address in request.user.member.saved_addresses.all():
-                            if request.POST.get(saved_address.location):
-                                address = saved_address
+                        address = request.POST.get("location")
+
+                        if address:
+                            address = request.user.member.saved_addresses.all().filter(location=address).first()
 
                     if not address:
                         address = request.user.member.primary_address

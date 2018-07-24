@@ -9,18 +9,6 @@
 {% endblock per_page_css %}
 
 {% block main_content %}
-
-    {#    <div class="container-fluid banner">#}
-    {#        <div class="row">#}
-    {#            <div class="col-md-6">#}
-    {#                <img id="banner_img" src="{% static 'images/dogear.jpg' %}"/>#}
-    {#            </div>#}
-    {#            <div class="col-6">#}
-    {#                <h3>Create your Dog-Ear account</h3>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
-    {#    <div class="form-signin">#}
     <form action="{% url 'members:register' %}" method="post" class="form-signin">
         <img src="{% static 'images/dogear-cropped.jpg' %}"/>
         <h1 class="h3 mb-3 font-weight-normal">Register</h1>
@@ -83,6 +71,4 @@
 
         <input type="submit" class="btn btn-primary" value="Submit"/>
     </form>
-    {#    </div>#}
-
 {% endblock main_content %}

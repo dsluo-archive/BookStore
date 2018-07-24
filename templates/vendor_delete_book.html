@@ -1,11 +1,34 @@
 {% extends "base.html" %}
+
+{% load static %}
+
+{% block per_page_css %}
+    <link rel="stylesheet" href="{% static 'css/vendor_delete_book.css' %}">
+{% endblock per_page_css %}
+
 {% block main_content %}
 
-<form method="post" action='' enctype='multipart/form-data'> {% csrf_token %}
-    <p>If you wish to delete {{ book.name }}, please enter the following phrase into the text box:
-    Yes, I want to delete {{ book.name }}.</p>
-    <input type="text" name="confirmation" placeholder="Enter the above phrase exactly.">
-	<input type="submit" class='btn btn-default' value="Confirm Delete"/>
-</form>
+	<div class="container-fluid banner">
+		<div class="row">
+			<div class="col-md-12">
+				<h3> Confirm Deletion of: {{ book.name }} </h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="container confirm">
+		<div class="row">
+			<div class="offset-md-1 col-md-10">
+				<div class="alert alert-danger">
+					<form method="post" action='' enctype='multipart/form-data'> {% csrf_token %}
+						<p>If you wish to delete {{ book.name }}, please enter the following phrase into the text box:
+						Yes, I want to delete {{ book.name }}.</p>
+						<input type="text" name="confirmation" id="input-box" placeholder="Enter the above phrase exactly.">
+						<input type="submit" class='btn btn-default' value="Confirm Delete"/>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 {% endblock main_content %}

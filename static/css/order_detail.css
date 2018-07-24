@@ -1,0 +1,29 @@
+.banner {
+	height: 200px;
+	text-align: center;
+	color: white;
+    font-family: GlacialIndifference-bold, sans-serif;
+    background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url("../images/bookshelf.jpg");
+    background-size: cover;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+}
+
+.banner h3 {
+	margin-top: 50px;
+	font-size: 32pt;
+	text-shadow: -2px 0 #545D68;, 0 2px #545D68;, 2px 0 #545D68;, 0 -2px #545D68;;
+}
+
+.alert li {
+	list-style-type: none;
+}
+
+#tot {
+	padding-left: 37px;
+}
+
+.confirm {
+	text-align: center;
+	margin-top: 25px;
+}

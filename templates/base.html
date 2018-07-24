@@ -68,31 +68,6 @@
                 {% endif %}
             </li>
 
-            {#            <!-- Product Dropdown -->#}
-            {#            <li class="nav-item dropdown">#}
-            {#                <a class="nav-link dropdown-toggle" href="#" id="prodDropdown" role="button" data-toggle="dropdown" ,#}
-            {#                   aria-haspopup="true" aria-expanded="false">#}
-            {#                    Products#}
-            {#                </a>#}
-            {##}
-            {#                <!-- Will need logic and content to grab approrpiate items -->#}
-            {##}
-            {#                <div class="dropdown-menu" aria-labelledby="prodDropdown">#}
-            {#                    <a class="dropdown-item" href="#">Product Type 1</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 2</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 3</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 4</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 5</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                    <a class="dropdown-item" href="#">Product Type 6</a>#}
-            {#                    <!-- Will link to a search query @ /q?s='...' -->#}
-            {#                </div>#}
-            {#            </li>#}
-
             <li class="nav-item">
                 <a class="nav-link" href="/book">Books</a> <!-- Will link to /about -->
             </li>
@@ -110,7 +85,7 @@
         {% endif %}
         <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search..."
                aria-label="searchBar">
-        {#            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">#}
+
         <button class="btn my-2 my-sm-0" type="submit">
             <i class="fas fa-search fa-lg"></i>
         </button>
@@ -132,11 +107,12 @@
                             <a class="dropdown-item" href="{{ item.book.get_absolute_url }}">{{ item }}
                                 by {{ item.book.author }} ({{ item.count }}) -
                                 ${% unit_price item.price item.count %}</a>
+                            <div class="dropdown-divider"></div>
                         {% endfor %}
-                        <div class="dropdown-divider"></div>
                         <p class="dropdown-item text-right">
                             Total: ${% total_price request.user.member.cart.items.all %}
                         </p>
+                        <div class="dropdown-divider"></div>
                         <div class="dropdown-item text-right">
                             <a class="btn btn-sm btn-dark" href="{% url "cart:cart" %}">
                                 Go to Cart
@@ -188,7 +164,6 @@
     </div>
 </nav>
 <!-- End Title Bar -->
-
 
 {% block main_content %}
 

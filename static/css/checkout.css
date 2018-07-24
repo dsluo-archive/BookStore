@@ -1,18 +1,10 @@
+@import "mixins/banner.css";
+
 .left {
     margin-left: 90%;
     margin-bottom: 3px;
 }
 
-.banner {
-	height: 200px;
-	text-align: center;
-	color: white;
-    font-family: GlacialIndifference-bold, sans-serif;
-    background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url("../images/bookshelf.jpg");
-    background-size: cover;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-}
 
 .banner h3 {
 	margin-top: 50px;

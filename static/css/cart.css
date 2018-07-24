@@ -1,18 +1,7 @@
-.banner {
-    color: white;
-    font-family: GlacialIndifference-bold, sans-serif;
-    background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url("../images/bookshelf.jpg");
-    background-size: cover;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    height: 300px;
-}
+@import "mixins/banner.css";
 
-#banner_img {
-    height: 200px;
-    width: 200px;
-    margin-left: 40%;
-    margin-top: 30px;
+.banner {
+    background-image: url("../images/bookshelf.jpg");
 }
 
 .main {

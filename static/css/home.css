@@ -1,62 +1,4 @@
-.banner {
-    background-image: url('../images/written.jpg');
-    background-size: cover;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    height: 300px;
-}
-
-.banner img {
-    height: 200px;
-    width: 200px;
-}
-
-.banner #profile-btn {
-    margin-left: 92.5%;
-    margin-top: 10px;
-}
-
-/* carousel style */
-.item {
-    display: none;
-}
-
-.control-box-left {
-    display: inline-block;
-
-}
-
-.control-box-right {
-    display: inline-block;
-    margin-left: 7.5%;
-}
-
-.book_imgs {
-    display: inline-block;
-}
-
-.span3 {
-    display: inline-block;
-}
-
-.book_img {
-    max-width: 100%;
-    margin: 12%;
-}
-
-.book_elem {
-    width: 200px;
-    height: 200px;
-}
-
-.book_elem_port {
-    height: 240px;
-    width: 180px;
-}
-
-.center {
-    text-align: center;
-}
+@import "mixins/banner.css";
 
 a {
     -webkit-transition: all 150ms ease;
@@ -71,34 +13,6 @@ a:hover {
     filter: alpha(opacity=50); /* IE7 */
     opacity: 0.6;
     text-decoration: none;
-}
-
-.carousel-container {
-    background: #FFFFFF;
-    margin: 20px;
-}
-
-::selection {
-    background: #ff5e99;
-    color: #FFFFFF;
-    text-shadow: 0;
-}
-
-::-moz-selection {
-    background: #ff5e99;
-    color: #FFFFFF;
-}
-
-a, a:focus, a:active, a:hover, object, embed {
-    outline: none;
-}
-
-:-moz-any-link:focus {
-    outline: none;
-}
-
-input::-moz-focus-inner {
-    border: 0;
 }
 
 .about-us {
@@ -116,4 +30,8 @@ input::-moz-focus-inner {
 .about-us p {
     margin-top: 10px;
     margin-left: 10px;
+}
+
+.overflow-x-auto {
+    overflow-x: auto;
 }

@@ -3,13 +3,7 @@
 {% block main_content %}
 
     {% if messages %}
-        <div class='messages'>
-            <ul class="messages">
-                {% for message in messages %}
-                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% include 'mixins/messages.html' %}
     {% endif %}
 
     <div style="margin: 0 auto; text-align: center">

@@ -18,17 +18,6 @@
 {% endblock jquery %}
 
 {% block main_content %}
-
-    {% if messages %}
-        <div class='messages'>
-            <ul class="messages">
-                {% for message in messages %}
-                    <li {% if message.tags %} class="{{message.tags}}" {% endif %}> {{ message }} </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
     <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid main_content">
         <div class="row banner">
@@ -94,7 +83,7 @@
 						<li class="list-group-item center">
 							<div class="checkout_cont">
 								<input class="btn btn-sm btn-dark" type="submit" value="Submit Order">
-                                <a href="{% url 'cart:cart' %}"><button class="btn btn-sm btn-dark">Return to Cart</button></a>
+                                <a href="{% url 'cart:cart' %}"><button type="button" class="btn btn-sm btn-dark">Return to Cart</button></a>
 							</div>
 						</li>
 					</ul>

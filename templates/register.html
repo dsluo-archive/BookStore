@@ -9,7 +9,7 @@
 {% endblock per_page_css %}
 
 {% block main_content %}
-    <form action="{% url 'members:register' %}" method="post" class="form-signin">
+    <form action="{% url 'members:register' %}" method="post" class="form-signin" enctype='multipart/form-data'>
         <img src="{% static 'images/dogear-cropped.jpg' %}"/>
         <h1 class="h3 mb-3 font-weight-normal">Register</h1>
 

@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="{% static 'css/mixins/forms.css' %}">
 {% endblock %}
 {% block main_content %}
+	<div class="container-fluid banner">
+		<div class="row">
+			<div class="col-md-12">
+				<h3> Confirm Deletion of: {{ user.username }} </h3>
+			</div>
+		</div>
+	</div>
 
     <form method="post" action='' enctype='multipart/form-data' class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Delete Account</h1>

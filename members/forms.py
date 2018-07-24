@@ -19,7 +19,7 @@ class PasswordResetForm(UserCreationForm):
         }
 
 
-class CustomUserCreationForm(forms.ModelForm):
+class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
@@ -28,7 +28,14 @@ class CustomUserCreationForm(forms.ModelForm):
             "username",
             "first_name",
             "last_name",
+            "password1",
+            "password2"
         ]
+
+        widgets = {
+            'password1': forms.PasswordInput,
+            'password2': forms.PasswordInput
+        }
 
     def save(self, commit=True):
         user = super(CustomUserCreationForm, self).save(commit=False)

@@ -1,0 +1,17 @@
+@import "mixins/banner.css";
+@import "mixins/forms.css";
+
+.banner h3 {
+    margin-top: 50px;
+    font-size: 32pt;
+    text-shadow: -3px 0 #545D68;, 0 3 px #545D68;, 3 px 0 #545D68;, 0 - 3 px #545D68;;
+}
+
+.confirm {
+    margin-top: 25px;
+}
+
+#input-box {
+    width: 300px;
+    margin-right: 20px;
+}

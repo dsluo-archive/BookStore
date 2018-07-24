@@ -37,7 +37,8 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <a href="{% url "members:reset_password_request" %}">Forgot Password?</a> <hr>
+        <a href="{% url "members:register" %}">Register</a>
+        <a href="{% url "members:reset_password_request" %}" style="float: right">Forgot Password?</a> <hr>
 
         <input type="submit" class="btn btn-primary" value="Submit"/>
     </form>

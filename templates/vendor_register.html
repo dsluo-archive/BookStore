@@ -12,10 +12,12 @@
         </div>
     {% endif %}
 
-    <h1>Vendor register</h1>
+    <div style="margin: 0 auto; text-align: center">
+        <h1>Vendor register</h1>
 
-    <form method="POST"> {% csrf_token %}
-        {{ vendor_form.as_p }}
-        <input type="submit">
-    </form>
+        <form method="POST"> {% csrf_token %}
+            {{ vendor_form.as_p }}
+            <input type="submit">
+        </form>
+    </div>
 {% endblock main_content %}

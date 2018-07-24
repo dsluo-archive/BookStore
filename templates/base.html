@@ -165,6 +165,12 @@
 </nav>
 <!-- End Title Bar -->
 
+{% block message %}
+    {% if messages %}
+        {% include "mixins/messages.html" %}
+    {% endif %}
+{% endblock message %}
+
 {% block main_content %}
 
     <!-- Replaced by the content in template extension -->

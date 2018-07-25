@@ -10,11 +10,6 @@
     <!-- send user instance as object, populate the page with it -->
     <div class="container-fluid spaced">
         <div class="row banner">
-            <div class="col-md-12">
-                {% block user_block %}
-                    <h1> Books for {{ request.user.first_name }} {{ request.user.last_name }}</h1>
-                {% endblock user_block %}
-            </div>
         </div>
     </div>
 

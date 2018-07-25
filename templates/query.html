@@ -83,7 +83,7 @@
             </form>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-md-10">
                 {% if books %}
                     <table class="table table-light table-striped">
                         <thead class="thead-dark">
@@ -91,6 +91,7 @@
                                 <th>Your Search Results:</th>
                                 <th>Title</th>
                                 <th>Author</th>
+                                <th>Published</th>
                                 <th>Vendor</th>
                                 <th>Price</th>
                             </tr>
@@ -106,6 +107,7 @@
                                     <th scope="row"><img class="thumbnail" src="{{ book.item_picture.url }}"/></th>
                                     <th><p>{{ book.name }}</p></th>
                                     <th><p>{{ book.author }}</p></th>
+                                    <th><p>{{ book.publish_date }}</p></th>
                                     <th><p>{{ book.vendor }}</p></th>
                                     <th><p>${{ book.price }}</p></th>
                                 </tr>

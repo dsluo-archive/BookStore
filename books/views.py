@@ -11,8 +11,6 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from books.models import Author, Book, Genre, PromotionCodes
-from books.tasks import cancel_promotional
-
 
 def landing(request):
     if request.user.is_authenticated:
@@ -166,21 +164,16 @@ def generate_promotion():
 
     # getting genre to discount
     max_id = Genre.objects.all().order_by("-id")[0].id
-    genre_id = random.randint(-20, max_id + 1)
+    genre_id = random.randint(1, max_id)
 
-    if genre_id <= 0:
-        genres = Genre.objects.all()
-    else:
-        genres = Genre.objects.all().filter(id=genre_id)
+    genre = Genre.objects.all().filter(id=genre_id).first()
 
     discount = round(random.uniform(0.05, .2), 2)
 
     new_promotion = PromotionCodes(code=code, discount=discount)
     new_promotion.save()
 
-    for genre in genres:
-        new_promotion.genres.add(genre)
-
-    cancel_promotional(new_promotion.code, countdown=86400)
+    new_promotion.genre = genre
+    new_promotion.save()
 
     return new_promotion.code

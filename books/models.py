@@ -34,7 +34,7 @@ class Author(models.Model):
 
 class PromotionCodes(models.Model):
     code = models.CharField(max_length=6, unique=True, blank=False)
-    genres = models.ManyToManyField(Genre, blank=True)
+    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, blank=True)
     discount = models.DecimalField(max_digits=2, decimal_places=2)
 
 

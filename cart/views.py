@@ -16,7 +16,7 @@ from analytics.models import update_reports
 # Create your views here.
 
 
-reservation_cancellation_timer = 432000  # (5 days)
+reservation_cancellation_timer = 150  # 2.5 minutes # 432000  # (5 days)
 
 if settings.DEBUG:
     gateway = braintree.BraintreeGateway(
@@ -38,14 +38,15 @@ def cart(request):
 
             if promotion:
                 for cart_item in request.user.member.cart.items.all():
-                    for genre in promotion.genres.all():
-                        if genre.book_set.all().filter(slug=cart_item.book.slug):
-                            cart_item.price = float(cart_item.book.price) * (1 - float(promotion.discount))
-                            cart_item.save()
-                            break
-                        else:
-                            cart_item.price = cart_item.book.price
-                            cart_item.save()
+                    genre = promotion.genre
+
+                    if genre.book_set.all().filter(slug=cart_item.book.slug):
+                        cart_item.price = float(cart_item.book.price) * (1 - float(promotion.discount))
+                        cart_item.save()
+                        break
+                    else:
+                        cart_item.price = cart_item.book.price
+                        cart_item.save()
 
                 messages.success(request, "Promotional " + code + " applied!")
             else:

@@ -1,6 +1,8 @@
 .banner {
-    background-size: cover;
-    background: url('../../images/written.jpg') no-repeat bottom center;
+    background: url('../../images/written.jpg');
+	background-size: cover;
+	background-position: top left, bottom center;
+	background-repeat: repeat, no-repeat;
     height: 300px;
 }
 

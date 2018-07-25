@@ -17,45 +17,139 @@
 			</div>
 		</div>
 	</div>
-	<div class="container confirm">
+
+	<div class="container-fluid confirm">
 		<div class="row">
-			<div class="offset-md-3 col-md-6">
-				<div class="alert alert-success">
-					<h5>Order Confirmation Number: {{ order.confirmation_number }}</h5>
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								<p>Order Details: </p>
+								<div class="card">
+									<div class="card-body bg-light">
+										<p>Date Ordered: {{ order.date }} </p>
+										<p>Ships To: {{ user.first_name }} {{ user.last_name }}</p>
+										<p>Order Confirmation: {{ order.confirmation_number }}</p>
+									</div>
+								</div>
+								{% if reservation %}
+									<div class="alert alert-warning pad-top">
+										<p>Item reserved for up to 5 days. Payment at vendor location in cash, check, or card must be completed before
+											deadline. </p>
+										<p>Available for pickup at specified Vendor(s) location: {% for item in items %} {{item.book.vendor.physical_address}}{% endfor %}</p>
+									</div>
+								{% else %}
+									<div class="alert alert-success pad-top">
+										Order Success
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-    {% if reservation %}
-        <p>Item reserved for up to 5 days. Payment at vendor location in cash, check, or card must be completed before
-            deadline. </p>
-        <p>Available for pickup at specified Vendor(s) location:</p>
-    {% endif %}
-	<div class="container">
+
+	<div class="container-fluid pad-top">
 		<div class="row">
-			<div class="offset-md-2 col-md-8">
-				<div class="alert alert-success" style="text-align: center">
-					<ul class="list-group">
-						{% for item in items %}
-							<li class="list-item">
-								<ul style="list-style-type: none">
-									<li><strong>Vendor: </strong>{{ item.book.vendor }}</li>
-                                    <li><strong>Vendor Address: </strong>{{ item.book.vendor.physical_address }}</li>
-                                    <li><strong>Title: </strong>{{ item.book }}</li>
-                                    <li><strong>Price: </strong>${% unit_price item.count item.price %}</li>
-                                    <li><strong>Number Ordered: </strong>{{ item.count }}</li>
-									<br>
-								</ul>
-							</li>
-						{% endfor %}
-                        <li class="list-item" id="tot"><strong>Total: </strong>${% total_price items %}</li>
-					</ul>
+			<div class="col-md-12">
+				<div class="card">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card-body">
+								<h4>Vendor Info:</h4>
+								<div class="card bg-light">
+									<div class="card-body">
+										<ul class="list-group" style="list-style-type:none;">
+											{% for item in items %}
+												<li class="list-item">
+													<div class="card pad-top">
+														<div class="card-body">
+															<h5> Item: {{item.book }} </h5>
+															<ul style="list-style-type: none">
+																<li><strong>Vendor: </strong>{{ item.book.vendor }}</li>
+																<li><strong>Vendor Address: </strong>{{ item.book.vendor.physical_address }}</li>
+															</ul>
+														</div>
+													</div>
+												</li>
+											{% endfor %}
+										</ul>
+									</div>
+								</div>
+								<h4 class="pad-top">Shipping Info:</h4>
+								<div class="card bg-light">
+									<div class="card-body">
+										<ul class="list-group" style="list-style-type:none;">
+											<li class="list-item">
+												<div class="card">
+													<div class="card-body">
+														<ul style="list-style-type: none">
+															<li><strong>Shipping Address: </strong>{{ order.address_used }}</li>
+														</ul>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card-body">
+								<h4>Item Info:</h4>
+								<div class="card bg-light">
+									<div class="card-body">
+										<ul class="list-group" style="list-style-type:none;">
+											{% for item in items %}
+												<div class="card pad-top">
+													<div class="card-body">
+														<div class="row pad-bottom">
+															<div class="col-md-6">
+																<img class="rounded" style="height:200px;width:200px; style:inline-block;" src="{{item.book.item_picture.url }}">
+															</div>
+															<div class="col-md-6"
+																<li class="list-item" style="inline-block">
+																	<ul style="list-style-type: none">
+																		<li><strong>Title: </strong>{{ item.book }}</li>
+																		<li><strong>Price: </strong>${% unit_price item.count item.price %}</li>
+																		<li><strong>Number Ordered: </strong>{{ item.count }}</li>
+																		<br>
+																	</ul>
+																</li>
+															</div>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<div class="card pad-top">
+												<li class="list-item pad-top" style="margin-left:55%;" id="tot"><h5><strong>Total: </strong>${% total_price items %}</h5></li>
+											</div>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
     {% if reservation %}
-        <a href="{{ order.get_absolute_url }}delete"><button>Cancel Reservation</button></a>
+		<div class="container pad-top pad-bottom">
+			<div class="row">
+				<div class="offset-md-3 col-md-6 text-center">
+					<div class="card">
+						<div class="card-body">
+							<a href="{{ order.get_absolute_url }}delete"><button class="btn-sm bg-danger">Cancel Reservation</button></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
     {% endif %}
 
 {% endblock main_content %}

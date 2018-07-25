@@ -19,6 +19,14 @@
 	list-style-type: none;
 }
 
+.pad-top {
+	margin-top: 10px;
+}
+
+.pad-bottom {
+	margin-bottom: 15px;
+}
+
 #tot {
 	padding-left: 37px;
 }

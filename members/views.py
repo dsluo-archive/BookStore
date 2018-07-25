@@ -243,10 +243,7 @@ def logout_user(request):
 def daily_newsletter(code):
     new_promotion = PromotionCodes.objects.all().filter(code=code).first()
 
-    discounted_genres = ""
-
-    for genre in new_promotion.genres:
-        discounted_genres = genre.subjects + ", "
+    discounted_genre = new_promotion.genre.subjects
 
     members = Member.objects.all().filter(receive_newsletter=True)
     emails = []
@@ -256,9 +253,9 @@ def daily_newsletter(code):
 
     send_mail("Dog Ear Bookstore Daily Newsletter",
               "Dog Ear Bookstore" + "\n\n"
-              + "Daily Promotional Code for " + str(float(new_promotion.discount) * 100) + "% Off:"
+              + "Daily Promotional Code for " + "%.2f" % str(float(new_promotion.discount) * 100) + "% Off: "
               + new_promotion.code + "\n\n"
-              + "Discount applies to select genre(s): " + discounted_genres[:-2],
+              + "Discount applies to select genre: " + discounted_genre,
               "dogearbookstore@gmail.com",
               emails,
               fail_silently=True)

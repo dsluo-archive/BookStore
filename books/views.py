@@ -22,16 +22,26 @@ def landing(request):
 
 
 def home(request):
-    new_books = Book.objects.all().order_by("publish_date")
-    newly_added_books = Book.objects.all().order_by("-id")
+    new_books = Book.objects.all().order_by("-publish_date")[:4]
     latest_authors = Author.objects.all().order_by('-id')
     genres = Genre.objects.all()
 
+    authors_to_home = []
+    for author in latest_authors:
+        if len(author.book_set.all()) > 0:
+            authors_to_home.append(author)
+    authors_to_home = authors_to_home[:4]
+
+    genres_to_home = []
+    for genre in genres:
+        if len(genre.book_set.all()) > 0:
+            genres_to_home.append(genre)
+    genres_to_home = genres_to_home[:4]
+
     return render(request, "home_page.html", {
         "new_books":         new_books,
-        "newly_added_books": newly_added_books,
-        "latest_authors":    latest_authors,
-        "genres":            genres
+        "latest_authors":    authors_to_home,
+        "genres":            genres_to_home
     })
 
 

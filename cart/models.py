@@ -141,7 +141,7 @@ class Order(models.Model):
     def price(self):
         price = 0.0
         for item in self.items.all():
-            price += float(item.price)
+            price += float(item.price) * item.count
 
         return "%.2f" % price
 
